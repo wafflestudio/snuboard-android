@@ -1,2 +1,2 @@
-# onboard-android
-Android of OnBoard Project
+# snuboard-android
+Android of SNUBoard Project
