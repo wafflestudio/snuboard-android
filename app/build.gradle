@@ -9,6 +9,9 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     defaultConfig {
         applicationId "com.wafflestudio.snuboard"
         minSdkVersion 21
@@ -16,10 +19,14 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "SERVER_BASE_URL", '"https://api.themoviedb.org/"'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "MOCK_SERVER_BASE_URL", localProperties['mockServerBaseUrl']
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
