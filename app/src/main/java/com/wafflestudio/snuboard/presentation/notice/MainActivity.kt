@@ -1,7 +1,8 @@
-package com.wafflestudio.snuboard
+package com.wafflestudio.snuboard.presentation.notice
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.wafflestudio.snuboard.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
