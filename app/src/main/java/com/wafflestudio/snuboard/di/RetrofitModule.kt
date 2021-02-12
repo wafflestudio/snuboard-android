@@ -121,7 +121,7 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
         val refreshToken = pref.getString(REFRESH_TOKEN_KEY, null)
         if (response.code == 401 && refreshToken != null) {
             val call: Call<UserTokenDto> =
-                userService.refreshWithToken("refresh_token", refreshToken)
+                userService.authWithToken("refresh_token", refreshToken)
             val tokenResponse: Response<UserTokenDto> = call.execute()
             if (tokenResponse.isSuccessful) {
                 var newRefreshToken: String? = null

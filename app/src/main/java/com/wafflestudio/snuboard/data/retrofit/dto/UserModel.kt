@@ -13,3 +13,14 @@ data class UserTokenDto(
     val keywords: List<String>
 )
 
+data class UserDto(
+    val id: Int,
+    val username: String,
+    val nickname: String,
+    val keywords: List<String>
+)
+
+data class PatchUserDto(
+    val nickname: String? = null,
+    val password: String? = null
+)
