@@ -1,6 +1,8 @@
 package com.wafflestudio.snuboard.di
 
 import android.content.Context
+import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.BuildConfig
 import com.wafflestudio.snuboard.data.retrofit.dto.UserTokenDto
 import com.wafflestudio.snuboard.data.retrofit.service.DepartmentService
@@ -9,7 +11,6 @@ import com.wafflestudio.snuboard.data.retrofit.service.UserService
 import com.wafflestudio.snuboard.di.AuthInterceptor.Companion.AUTHORIZATION
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.ACCESS_TOKEN_KEY
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.REFRESH_TOKEN_KEY
-import com.wafflestudio.snuboard.di.SharedPreferenceConst.TOKEN_FILENAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -89,11 +90,6 @@ class AuthInterceptor
 @Inject
 constructor(@ApplicationContext appContext: Context) : Interceptor {
 
-    private val pref = appContext.getSharedPreferences(
-        TOKEN_FILENAME,
-        Context.MODE_PRIVATE
-    )
-
     override fun intercept(chain: Interceptor.Chain): Okhttp3Response {
         val accessToken = pref.getString(ACCESS_TOKEN_KEY, null)
         return if (accessToken != null) {
@@ -106,6 +102,10 @@ constructor(@ApplicationContext appContext: Context) : Interceptor {
         }
 
     }
+
+    private val pref = PreferenceManager.getDefaultSharedPreferences(
+            appContext
+    )
 
     companion object {
         const val AUTHORIZATION = "Authorization"
@@ -124,25 +124,28 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
                 userService.refreshWithToken("refresh_token", refreshToken)
             val tokenResponse: Response<UserTokenDto> = call.execute()
             if (tokenResponse.isSuccessful) {
-                val newRefreshToken = tokenResponse.body()!!.refresh_token
-                val newAccessToken = tokenResponse.body()!!.access_token
+                var newRefreshToken: String? = null
+                var newAccessToken: String? = null
+                tokenResponse.body()?.let {
+                    newRefreshToken = it.refreshToken
+                    newAccessToken = it.accessToken
+                }
 
-                val editor = pref.edit()
-                editor.putString(REFRESH_TOKEN_KEY, newRefreshToken)
-                editor.putString(ACCESS_TOKEN_KEY, newAccessToken)
-                editor.apply()
+                pref.edit {
+                    putString(REFRESH_TOKEN_KEY, newRefreshToken)
+                    putString(ACCESS_TOKEN_KEY, newAccessToken)
+                }
 
                 return response.request.newBuilder()
-                    .header(AUTHORIZATION, newAccessToken)
-                    .build()
+                        .header(AUTHORIZATION, newAccessToken!!)
+                        .build()
             }
         }
         return null
     }
 
-    private val pref = appContext.getSharedPreferences(
-        TOKEN_FILENAME,
-        Context.MODE_PRIVATE
+    private val pref = PreferenceManager.getDefaultSharedPreferences(
+            appContext
     )
 
     private val client: OkHttpClient = if (BuildConfig.DEBUG) {
@@ -150,10 +153,10 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
+                .addInterceptor(loggingInterceptor)
+                .build()
     } else OkHttpClient
-        .Builder()
+            .Builder()
         .build()
 
     private val userService: UserService = Retrofit.Builder()
