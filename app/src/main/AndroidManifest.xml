@@ -10,7 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SNUBoard">
-        <activity android:name=".presentation.notice.MainActivity">
+        <activity android:name=".presentation.department.DepartmentSearchActivity"></activity>
+        <activity android:name=".presentation.user.ProfileActivity" />
+        <activity android:name=".presentation.department.DepartmentActivity" />
+        <activity android:name=".presentation.notice.NoticeDetailActivity" />
+        <activity android:name=".presentation.notice.NoticeSearchActivity" />
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
