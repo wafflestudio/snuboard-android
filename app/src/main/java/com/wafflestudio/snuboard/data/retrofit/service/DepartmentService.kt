@@ -11,20 +11,20 @@ interface DepartmentService {
 
     @GET("departments/{department_id}/")
     fun getDepartmentById(
-            @Path("department_id") departmentId: Int
+        @Path("department_id") departmentId: Int
     ): Single<Response<DepartmentDto>>
 
     @FormUrlEncoded
     @DELETE("departments/{department_id}/follow/")
     fun deleteFollowOfDepartment(
-            @Path("department_id") departmentId: Int,
-            @Field("follow") follow: String
+        @Path("department_id") departmentId: Int,
+        @Field("follow") follow: String
     ): Single<Response<DepartmentDto>>
 
     @FormUrlEncoded
     @POST("departments/{department_id}/follow/")
     fun postFollowOfDepartment(
-            @Path("department_id") departmentId: Int,
-            @Field("follow") follow: String
+        @Path("department_id") departmentId: Int,
+        @Field("follow") follow: String
     ): Single<Response<DepartmentDto>>
 }
