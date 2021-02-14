@@ -18,12 +18,25 @@ class NoticeFeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_notice_feed,
-                container,
-                false
-            )
+                DataBindingUtil.inflate(
+                        inflater,
+                        R.layout.fragment_notice_feed,
+                        container,
+                        false
+                )
+        binding.run {
+            toolBar.also { tb ->
+                tb.inflateMenu(R.menu.app_bar_fragment_notice_feed)
+                tb.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.search_button ->
+                            startActivity(NoticeSearchActivity.intent(requireContext()))
+                        else -> return@setOnMenuItemClickListener false
+                    }
+                    return@setOnMenuItemClickListener true
+                }
+            }
+        }
         return binding.root
     }
 }
