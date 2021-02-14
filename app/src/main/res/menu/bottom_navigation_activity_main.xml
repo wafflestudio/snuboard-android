@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notice_feed_fragment"
+        android:enabled="true"
+        android:icon="@drawable/sl_bn_feed"
+        android:title="@string/activity_main_bn_feed" />
+    <item
+        android:id="@+id/department_follow_list_fragment"
+        android:enabled="true"
+        android:icon="@drawable/sl_bn_dept"
+        android:title="@string/activity_main_bn_dept" />
+    <item
+        android:id="@+id/saved_fragment"
+        android:enabled="true"
+        android:icon="@drawable/sl_bn_saved"
+        android:title="@string/activity_main_bn_saved" />
+</menu>
