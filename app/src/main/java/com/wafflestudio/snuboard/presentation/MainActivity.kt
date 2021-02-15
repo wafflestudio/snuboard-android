@@ -47,8 +47,10 @@ class MainActivity : AppCompatActivity() {
             }
             navigationView.setNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.group1_item1 ->
+                    R.id.group1_item1 -> {
                         startActivity(ProfileActivity.intent(this@MainActivity))
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
+                    }
                     else ->
                         return@setNavigationItemSelectedListener false
                 }

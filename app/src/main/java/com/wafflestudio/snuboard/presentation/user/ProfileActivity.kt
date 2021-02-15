@@ -24,6 +24,11 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.slide_to_right)
+    }
+
     companion object {
         fun intent(context: Context) = Intent(context, ProfileActivity::class.java)
     }
