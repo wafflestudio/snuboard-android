@@ -33,8 +33,7 @@
                 <TextView
                     android:id="@+id/tool_bar_title"
                     style="@style/AppBarTitle"
-                    android:background="@color/white"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/sriracha_regular"
                     android:gravity="center"
