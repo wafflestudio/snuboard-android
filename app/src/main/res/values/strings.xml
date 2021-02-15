@@ -6,4 +6,5 @@
     <string name="activity_main_bn_dept">학과</string>
     <string name="activity_main_bn_saved">관심목록</string>
     <string name="fragment_notice_feed_app_bar_search">검색</string>
+    <string name="header_navigation_drawer_close">close button</string>
 </resources>
