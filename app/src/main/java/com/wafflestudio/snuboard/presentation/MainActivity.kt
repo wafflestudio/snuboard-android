@@ -9,6 +9,7 @@ import com.wafflestudio.snuboard.databinding.ActivityMainBinding
 import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
 import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
+import com.wafflestudio.snuboard.presentation.user.ProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,6 +44,16 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 true
+            }
+            navigationView.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.group1_item1 ->
+                        startActivity(ProfileActivity.intent(this@MainActivity))
+                    else ->
+                        return@setNavigationItemSelectedListener false
+                }
+                drawerLayout.close()
+                return@setNavigationItemSelectedListener true
             }
         }
     }

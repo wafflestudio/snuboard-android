@@ -2,19 +2,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
         android:id="@+id/group1"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
-            android:id="@+id/item1"
-            android:icon="@drawable/ic_favorite"
-            android:title="title_1"
-            android:checked="true" />
+            android:id="@+id/group1_subtitle"
+            android:title="@string/navigation_drawer_activity_main_category">
+            <menu>
+                <item
+                    android:id="@+id/group1_item1"
+                    android:icon="@drawable/ic_person"
+                    android:title="@string/navigation_drawer_activity_main_profile" />
+            </menu>
+        </item>
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="none">
         <item
-            android:id="@+id/item2"
-            android:icon="@drawable/ic_favorite"
-            android:title="title_2" />
+            android:id="@+id/group2_subtitle"
+            android:title="@string/navigation_drawer_activity_main_app">
+            <menu>
+                <item
+                    android:id="@+id/group2_item1"
+                    android:icon="@drawable/ic_system_update"
+                    android:title="@string/navigation_drawer_activity_main_version" />
+                <item
+                    android:id="@+id/group2_item2"
+                    android:icon="@drawable/ic_library_books"
+                    android:title="@string/navigation_drawer_activity_main_license" />
+            </menu>
+        </item>
+    </group>
+    <group
+        android:id="@+id/group3"
+        android:checkableBehavior="none">
         <item
-            android:id="@+id/item3"
-            android:icon="@drawable/ic_favorite"
-            android:title="title_3" />
+            android:id="@+id/group3_item1"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/navigation_drawer_activity_main_logout" />
     </group>
 </menu>
