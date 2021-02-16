@@ -2,13 +2,13 @@ package com.wafflestudio.snuboard.data.retrofit.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class NoticeList(
-        val notices: List<Notice>,
+data class NoticeListDto(
+        val notices: List<NoticeDto>,
         @SerializedName("next_cursor")
         val nextCursor: String
 )
 
-data class Notice(
+data class NoticeDto(
         val id: Int,
         @SerializedName("department_name")
         val departmentName: String,
@@ -23,12 +23,12 @@ data class Notice(
         @SerializedName("is_pinned")
         val isPinned: Boolean,
         val link: String,
-        val files: List<NoticeFile>,
+        val files: List<NoticeFileDto>,
         @SerializedName("is_scrapped")
         val isScrapped: Boolean
 )
 
-data class NoticeFile(
+data class NoticeFileDto(
         val id: Int,
         val name: String,
         val link: String
