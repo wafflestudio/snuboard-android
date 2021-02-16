@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.FragmentNoticeFeedBinding
 import com.wafflestudio.snuboard.presentation.MainActivityViewModel
@@ -17,6 +19,7 @@ class NoticeFeedFragment : Fragment() {
 
     lateinit var binding: FragmentNoticeFeedBinding
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+    private val noticeFeedFragmentViewModel: NoticeFeedFragmentViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,8 @@ class NoticeFeedFragment : Fragment() {
                         false
                 )
         binding.run {
+            lifecycleOwner = this@NoticeFeedFragment
+            fragmentViewModel = noticeFeedFragmentViewModel
             toolBar.also { tb ->
                 tb.inflateMenu(R.menu.app_bar_fragment_notice_feed)
                 tb.setOnMenuItemClickListener {
@@ -44,6 +49,10 @@ class NoticeFeedFragment : Fragment() {
                 tb.setNavigationOnClickListener {
                     mainActivityViewModel.setDrawer(true)
                 }
+            }
+            recyclerView.run {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = NoticeListAdapter()
             }
         }
         return binding.root
