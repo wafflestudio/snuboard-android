@@ -13,4 +13,6 @@
     <string name="navigation_drawer_activity_main_version">버전 정보</string>
     <string name="navigation_drawer_activity_main_license">라이센스 정보/개인정보 처리방침</string>
     <string name="navigation_drawer_activity_main_logout">로그아웃</string>
+    <string name="tool_bar_fragment_department_follow">팔로우</string>
+    <string name="tool_bar_fragment_saved">관심목록</string>
 </resources>
