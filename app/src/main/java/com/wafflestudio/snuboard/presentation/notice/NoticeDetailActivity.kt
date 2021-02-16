@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation.notice
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,5 +22,13 @@ class NoticeDetailActivity : AppCompatActivity() {
         binding.run {
 
         }
+    }
+
+    companion object {
+        fun intent(context: Context, noticeId: Int) =
+            Intent(context, NoticeDetailActivity::class.java)
+                .putExtra(EXTRA_NOTICE_ID, noticeId)
+
+        const val EXTRA_NOTICE_ID = "extra_notice_id"
     }
 }
