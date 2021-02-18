@@ -9,7 +9,10 @@ import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
+import com.wafflestudio.snuboard.domain.model.DepartmentColor
 import com.wafflestudio.snuboard.domain.model.Notice
+import com.wafflestudio.snuboard.domain.model.Tag
+import com.wafflestudio.snuboard.presentation.TagListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
 
 @SuppressLint("RtlHardcoded")
@@ -26,11 +29,11 @@ fun bindHeartFilled(view: ImageView, bool: Boolean) {
     if (bool) {
         view.setImageResource(R.drawable.ic_favorite)
         view.imageTintList = ColorStateList
-            .valueOf(ContextCompat.getColor(view.context, R.color.purple1))
+                .valueOf(ContextCompat.getColor(view.context, R.color.purple1))
     } else {
         view.setImageResource(R.drawable.ic_favorite_border)
         view.imageTintList = ColorStateList
-            .valueOf(ContextCompat.getColor(view.context, R.color.gray3))
+                .valueOf(ContextCompat.getColor(view.context, R.color.gray3))
     }
 }
 
@@ -38,6 +41,22 @@ fun bindHeartFilled(view: ImageView, bool: Boolean) {
 fun bindNoticeItems(view: RecyclerView, items: List<Notice>?) {
     val adapt = view.adapter as NoticeListAdapter
     items?.run {
+        adapt.submitList(items)
+    }
+}
+
+@BindingAdapter("item_tags")
+fun bindTagItems(view: RecyclerView, item: Notice?) {
+    val adapt = view.adapter as TagListAdapter
+    item?.also {
+        val items = mutableListOf<Tag>(
+                Tag(it.departmentName, it.departmentColor)
+        )
+        items.addAll(
+                it.tags.map { it1 ->
+                    Tag(it1, DepartmentColor.TAG_COLOR)
+                }
+        )
         adapt.submitList(items)
     }
 }

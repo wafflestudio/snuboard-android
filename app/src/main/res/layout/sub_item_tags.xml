@@ -3,21 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+
+        <variable
+            name="item"
+            type="com.wafflestudio.snuboard.domain.model.Notice" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tag_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:item_tags="@{item}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
             tools:listitem="@layout/sub_item_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

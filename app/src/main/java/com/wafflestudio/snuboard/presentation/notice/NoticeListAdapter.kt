@@ -5,8 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ItemNoticeBinding
 import com.wafflestudio.snuboard.domain.model.Notice
+import com.wafflestudio.snuboard.presentation.TagListAdapter
 
 
 class NoticeListAdapter : ListAdapter<Notice, NoticeViewHolder>(NoticeDiffCallback()) {
@@ -39,13 +45,20 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
             item = notice
             clickListener = NoticeClickListener {
                 binding.root.context.startActivity(
-                    NoticeDetailActivity.intent(
-                        binding.root.context,
-                        it
-                    )
+                        NoticeDetailActivity.intent(
+                                binding.root.context,
+                                it
+                        )
                 )
             }
             executePendingBindings()
+        }
+        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
+        tagRecyclerView.adapter = TagListAdapter()
+        tagRecyclerView.layoutManager = FlexboxLayoutManager(binding.root.context).apply {
+            flexWrap = FlexWrap.WRAP
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
         }
     }
 }
