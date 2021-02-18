@@ -6,23 +6,20 @@
     <data>
 
         <variable
-            name="name"
-            type="java.lang.String" />
-
-        <variable
-            name="colorId"
-            type="java.lang.Integer" />
+            name="item"
+            type="com.wafflestudio.snuboard.domain.model.Tag" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp">
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/jade"
+            android:backgroundTint="@{item.color.colorId}"
             app:cardCornerRadius="8dp"
             app:contentPaddingTop="5dp"
             app:contentPaddingRight="9dp"
@@ -32,7 +29,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:backgroundTint="@color/jade">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,6 +38,7 @@
                 android:textSize="10sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:text="@{item.content}"
                 tools:text="전기정보공학부"
                 tools:ignore="SmallSp" />
         </androidx.cardview.widget.CardView>

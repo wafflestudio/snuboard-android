@@ -4,6 +4,7 @@ data class Notice(
         val id: Int,
         val departmentName: String,
         val departmentId: Int,
+        val departmentColor: DepartmentColor,
         val title: String,
         val preview: String,
         val content: String,
