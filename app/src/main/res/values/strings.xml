@@ -24,4 +24,7 @@
     <string name="button_fragment_login_login">로그인</string>
     <string name="button_fragment_login_sign_up">회원가입</string>
     <string name="textview_fragment_login_confirm_password">Confirm Password</string>
+    <string name="textview_fragment_login_nickname">Nickname</string>
+    <string name="textview_fragment_login_account_explanation"><u>계정이 왜 필요한가요?</u></string>
+    <string name="textview_fragment_login_personal_info_explanation"><u>서비스 이용약관 및 개인정보처리방침</u></string>
 </resources>

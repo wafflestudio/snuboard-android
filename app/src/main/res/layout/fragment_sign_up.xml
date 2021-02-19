@@ -23,24 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.15" />
-
-        <TextView
-            android:id="@+id/app_explanation_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:text="@string/app_explanation"
-            android:textColor="@color/gray4"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_name_text"
-            app:layout_constraintVertical_bias="0.0" />
-
+            app:layout_constraintVertical_bias="0.1" />
 
         <TextView
             android:id="@+id/username_label_text"
@@ -71,7 +54,7 @@
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_explanation_text"
+            app:layout_constraintTop_toBottomOf="@id/app_name_text"
             android:importantForAutofill="no"
             android:inputType="text"
             tools:ignore="LabelFor" />
@@ -144,13 +127,80 @@
             app:layout_constraintTop_toBottomOf="@id/password_edit_text"
             tools:ignore="LabelFor" />
 
+        <TextView
+            android:id="@+id/nickname_label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_thin"
+            android:gravity="center"
+            android:text="@string/textview_fragment_login_nickname"
+            android:textColor="@color/gray3"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/nickname_edit_text"
+            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/nickname_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/et_bottom_line"
+            android:ems="12"
+            android:fontFamily="@font/roboto_thin"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirm_password_edit_text"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/account_explanation_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/roboto_thin"
+            android:gravity="center"
+            android:text="@string/textview_fragment_login_account_explanation"
+            android:textColor="@color/gray3"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/nickname_edit_text"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/personal_info_explanation_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_thin"
+            android:gravity="center"
+            android:text="@string/textview_fragment_login_personal_info_explanation"
+            android:textColor="@color/gray3"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/account_explanation_link"
+            tools:ignore="SmallSp" />
+
+
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:id="@+id/sign_up_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:text="@string/button_fragment_login_sign_up"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -159,10 +209,10 @@
             app:strokeColor="@color/gray1"
             app:strokeWidth="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/app_explanation_text"
-            app:layout_constraintStart_toStartOf="@id/app_explanation_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
+            app:layout_constraintEnd_toEndOf="@id/confirm_password_edit_text"
+            app:layout_constraintStart_toStartOf="@id/confirm_password_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/personal_info_explanation_link"
+            app:layout_constraintVertical_bias="0.2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
