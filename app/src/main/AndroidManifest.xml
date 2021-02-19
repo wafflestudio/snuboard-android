@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_app_icon_v1_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SNUBoard">
+        <activity android:name=".presentation.auth.AuthActivity" />
         <activity android:name=".presentation.department.DepartmentSearchActivity" />
         <activity android:name=".presentation.user.ProfileActivity" />
         <activity android:name=".presentation.department.DepartmentActivity" />
