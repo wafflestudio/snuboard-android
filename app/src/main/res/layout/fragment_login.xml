@@ -97,6 +97,7 @@
             android:id="@+id/password_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:background="@drawable/et_bottom_line"
             android:ems="12"
             android:fontFamily="@font/roboto_thin"
@@ -104,11 +105,11 @@
             android:inputType="textPassword"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/login_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/username_edit_text"
-            app:layout_constraintVertical_bias="0.18"
+            app:layout_constraintVertical_bias="0.0"
             tools:ignore="LabelFor" />
 
         <Button

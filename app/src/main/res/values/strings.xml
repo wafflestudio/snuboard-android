@@ -23,4 +23,5 @@
     <string name="textview_fragment_login_password">Password</string>
     <string name="button_fragment_login_login">로그인</string>
     <string name="button_fragment_login_sign_up">회원가입</string>
+    <string name="textview_fragment_login_confirm_password">Confirm Password</string>
 </resources>
