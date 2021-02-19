@@ -18,4 +18,9 @@
     <string name="text_item_notice_title">2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업운영 계획 안내</string>
     <string name="text_item_notice_content">2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다. 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.</string>
     <string name="image_sub_item_notice_info_comment">Comment icon for notice</string>
+    <string name="app_explanation">스누보드에서 서울대학교의 모든 \n공지사항을 모아보세요</string>
+    <string name="textview_fragment_login_username">Username</string>
+    <string name="textview_fragment_login_password">Password</string>
+    <string name="button_fragment_login_login">로그인</string>
+    <string name="button_fragment_login_sign_up">회원가입</string>
 </resources>
