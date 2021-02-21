@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -49,7 +51,10 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.group1_item1 -> {
                         startActivity(ProfileActivity.intent(this@MainActivity))
-                        overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
+                        overridePendingTransition(
+                            R.anim.slide_from_right,
+                            R.anim.nav_default_exit_anim
+                        )
                     }
                     else ->
                         return@setNavigationItemSelectedListener false
@@ -58,5 +63,9 @@ class MainActivity : AppCompatActivity() {
                 return@setNavigationItemSelectedListener true
             }
         }
+    }
+
+    companion object {
+        fun intent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 }

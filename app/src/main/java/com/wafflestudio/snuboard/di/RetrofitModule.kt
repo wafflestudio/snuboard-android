@@ -35,7 +35,7 @@ class RetrofitModule {
     @Singleton
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor,
-        authenticator: Authenticator
+        authenticator: TokenAuthenticator
     ) = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -59,7 +59,7 @@ class RetrofitModule {
         Retrofit.Builder()
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.MOCK_SERVER_BASE_URL)
+            .baseUrl(BuildConfig.TEST_SERVER_BASE_URL)
             .client(okHttpClient)
             .build()
 
@@ -162,7 +162,7 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
     private val userService: UserService = Retrofit.Builder()
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BuildConfig.MOCK_SERVER_BASE_URL)
+        .baseUrl(BuildConfig.TEST_SERVER_BASE_URL)
         .client(client)
         .build()
         .create(UserService::class.java)

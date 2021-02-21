@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data>
+
+        <variable
+            name="activityViewModel"
+            type="com.wafflestudio.snuboard.presentation.auth.AuthActivityViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -52,6 +57,7 @@
             android:textColor="@color/black"
             android:fontFamily="@font/roboto_thin"
             android:textSize="18sp"
+            android:text="@={activityViewModel.usernameSignUpFragment}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_name_text"
@@ -88,6 +94,7 @@
             android:inputType="textPassword"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:text="@={activityViewModel.passwordSignUpFragment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/username_edit_text"
@@ -122,6 +129,7 @@
             android:inputType="textPassword"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:text="@={activityViewModel.confirmPasswordSignUpFragment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password_edit_text"
@@ -156,6 +164,7 @@
             android:inputType="text"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:text="@={activityViewModel.nicknameSignUpFragment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/confirm_password_edit_text"
