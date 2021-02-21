@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "MOCK_SERVER_BASE_URL", localProperties['mockServerBaseUrl']
+            buildConfigField "String", "TEST_SERVER_BASE_URL", localProperties['testServerBaseUrl']
         }
         release {
             minifyEnabled false

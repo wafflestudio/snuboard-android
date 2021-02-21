@@ -1,0 +1,118 @@
+package com.wafflestudio.snuboard.presentation.auth
+
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.preference.PreferenceManager
+import com.wafflestudio.snuboard.di.SharedPreferenceConst
+import com.wafflestudio.snuboard.domain.model.User
+import com.wafflestudio.snuboard.domain.usecase.LoginUseCase
+import com.wafflestudio.snuboard.domain.usecase.SignUpUseCase
+import com.wafflestudio.snuboard.utils.ErrorResponse
+import com.wafflestudio.snuboard.utils.Event
+import com.wafflestudio.snuboard.utils.SingleEvent.triggerToast
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
+import javax.inject.Inject
+
+@HiltViewModel
+class AuthActivityViewModel
+@Inject
+constructor(
+    private val signUpUseCase: SignUpUseCase,
+    private val loginUseCase: LoginUseCase,
+    @ApplicationContext appContext: Context,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    private val pref = PreferenceManager.getDefaultSharedPreferences(
+        appContext
+    )
+
+    private val _navigateToMainActivity = MutableLiveData<Event<Unit>>()
+
+    val usernameLoginFragment = MutableLiveData<String>()
+    val passwordLoginFragment = MutableLiveData<String>()
+
+    val usernameSignUpFragment = MutableLiveData<String>()
+    val passwordSignUpFragment = MutableLiveData<String>()
+    val confirmPasswordSignUpFragment = MutableLiveData<String>()
+    val nicknameSignUpFragment = MutableLiveData<String>()
+
+    val navigateToMainActivity: LiveData<Event<Unit>>
+        get() = _navigateToMainActivity
+
+
+    fun signUp() {
+        when {
+            usernameSignUpFragment.value == null ->
+                triggerToast.value = Event("Username이 비어있습니다.")
+            passwordSignUpFragment.value == null ->
+                triggerToast.value = Event("Password가 비어있습니다.")
+            confirmPasswordSignUpFragment.value == null ->
+                triggerToast.value = Event("Confirm Password가 비어있습니다.")
+            nicknameSignUpFragment.value == null ->
+                triggerToast.value = Event("Nickname이 비어있습니다.")
+            passwordSignUpFragment.value != confirmPasswordSignUpFragment.value ->
+                triggerToast.value = Event("비밀번호와 비밀번호 확인이 다릅니다.")
+            else ->
+                signUpUseCase
+                    .signUp(
+                        usernameSignUpFragment.value!!,
+                        passwordSignUpFragment.value!!,
+                        nicknameSignUpFragment.value!!
+                    )
+                    .subscribe({
+                        when (it) {
+                            is User -> {
+                                _navigateToMainActivity.value = Event(Unit)
+                            }
+                            is ErrorResponse -> {
+                                triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                    }, {
+                        Timber.e(it)
+                    })
+        }
+    }
+
+    fun login() {
+        when {
+            usernameLoginFragment.value == null ->
+                triggerToast.value = Event("Username이 비어있습니다.")
+            passwordLoginFragment.value == null ->
+                triggerToast.value = Event("Password가 비어있습니다.")
+            else ->
+                loginUseCase
+                    .login(
+                        usernameLoginFragment.value!!,
+                        passwordLoginFragment.value!!
+                    )
+                    .subscribe({
+                        when (it) {
+                            is User -> {
+                                _navigateToMainActivity.value = Event(Unit)
+                            }
+                            is ErrorResponse -> {
+                                triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                    }, {
+                        Timber.e(it)
+                    })
+        }
+    }
+
+    fun checkToken() {
+        pref.getString(SharedPreferenceConst.ACCESS_TOKEN_KEY, null)
+            ?.run {
+                _navigateToMainActivity.value = Event(Unit)
+            }
+    }
+}
