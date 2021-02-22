@@ -31,3 +31,16 @@ constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 }
+
+@Singleton
+class GetMyInfoUseCase
+@Inject
+constructor(
+    private val userRepository: UserRepository
+) {
+    fun getMyInfo(): Single<Any> {
+        return userRepository
+            .getUserMe()
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+}

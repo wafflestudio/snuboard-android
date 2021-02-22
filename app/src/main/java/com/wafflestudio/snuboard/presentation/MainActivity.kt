@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 return@setNavigationItemSelectedListener true
             }
         }
+        mainActivityViewModel.getMyInfo()
     }
 
     companion object {
