@@ -5,4 +5,19 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="NotoSansBold">
+        <item name="fontFamily">@font/noto_sans_cjk_kr_bold</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="NotoSansRegular">
+        <item name="fontFamily">@font/noto_sans_cjk_kr_regular</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="NotoSansThin">
+        <item name="fontFamily">@font/noto_sans_cjk_kr_thin</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 </resources>

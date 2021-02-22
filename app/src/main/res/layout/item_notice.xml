@@ -46,6 +46,7 @@
                     app:item="@{item}" />
 
                 <TextView
+                    style="@style/NotoSansBold"
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,7 +54,6 @@
                     android:layout_marginBottom="8dp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:text="@{item.title}"
@@ -62,13 +62,13 @@
                     tools:targetApi="o" />
 
                 <TextView
+                    style="@style/NotoSansRegular"
                     android:id="@+id/preview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:textStyle="normal"
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     android:text="@{item.preview}"

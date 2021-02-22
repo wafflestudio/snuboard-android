@@ -41,6 +41,7 @@
                     tools:background="@color/korean_daisy">
 
                     <TextView
+                        style="@style/NotoSansBold"
                         android:id="@+id/department_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
