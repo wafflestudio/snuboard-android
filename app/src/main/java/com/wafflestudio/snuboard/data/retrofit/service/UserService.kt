@@ -29,8 +29,8 @@ interface UserService {
     @FormUrlEncoded
     @POST("users/auth/token/")
     fun authWithToken(
-        @Field("grant_type") grantType: String,
-        @Field("refresh_token") refreshToken: String
+            @Field("grant_type") grantType: String,
+            @Header("Authorization") refreshToken: String
     ): Call<UserTokenDto>
 
     @GET("users/me/")

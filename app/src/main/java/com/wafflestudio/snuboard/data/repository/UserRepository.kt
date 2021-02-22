@@ -18,6 +18,8 @@ interface UserRepository {
     fun login(username: String, password: String): Single<Any>
 
     fun signUp(username: String, password: String, nickname: String): Single<Any>
+
+    fun getUserMe(): Single<Any>
 }
 
 @Singleton
@@ -61,6 +63,19 @@ constructor(
                             putString(SharedPreferenceConst.ACCESS_TOKEN_KEY, it1.accessToken)
                         }
                         return@map userMapper.mapFromUserTokenDto(it1)
+                    }
+                } else
+                    return@map parseErrorResponse(it.errorBody()!!)
+            }
+    }
+
+    override fun getUserMe(): Single<Any> {
+        return userService.getUserMe()
+            .subscribeOn(Schedulers.io())
+            .map {
+                if (it.isSuccessful) {
+                    it.body()?.let { it1 ->
+                        return@map userMapper.mapFromUserDto(it1)
                     }
                 } else
                     return@map parseErrorResponse(it.errorBody()!!)

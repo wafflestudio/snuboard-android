@@ -41,9 +41,9 @@ class RetrofitModule {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(authInterceptor)
-            .authenticator(authenticator)
+                .addInterceptor(authInterceptor)
+                .authenticator(authenticator)
+                .addInterceptor(loggingInterceptor)
             .build()
     } else OkHttpClient
         .Builder()
@@ -86,6 +86,7 @@ class RetrofitModule {
 
 }
 
+@Singleton
 class AuthInterceptor
 @Inject
 constructor(@ApplicationContext appContext: Context) : Interceptor {
@@ -120,8 +121,9 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
     override fun authenticate(route: Route?, response: Okhttp3Response): Request? {
         val refreshToken = pref.getString(REFRESH_TOKEN_KEY, null)
         if (response.code == 401 && refreshToken != null) {
+            val auth = "Bearer $refreshToken"
             val call: Call<UserTokenDto> =
-                userService.authWithToken("refresh_token", refreshToken)
+                    userService.authWithToken("refresh_token", auth)
             val tokenResponse: Response<UserTokenDto> = call.execute()
             if (tokenResponse.isSuccessful) {
                 var newRefreshToken: String? = null
@@ -137,7 +139,7 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
                 }
 
                 return response.request.newBuilder()
-                        .header(AUTHORIZATION, newAccessToken!!)
+                        .header(AUTHORIZATION, "Bearer $newAccessToken")
                         .build()
             }
         }
