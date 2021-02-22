@@ -27,4 +27,5 @@
     <string name="textview_fragment_login_nickname">Nickname</string>
     <string name="textview_fragment_login_account_explanation"><u>계정이 왜 필요한가요?</u></string>
     <string name="textview_fragment_login_personal_info_explanation"><u>서비스 이용약관 및 개인정보처리방침</u></string>
+    <string name="image_view_item_following_department_arrow">detail_arrow_icon</string>
 </resources>
