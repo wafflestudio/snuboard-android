@@ -5,12 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
+import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityMainBinding
+import com.wafflestudio.snuboard.di.SharedPreferenceConst.ACCESS_TOKEN_KEY
+import com.wafflestudio.snuboard.di.SharedPreferenceConst.REFRESH_TOKEN_KEY
 import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
 import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
+import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.user.ProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,9 +57,18 @@ class MainActivity : AppCompatActivity() {
                     R.id.group1_item1 -> {
                         startActivity(ProfileActivity.intent(this@MainActivity))
                         overridePendingTransition(
-                            R.anim.slide_from_right,
-                            R.anim.nav_default_exit_anim
+                                R.anim.slide_from_right,
+                                R.anim.nav_default_exit_anim
                         )
+                    }
+                    R.id.group3_item1 -> {
+                        val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+                        pref.edit {
+                            remove(REFRESH_TOKEN_KEY)
+                            remove(ACCESS_TOKEN_KEY)
+                        }
+                        startActivity(AuthActivity.intent(this@MainActivity))
+                        finish()
                     }
                     else ->
                         return@setNavigationItemSelectedListener false

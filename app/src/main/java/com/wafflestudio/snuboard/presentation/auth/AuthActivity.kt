@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation.auth
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -42,5 +44,9 @@ class AuthActivity : AppCompatActivity() {
         binding.run {
 
         }
+    }
+
+    companion object {
+        fun intent(context: Context): Intent = Intent(context, AuthActivity::class.java)
     }
 }
