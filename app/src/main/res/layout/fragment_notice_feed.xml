@@ -53,9 +53,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_height="0dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:clipToPadding="false"
             app:notice_items="@{fragmentViewModel.notices}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
