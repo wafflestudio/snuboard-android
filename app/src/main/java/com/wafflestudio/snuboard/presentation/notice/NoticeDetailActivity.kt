@@ -29,6 +29,6 @@ class NoticeDetailActivity : AppCompatActivity() {
             Intent(context, NoticeDetailActivity::class.java)
                 .putExtra(EXTRA_NOTICE_ID, noticeId)
 
-        const val EXTRA_NOTICE_ID = "extra_notice_id"
+        private const val EXTRA_NOTICE_ID = "extra_notice_id"
     }
 }

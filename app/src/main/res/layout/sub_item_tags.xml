@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="item"
+            name="notice"
             type="com.wafflestudio.snuboard.domain.model.Notice" />
+
+        <variable
+            name="contents"
+            type="java.util.List&lt;String&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:item_tags="@{item}"
+            app:notice_tag_items="@{notice}"
+            app:tag_items="@{contents}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

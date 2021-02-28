@@ -43,7 +43,7 @@
 
                 <include
                     layout="@layout/sub_item_tags"
-                    app:item="@{item}" />
+                    app:notice="@{item}" />
 
                 <TextView
                     style="@style/NotoSansBold"

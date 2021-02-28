@@ -9,10 +9,10 @@ import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
-import com.wafflestudio.snuboard.domain.model.DepartmentColor
-import com.wafflestudio.snuboard.domain.model.Notice
-import com.wafflestudio.snuboard.domain.model.Tag
+import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.presentation.TagListAdapter
+import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAdapter
+import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
 
 @SuppressLint("RtlHardcoded")
@@ -40,13 +40,13 @@ fun bindHeartFilled(view: ImageView, bool: Boolean) {
 @BindingAdapter("notice_items")
 fun bindNoticeItems(view: RecyclerView, items: List<Notice>?) {
     val adapt = view.adapter as NoticeListAdapter
-    items?.run {
-        adapt.submitList(items)
+    items?.also {
+        adapt.submitList(it)
     }
 }
 
-@BindingAdapter("item_tags")
-fun bindTagItems(view: RecyclerView, item: Notice?) {
+@BindingAdapter("notice_tag_items")
+fun bindNoticeTagItems(view: RecyclerView, item: Notice?) {
     val adapt = view.adapter as TagListAdapter
     item?.also {
         val items = mutableListOf<Tag>(
@@ -58,5 +58,33 @@ fun bindTagItems(view: RecyclerView, item: Notice?) {
                 }
         )
         adapt.submitList(items)
+    }
+}
+
+@BindingAdapter("tag_items")
+fun bindTagItems(view: RecyclerView, contents: List<String>?) {
+    val adapt = view.adapter as TagListAdapter
+    contents?.also {
+        adapt.submitList(
+                it.map { it1 ->
+                    Tag(it1, DepartmentColor.TAG_COLOR)
+                }
+        )
+    }
+}
+
+@BindingAdapter("college_department_items")
+fun bindCollegeDepartmentItems(view: RecyclerView, items: List<CollegeDepartment>?) {
+    val adapt = view.adapter as CollegeDepartmentListAdapter
+    items?.also {
+        adapt.submitList(it)
+    }
+}
+
+@BindingAdapter("following_department_items")
+fun bindFollowingDepartmentItems(view: RecyclerView, items: List<FollowingDepartment>?) {
+    val adapt = view.adapter as FollowingDepartmentListAdapter
+    items?.also {
+        adapt.submitList(it)
     }
 }
