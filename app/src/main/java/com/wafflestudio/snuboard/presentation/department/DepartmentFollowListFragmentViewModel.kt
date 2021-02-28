@@ -20,6 +20,7 @@ constructor(
 ) : ViewModel() {
     private val _followingDepartments = MutableLiveData<List<FollowingDepartment>>()
     private val _engDepartments = MutableLiveData<List<EngDepartment>>()
+    val updateDepartments = classifyDepartmentUseCase.updateDepartments
 
     val followingDepartments: LiveData<List<FollowingDepartment>>
         get() = _followingDepartments
@@ -27,6 +28,8 @@ constructor(
         get() = _engDepartments
 
     fun getDepartments() {
+        _followingDepartments.value = emptyList()
+        _engDepartments.value = emptyList()
         classifyDepartmentUseCase
                 .classifyDepartments()
                 .subscribe({
