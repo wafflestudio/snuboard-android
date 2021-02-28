@@ -3,7 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data>
+
+        <variable
+            name="item"
+            type="com.wafflestudio.snuboard.domain.model.CollegeDepartment" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,6 +38,7 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="11sp"
+            android:text="@{item.name}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/department_icon"
             app:layout_constraintTop_toTopOf="parent"

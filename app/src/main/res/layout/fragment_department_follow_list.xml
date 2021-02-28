@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.wafflestudio.snuboard.presentation.department.DepartmentFollowListFragmentViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -67,6 +72,7 @@
                     android:id="@+id/following_department_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:following_department_items="@{viewModel.followingDepartments}"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_following_department" />
 
@@ -132,8 +138,9 @@
                             android:id="@+id/department_list_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:college_department_items="@{viewModel.engDepartments}"
                             tools:itemCount="3"
-                            tools:listitem="@layout/item_department_list" />
+                            tools:listitem="@layout/item_college_department" />
                     </LinearLayout>
 
 

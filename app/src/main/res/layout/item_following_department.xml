@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+
+        <variable
+            name="item"
+            type="com.wafflestudio.snuboard.domain.model.FollowingDepartment" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/following_department_layout"
@@ -38,6 +43,7 @@
                     android:paddingEnd="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    android:background="@color/korean_daisy"
                     tools:background="@color/korean_daisy">
 
                     <TextView
@@ -45,6 +51,7 @@
                         android:id="@+id/department_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{item.name}"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -71,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    app:contents="@{item.follow}"
                     layout="@layout/sub_item_tags" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
