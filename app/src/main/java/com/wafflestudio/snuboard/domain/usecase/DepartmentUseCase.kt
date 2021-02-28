@@ -1,10 +1,13 @@
 package com.wafflestudio.snuboard.domain.usecase
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.wafflestudio.snuboard.data.repository.DepartmentRepository
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment
 import com.wafflestudio.snuboard.domain.model.Department
 import com.wafflestudio.snuboard.domain.model.FollowingDepartment
 import com.wafflestudio.snuboard.utils.ErrorResponse
+import com.wafflestudio.snuboard.utils.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -16,6 +19,11 @@ class ClassifyDepartmentUseCase
 constructor(
         private val departmentRepository: DepartmentRepository
 ) {
+
+    private val _updateDepartments = MutableLiveData<Event<Unit>>()
+    val updateDepartments: LiveData<Event<Unit>>
+        get() = _updateDepartments
+
     fun classifyDepartments(): Observable<Any> {
         return departmentRepository
                 .getDepartments()
@@ -47,5 +55,9 @@ constructor(
                 }
                 .observeOn(AndroidSchedulers.mainThread())
 
+    }
+
+    fun updateDepartments() {
+        _updateDepartments.value = Event(Unit)
     }
 }

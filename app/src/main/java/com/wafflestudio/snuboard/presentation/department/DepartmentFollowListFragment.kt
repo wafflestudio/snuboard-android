@@ -50,7 +50,12 @@ class DepartmentFollowListFragment : Fragment() {
                 adapter = CollegeDepartmentListAdapter()
             }
         }
-        departmentFollowListFragmentViewModel.getDepartments()
+        departmentFollowListFragmentViewModel.apply {
+            updateDepartments.observe(viewLifecycleOwner, {
+                getDepartments()
+            })
+            getDepartments()
+        }
         return binding.root
     }
 }

@@ -7,8 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentBinding
+import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DepartmentActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var classifyDepartmentUseCase: ClassifyDepartmentUseCase
 
     private val binding: ActivityDepartmentBinding by lazy {
         DataBindingUtil.setContentView(
@@ -22,6 +29,11 @@ class DepartmentActivity : AppCompatActivity() {
         binding.run {
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        classifyDepartmentUseCase.updateDepartments()
     }
 
     companion object {
