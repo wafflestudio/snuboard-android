@@ -1,10 +1,13 @@
 package com.wafflestudio.snuboard.presentation.department
 
+import android.app.Activity
+import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ItemCollegeDepartmentBinding
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment
 
@@ -45,6 +48,12 @@ class CollegeDepartmentViewHolder(private val binding: ItemCollegeDepartmentBind
                                     collegeDepartment.id
                             )
                     )
+                    ((context as ContextWrapper)
+                            .baseContext as Activity)
+                            .overridePendingTransition(
+                                    R.anim.slide_from_right,
+                                    R.anim.nav_default_exit_anim
+                            )
                 }
             }
             executePendingBindings()
