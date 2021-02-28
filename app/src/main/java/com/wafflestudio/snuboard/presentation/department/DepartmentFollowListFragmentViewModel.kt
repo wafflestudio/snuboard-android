@@ -28,29 +28,19 @@ constructor(
         get() = _engDepartments
 
     fun getDepartments() {
-        _followingDepartments.value = emptyList()
-        _engDepartments.value = emptyList()
+        val tmpFollowingDepartmentList = mutableListOf<FollowingDepartment>()
+        val tmpEngDepartmentList = mutableListOf<EngDepartment>()
         classifyDepartmentUseCase
                 .classifyDepartments()
                 .subscribe({
                     when (it) {
                         is FollowingDepartment -> {
-                            if (_followingDepartments.value == null)
-                                _followingDepartments.value = listOf(it)
-                            else {
-                                val tmpList = _followingDepartments.value!!.toMutableList()
-                                tmpList.add(it)
-                                _followingDepartments.value = tmpList
-                            }
+                            tmpFollowingDepartmentList.add(it)
+                            _followingDepartments.value = tmpFollowingDepartmentList
                         }
                         is EngDepartment -> {
-                            if (_engDepartments.value == null)
-                                _engDepartments.value = listOf(it)
-                            else {
-                                val tmpList = _engDepartments.value!!.toMutableList()
-                                tmpList.add(it)
-                                _engDepartments.value = tmpList
-                            }
+                            tmpEngDepartmentList.add(it)
+                            _engDepartments.value = tmpEngDepartmentList
                         }
                     }
                 }, {

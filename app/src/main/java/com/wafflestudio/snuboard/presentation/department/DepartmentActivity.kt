@@ -3,6 +3,7 @@ package com.wafflestudio.snuboard.presentation.department
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wafflestudio.snuboard.R
@@ -24,10 +25,13 @@ class DepartmentActivity : AppCompatActivity() {
         ) as ActivityDepartmentBinding
     }
 
+    private val departmentActivityViewModel: DepartmentActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.run {
-
+            lifecycleOwner = this@DepartmentActivity
+            viewModel = departmentActivityViewModel
         }
     }
 
