@@ -20,7 +20,7 @@
             android:id="@+id/tag_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@{item.color.colorId}"
+            app:tag_color="@{item.color.colorId}"
             app:cardCornerRadius="8dp"
             app:contentPaddingTop="5dp"
             app:contentPaddingRight="9dp"
