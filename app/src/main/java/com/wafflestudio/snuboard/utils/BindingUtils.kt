@@ -2,8 +2,10 @@ package com.wafflestudio.snuboard.utils
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.Gravity
 import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
@@ -95,4 +97,10 @@ fun bindFollowingDepartmentItems(view: RecyclerView, items: List<FollowingDepart
     items?.also {
         adapt.submitList(it)
     }
+}
+
+@BindingAdapter("tag_color")
+fun bindTagColor(view: CardView, colorId: Int) {
+    val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))
+    view.setCardBackgroundColor(Color.parseColor(colorString))
 }
