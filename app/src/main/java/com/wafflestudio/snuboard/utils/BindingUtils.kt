@@ -61,8 +61,8 @@ fun bindNoticeTagItems(view: RecyclerView, item: Notice?) {
     }
 }
 
-@BindingAdapter("tag_items")
-fun bindTagItems(view: RecyclerView, contents: List<String>?) {
+@BindingAdapter("string_tag_items")
+fun bindStringTagItems(view: RecyclerView, contents: List<String>?) {
     val adapt = view.adapter as TagListAdapter
     contents?.also {
         adapt.submitList(
@@ -70,6 +70,14 @@ fun bindTagItems(view: RecyclerView, contents: List<String>?) {
                     Tag(it1, DepartmentColor.TAG_COLOR)
                 }
         )
+    }
+}
+
+@BindingAdapter("tag_items")
+fun bindTagItems(view: RecyclerView, tags: List<Tag>?) {
+    val adapt = view.adapter as TagListAdapter
+    tags?.also {
+        adapt.submitList(it)
     }
 }
 

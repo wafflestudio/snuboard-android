@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.TagDepartment
 import com.wafflestudio.snuboard.domain.usecase.GetTagDepartmentInfoUseCase
+import com.wafflestudio.snuboard.domain.usecase.PostFollowingTagUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -18,6 +19,7 @@ class DepartmentActivityViewModel
 @Inject
 constructor(
         private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
+        private val postFollowingTagUseCase: PostFollowingTagUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _departmentInfo = MutableLiveData<TagDepartment>()
@@ -41,6 +43,26 @@ constructor(
                 }, {
                     Timber.e(it)
                 })
+    }
+
+    fun postFollowingTag(tagContent: String) {
+        departmentInfo.value?.let {
+            postFollowingTagUseCase
+                    .postFollowingTag(it.id, tagContent)
+                    .subscribe({ it1 ->
+                        when (it1) {
+                            is TagDepartment -> {
+                                _departmentInfo.value = it1
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it1.message)
+                                Timber.e(it1.message)
+                            }
+                        }
+                    }, { it1 ->
+                        Timber.e(it1)
+                    })
+        }
     }
 
 }

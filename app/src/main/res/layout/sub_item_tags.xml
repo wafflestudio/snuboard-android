@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:notice_tag_items="@{notice}"
-            app:tag_items="@{contents}"
+            app:string_tag_items="@{contents}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
