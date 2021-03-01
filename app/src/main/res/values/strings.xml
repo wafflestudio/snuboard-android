@@ -32,4 +32,7 @@
     <string name="image_view_item_navigate_next">navigate_next</string>
     <string name="image_view_fragment_dept_domain">domain</string>
     <string name="text_fragment_dept_eng_college">공과대학</string>
+    <string name="tab_activity_dept_home">홈</string>
+    <string name="tab_activity_dept_feed">피드</string>
+    <string name="fragment_department_home_app_bar_link">링크</string>
 </resources>
