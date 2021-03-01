@@ -43,7 +43,7 @@
                     android:paddingEnd="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:background="@color/korean_daisy"
+                    app:department_color="@{item.departmentColor.colorId}"
                     tools:background="@color/korean_daisy">
 
                     <TextView

@@ -38,7 +38,7 @@ class DepartmentFeedFragment : Fragment() {
             tagRecyclerView.run {
                 adapter = TagListAdapter(
                         TagClickListener {
-                            departmentActivityViewModel.postFollowingTag(it)
+                            departmentActivityViewModel.toggleFollowingTag(it)
                         }
                 )
                 layoutManager = FlexboxLayoutManager(binding.root.context).apply {

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.Gravity
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
@@ -103,4 +104,10 @@ fun bindFollowingDepartmentItems(view: RecyclerView, items: List<FollowingDepart
 fun bindTagColor(view: CardView, colorId: Int) {
     val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))
     view.setCardBackgroundColor(Color.parseColor(colorString))
+}
+
+@BindingAdapter("department_color")
+fun bindDepartmentColor(view: ConstraintLayout, colorId: Int) {
+    val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))
+    view.setBackgroundColor(Color.parseColor(colorString))
 }
