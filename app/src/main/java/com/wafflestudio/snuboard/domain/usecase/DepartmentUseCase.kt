@@ -10,6 +10,7 @@ import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,5 +60,18 @@ constructor(
 
     fun updateDepartments() {
         _updateDepartments.value = Event(Unit)
+    }
+}
+
+@Singleton
+class GetDepartmentInfoUseCase
+@Inject
+constructor(
+        private val departmentRepository: DepartmentRepository
+) {
+    fun getDepartmentInfo(departmentId: Int): Single<Any> {
+        return departmentRepository
+                .getDepartmentById(departmentId)
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

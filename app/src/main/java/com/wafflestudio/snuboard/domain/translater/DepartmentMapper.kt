@@ -11,9 +11,13 @@ class DepartmentMapper
 @Inject
 constructor() {
 
-    fun mapFromDepartmentDto(dto: List<DepartmentDto>): List<Department> {
+    fun mapFromListDepartmentDto(dto: List<DepartmentDto>): List<Department> {
         return dto.map {
             Department(it.id, it.name, it.tags, it.follow, DepartmentColor.SKY)
         }
+    }
+
+    fun mapFromDepartmentDto(dto: DepartmentDto): Department {
+        return Department(dto.id, dto.name, dto.tags, dto.follow, DepartmentColor.SKY)
     }
 }
