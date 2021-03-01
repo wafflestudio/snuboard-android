@@ -35,4 +35,6 @@
     <string name="tab_activity_dept_home">홈</string>
     <string name="tab_activity_dept_feed">피드</string>
     <string name="fragment_department_home_app_bar_link">링크</string>
+    <string name="image_fragment_dept_feed_tag">tag</string>
+    <string name="text_view_fragement_dept_feed_follow">팔로우</string>
 </resources>
