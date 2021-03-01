@@ -12,6 +12,10 @@ interface DepartmentRepository {
     fun getDepartments(): Single<Any>
 
     fun getDepartmentById(departmentId: Int): Single<Any>
+
+    fun deleteFollowOfDepartment(departmentId: Int, follow: String): Single<Any>
+
+    fun postFollowOfDepartment(departmentId: Int, follow: String): Single<Any>
 }
 
 @Singleton
@@ -36,6 +40,32 @@ constructor(
 
     override fun getDepartmentById(departmentId: Int): Single<Any> {
         return departmentService.getDepartmentById(departmentId)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map departmentMapper.mapFromDepartmentDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
+    }
+
+    override fun deleteFollowOfDepartment(departmentId: Int, follow: String): Single<Any> {
+        return departmentService.deleteFollowOfDepartment(departmentId, follow)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map departmentMapper.mapFromDepartmentDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
+    }
+
+    override fun postFollowOfDepartment(departmentId: Int, follow: String): Single<Any> {
+        return departmentService.postFollowOfDepartment(departmentId, follow)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {

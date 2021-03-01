@@ -91,3 +91,36 @@ constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 }
+
+@Singleton
+class PostFollowingTagUseCase
+@Inject
+constructor(
+        private val departmentRepository: DepartmentRepository
+) {
+    fun postFollowingTag(departmentId: Int, tagContent: String): Single<Any> {
+        return departmentRepository
+                .postFollowOfDepartment(departmentId, tagContent)
+                .map {
+                    when (it) {
+                        is Department -> {
+                            val tmpTags = it.tags.map { it1 ->
+                                if (it1 in it.follow) {
+                                    Tag(it1, DepartmentColor.TAG_SELECTED_COLOR)
+                                } else {
+                                    Tag(it1, DepartmentColor.TAG_COLOR)
+                                }
+                            }
+                            return@map TagDepartment(it.id, it.name, tmpTags)
+                        }
+                        is ErrorResponse ->
+                            return@map it
+                        else ->
+                            throw Error("Unexpected type from DepartmentMapper")
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+
+
+    }
+}

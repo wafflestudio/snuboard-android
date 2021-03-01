@@ -54,11 +54,13 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
             executePendingBindings()
         }
         val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
-        tagRecyclerView.adapter = TagListAdapter()
-        tagRecyclerView.layoutManager = FlexboxLayoutManager(binding.root.context).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            justifyContent = JustifyContent.FLEX_START
+        tagRecyclerView.run {
+            adapter = TagListAdapter(null)
+            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
         }
     }
 }

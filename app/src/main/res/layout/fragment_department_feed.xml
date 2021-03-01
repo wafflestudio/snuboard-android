@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data>
+
+        <variable
+            name="activityViewModel"
+            type="com.wafflestudio.snuboard.presentation.department.DepartmentActivityViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -46,7 +51,8 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/tags_header"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp">
 
                             <ImageView
                                 android:id="@+id/tags_icon"
@@ -78,6 +84,16 @@
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tag_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:tag_items="@{activityViewModel.departmentInfo.tags}"
+                            tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                            tools:listitem="@layout/sub_item_tag" />
+
 
                     </LinearLayout>
 

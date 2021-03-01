@@ -5,8 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ItemFollowingDepartmentBinding
 import com.wafflestudio.snuboard.domain.model.FollowingDepartment
+import com.wafflestudio.snuboard.presentation.TagListAdapter
 
 class FollowingDepartmentListAdapter :
         ListAdapter<FollowingDepartment, FollowingDepartmentViewHolder>(FollowingDepartmentDiffCallback()) {
@@ -36,6 +42,15 @@ class FollowingDepartmentViewHolder(private val binding: ItemFollowingDepartment
     fun bindItems(followingDepartment: FollowingDepartment) {
         binding.run {
             item = followingDepartment
+        }
+        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
+        tagRecyclerView.run {
+            adapter = TagListAdapter(null)
+            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
         }
     }
 }
