@@ -31,3 +31,9 @@ sealed class CollegeDepartment(open val id: Int, open val name: String) {
         private val engDepartmentNames = listOf("기계공학부", "컴퓨터공학부")
     }
 }
+
+data class TagDepartment(
+        val id: Int,
+        val name: String,
+        val tags: List<Tag>
+)

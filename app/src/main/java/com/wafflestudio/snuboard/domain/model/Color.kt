@@ -13,7 +13,8 @@ enum class DepartmentColor(val colorId: Int) {
     MEDITERRANEAN(R.color.mediterranean),
     AMETHYST(R.color.amethyst),
     LAVENDER(R.color.lavender),
-    TAG_COLOR(R.color.gray4);
+    TAG_COLOR(R.color.gray4),
+    TAG_SELECTED_COLOR(R.color.purple1);
 
     companion object {
         fun fromColorId(colorId: Int): DepartmentColor? =
