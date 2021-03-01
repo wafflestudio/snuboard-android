@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.tabs.TabLayoutMediator
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentBinding
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
@@ -32,12 +33,36 @@ class DepartmentActivity : AppCompatActivity() {
         binding.run {
             lifecycleOwner = this@DepartmentActivity
             viewModel = departmentActivityViewModel
+
+            pager.apply {
+                adapter = DepartmentPagerAdapter(this@DepartmentActivity)
+            }
+            TabLayoutMediator(tabLayout, pager) { tab, position ->
+                tab.text = DepartmentPageConst.fromPosition(position)!!.title
+            }.attach()
+            setSupportActionBar(toolBar)
+            supportActionBar!!.apply {
+                setDisplayShowTitleEnabled(false)
+                setDisplayHomeAsUpEnabled(true)
+                setHomeButtonEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_navigate_before)
+            }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         classifyDepartmentUseCase.updateDepartments()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.slide_to_right)
     }
 
     companion object {
