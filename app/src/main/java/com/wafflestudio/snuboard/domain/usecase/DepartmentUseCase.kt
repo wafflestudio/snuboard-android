@@ -3,9 +3,7 @@ package com.wafflestudio.snuboard.domain.usecase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.wafflestudio.snuboard.data.repository.DepartmentRepository
-import com.wafflestudio.snuboard.domain.model.CollegeDepartment
-import com.wafflestudio.snuboard.domain.model.Department
-import com.wafflestudio.snuboard.domain.model.FollowingDepartment
+import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -64,14 +62,32 @@ constructor(
 }
 
 @Singleton
-class GetDepartmentInfoUseCase
+class GetTagDepartmentInfoUseCase
 @Inject
 constructor(
         private val departmentRepository: DepartmentRepository
 ) {
-    fun getDepartmentInfo(departmentId: Int): Single<Any> {
+    fun getTagDepartmentInfo(departmentId: Int): Single<Any> {
         return departmentRepository
                 .getDepartmentById(departmentId)
+                .map {
+                    when (it) {
+                        is Department -> {
+                            val tmpTags = it.tags.map { it1 ->
+                                if (it1 in it.follow) {
+                                    Tag(it1, DepartmentColor.TAG_SELECTED_COLOR)
+                                } else {
+                                    Tag(it1, DepartmentColor.TAG_COLOR)
+                                }
+                            }
+                            return@map TagDepartment(it.id, it.name, tmpTags)
+                        }
+                        is ErrorResponse ->
+                            return@map it
+                        else ->
+                            throw Error("Unexpected type from DepartmentMapper")
+                    }
+                }
                 .observeOn(AndroidSchedulers.mainThread())
     }
 }

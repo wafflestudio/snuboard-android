@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.wafflestudio.snuboard.domain.model.Department
-import com.wafflestudio.snuboard.domain.usecase.GetDepartmentInfoUseCase
+import com.wafflestudio.snuboard.domain.model.TagDepartment
+import com.wafflestudio.snuboard.domain.usecase.GetTagDepartmentInfoUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -17,20 +17,20 @@ import javax.inject.Inject
 class DepartmentActivityViewModel
 @Inject
 constructor(
-        private val getDepartmentInfoUseCase: GetDepartmentInfoUseCase,
+        private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _departmentInfo = MutableLiveData<Department>()
+    private val _departmentInfo = MutableLiveData<TagDepartment>()
 
-    val departmentInfo: LiveData<Department>
+    val departmentInfo: LiveData<TagDepartment>
         get() = _departmentInfo
 
     fun getDepartmentInfo(departmentId: Int) {
-        getDepartmentInfoUseCase
-                .getDepartmentInfo(departmentId)
+        getTagDepartmentInfoUseCase
+                .getTagDepartmentInfo(departmentId)
                 .subscribe({
                     when (it) {
-                        is Department -> {
+                        is TagDepartment -> {
                             _departmentInfo.value = it
                         }
                         is ErrorResponse -> {
