@@ -90,7 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:tag_items="@{activityViewModel.departmentInfo.tags}"
+                            app:tag_items="@{activityViewModel.tagDepartmentInfo.tags}"
                             tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                             tools:listitem="@layout/sub_item_tag" />
 

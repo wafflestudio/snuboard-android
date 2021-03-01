@@ -51,7 +51,7 @@ class DepartmentActivity : AppCompatActivity() {
 
         val departmentId = intent.getIntExtra(EXTRA_DEPARTMENT_ID, -1)
         if (departmentId == -1) finish()
-        departmentActivityViewModel.getDepartmentInfo(departmentId)
+        departmentActivityViewModel.getTagDepartmentInfo(departmentId)
     }
 
     override fun onDestroy() {

@@ -36,15 +36,16 @@ constructor(
                     when (it) {
                         is FollowingDepartment -> {
                             tmpFollowingDepartmentList.add(it)
-                            _followingDepartments.value = tmpFollowingDepartmentList
                         }
                         is EngDepartment -> {
                             tmpEngDepartmentList.add(it)
-                            _engDepartments.value = tmpEngDepartmentList
                         }
                     }
                 }, {
                     Timber.e(it)
+                }, {
+                    _followingDepartments.value = tmpFollowingDepartmentList
+                    _engDepartments.value = tmpEngDepartmentList
                 })
     }
 }

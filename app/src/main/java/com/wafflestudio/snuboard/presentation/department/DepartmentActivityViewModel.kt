@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.wafflestudio.snuboard.domain.model.DepartmentColor
 import com.wafflestudio.snuboard.domain.model.TagDepartment
+import com.wafflestudio.snuboard.domain.usecase.DeleteFollowingTagUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetTagDepartmentInfoUseCase
 import com.wafflestudio.snuboard.domain.usecase.PostFollowingTagUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
@@ -20,20 +22,21 @@ class DepartmentActivityViewModel
 constructor(
         private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
         private val postFollowingTagUseCase: PostFollowingTagUseCase,
+        private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _departmentInfo = MutableLiveData<TagDepartment>()
+    private val _tagDepartmentInfo = MutableLiveData<TagDepartment>()
 
-    val departmentInfo: LiveData<TagDepartment>
-        get() = _departmentInfo
+    val tagDepartmentInfo: LiveData<TagDepartment>
+        get() = _tagDepartmentInfo
 
-    fun getDepartmentInfo(departmentId: Int) {
+    fun getTagDepartmentInfo(departmentId: Int) {
         getTagDepartmentInfoUseCase
                 .getTagDepartmentInfo(departmentId)
                 .subscribe({
                     when (it) {
                         is TagDepartment -> {
-                            _departmentInfo.value = it
+                            _tagDepartmentInfo.value = it
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)
@@ -45,14 +48,23 @@ constructor(
                 })
     }
 
-    fun postFollowingTag(tagContent: String) {
-        departmentInfo.value?.let {
-            postFollowingTagUseCase
-                    .postFollowingTag(it.id, tagContent)
-                    .subscribe({ it1 ->
+    fun toggleFollowingTag(tagContent: String) {
+        tagDepartmentInfo.value?.let {
+            val designatedColor = it.tags.find { tag -> tag.content == tagContent }?.color
+            when (designatedColor) {
+                DepartmentColor.TAG_COLOR ->
+                    postFollowingTagUseCase
+                            .postFollowingTag(it.id, tagContent)
+                DepartmentColor.TAG_SELECTED_COLOR ->
+                    deleteFollowingTagUseCase
+                            .deleteFollowingTag(it.id, tagContent)
+                else ->
+                    null
+            }
+                    ?.subscribe({ it1 ->
                         when (it1) {
                             is TagDepartment -> {
-                                _departmentInfo.value = it1
+                                _tagDepartmentInfo.value = it1
                             }
                             is ErrorResponse -> {
                                 SingleEvent.triggerToast.value = Event(it1.message)

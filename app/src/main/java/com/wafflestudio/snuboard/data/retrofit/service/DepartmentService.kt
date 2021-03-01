@@ -15,7 +15,7 @@ interface DepartmentService {
     ): Single<Response<DepartmentDto>>
 
     @FormUrlEncoded
-    @DELETE("departments/{department_id}/follow/")
+    @HTTP(method = "DELETE", path = "departments/{department_id}/follow/", hasBody = true)
     fun deleteFollowOfDepartment(
         @Path("department_id") departmentId: Int,
         @Field("follow") follow: String
