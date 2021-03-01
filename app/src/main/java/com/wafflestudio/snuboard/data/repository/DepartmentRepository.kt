@@ -10,6 +10,8 @@ import javax.inject.Singleton
 
 interface DepartmentRepository {
     fun getDepartments(): Single<Any>
+
+    fun getDepartmentById(departmentId: Int): Single<Any>
 }
 
 @Singleton
@@ -21,6 +23,19 @@ constructor(
 ) : DepartmentRepository {
     override fun getDepartments(): Single<Any> {
         return departmentService.getDepartments()
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map departmentMapper.mapFromListDepartmentDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
+    }
+
+    override fun getDepartmentById(departmentId: Int): Single<Any> {
+        return departmentService.getDepartmentById(departmentId)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {

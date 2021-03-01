@@ -48,6 +48,10 @@ class DepartmentActivity : AppCompatActivity() {
                 setHomeAsUpIndicator(R.drawable.ic_navigate_before)
             }
         }
+
+        val departmentId = intent.getIntExtra(EXTRA_DEPARTMENT_ID, -1)
+        if (departmentId == -1) finish()
+        departmentActivityViewModel.getDepartmentInfo(departmentId)
     }
 
     override fun onDestroy() {
