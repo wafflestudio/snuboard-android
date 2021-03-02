@@ -8,6 +8,8 @@
         <variable
             name="activityViewModel"
             type="com.wafflestudio.snuboard.presentation.department.DepartmentActivityViewModel" />
+
+        <import type="com.wafflestudio.snuboard.domain.model.DepartmentColor" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp">
 
@@ -94,6 +97,176 @@
                             tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                             tools:listitem="@layout/sub_item_tag" />
 
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/colors_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white"
+                    app:contentPadding="12dp"
+                    app:cardCornerRadius="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/colors_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:id="@+id/colors_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="4dp"
+                                android:contentDescription="@string/image_fragment_dept_feed_tag"
+                                android:src="@drawable/ic_color_lens"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/colors_name"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintHorizontal_chainStyle="packed"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/gray1" />
+
+                            <TextView
+                                android:id="@+id/colors_name"
+                                style="@style/NotoSansBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_view_fragement_dept_feed_color"
+                                android:textColor="@color/gray1"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/colors_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/colors_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_pomegranate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/color_pea"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/color_citrus"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.POMEGRANATE}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_citrus"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="@id/color_pomegranate"
+                                app:layout_constraintBottom_toBottomOf="@id/color_pomegranate"
+                                app:layout_constraintStart_toEndOf="@id/color_pomegranate"
+                                app:layout_constraintEnd_toStartOf="@id/color_korean_daisy"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.CITRUS}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_korean_daisy"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="@id/color_pomegranate"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/color_citrus"
+                                app:layout_constraintTop_toTopOf="@id/color_pomegranate"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.KOREAN_DAISY}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_pea"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@id/color_pomegranate"
+                                app:layout_constraintBottom_toTopOf="@id/color_sky"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/color_jade"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.PEA}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_jade"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="@id/color_pea"
+                                app:layout_constraintBottom_toBottomOf="@id/color_pea"
+                                app:layout_constraintStart_toEndOf="@id/color_pea"
+                                app:layout_constraintEnd_toStartOf="@id/color_mediterranean"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.JADE}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_mediterranean"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="@id/color_pea"
+                                app:layout_constraintBottom_toBottomOf="@id/color_pea"
+                                app:layout_constraintStart_toEndOf="@id/color_jade"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.MEDITERRANEAN}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_sky"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@id/color_pea"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/color_lavender"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.SKY}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_lavender"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="@id/color_sky"
+                                app:layout_constraintBottom_toBottomOf="@id/color_sky"
+                                app:layout_constraintStart_toEndOf="@id/color_sky"
+                                app:layout_constraintEnd_toStartOf="@id/color_amethyst"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.LAVENDER}" />
+
+                            <include
+                                layout="@layout/item_color"
+                                android:id="@+id/color_amethyst"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="@id/color_sky"
+                                app:layout_constraintBottom_toBottomOf="@id/color_sky"
+                                app:layout_constraintStart_toEndOf="@id/color_lavender"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:selectedColor="@{activityViewModel.tagDepartmentInfo.departmentColor}"
+                                app:color="@{DepartmentColor.AMETHYST}" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
 

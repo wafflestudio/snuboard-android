@@ -35,5 +35,6 @@ sealed class CollegeDepartment(open val id: Int, open val name: String) {
 data class TagDepartment(
         val id: Int,
         val name: String,
-        val tags: List<Tag>
+        val tags: List<Tag>,
+        val departmentColor: DepartmentColor
 )

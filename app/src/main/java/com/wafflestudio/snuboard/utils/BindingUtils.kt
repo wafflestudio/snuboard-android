@@ -3,8 +3,11 @@ package com.wafflestudio.snuboard.utils
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.Gravity
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -110,4 +113,28 @@ fun bindTagColor(view: CardView, colorId: Int) {
 fun bindDepartmentColor(view: ConstraintLayout, colorId: Int) {
     val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))
     view.setBackgroundColor(Color.parseColor(colorString))
+}
+
+@BindingAdapter("preview_color")
+fun bindPreviewColor(view: ImageView, colorId: Int) {
+    val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))
+    view.setColorFilter(Color.parseColor(colorString))
+}
+
+@BindingAdapter("text_style_string")
+fun bindTextStyleString(view: TextView, style: String) {
+    when (style) {
+        "bold" -> view.setTypeface(null, Typeface.BOLD)
+        "normal" -> view.setTypeface(null, Typeface.NORMAL)
+        else -> throw Error("Not valid style in textView")
+    }
+}
+
+@BindingAdapter("image_visibility_string")
+fun bindTextStyleString(view: ImageView, visibility: String) {
+    when (visibility) {
+        "visible" -> view.visibility = View.VISIBLE
+        "gone" -> view.visibility = View.GONE
+        else -> throw Error("Not valid style in textView")
+    }
 }
