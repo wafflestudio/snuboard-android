@@ -8,6 +8,10 @@
         <variable
             name="item"
             type="com.wafflestudio.snuboard.domain.model.FollowingDepartment" />
+
+        <variable
+            name="clickListener"
+            type="com.wafflestudio.snuboard.presentation.department.FollowingDepartmentClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +47,7 @@
                     android:paddingEnd="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    app:click_listener_constraint_layout="@{() -> clickListener.onClick()}"
                     app:department_color="@{item.departmentColor.colorId}"
                     tools:background="@color/korean_daisy">
 

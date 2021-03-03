@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation.department
 
+import android.app.Activity
+import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -42,6 +44,22 @@ class FollowingDepartmentViewHolder(private val binding: ItemFollowingDepartment
     fun bindItems(followingDepartment: FollowingDepartment) {
         binding.run {
             item = followingDepartment
+            clickListener = FollowingDepartmentClickListener {
+                binding.root.apply {
+                    context.startActivity(
+                            DepartmentActivity.intent(
+                                    context,
+                                    followingDepartment.id
+                            )
+                    )
+                    ((context as ContextWrapper)
+                            .baseContext as Activity)
+                            .overridePendingTransition(
+                                    R.anim.slide_from_right,
+                                    R.anim.nav_default_exit_anim
+                            )
+                }
+            }
         }
         val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
         tagRecyclerView.run {
@@ -53,4 +71,8 @@ class FollowingDepartmentViewHolder(private val binding: ItemFollowingDepartment
             }
         }
     }
+}
+
+class FollowingDepartmentClickListener(val clickListener: () -> Unit) {
+    fun onClick() = clickListener()
 }

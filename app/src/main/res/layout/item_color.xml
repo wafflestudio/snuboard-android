@@ -25,7 +25,7 @@
         android:paddingEnd="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        app:click_listener_color="@{() -> colorClickListener.onClick(color)}"
+        app:click_listener_constraint_layout="@{() -> colorClickListener.onClick(color)}"
         tools:ignore="SmallSp">
 
         <ImageView
