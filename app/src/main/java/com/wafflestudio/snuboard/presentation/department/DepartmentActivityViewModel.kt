@@ -1,9 +1,12 @@
 package com.wafflestudio.snuboard.presentation.department
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.domain.model.DepartmentColor
 import com.wafflestudio.snuboard.domain.model.TagDepartment
 import com.wafflestudio.snuboard.domain.usecase.DeleteFollowingTagUseCase
@@ -75,6 +78,20 @@ constructor(
                         Timber.e(it1)
                     })
         }
+    }
+
+    fun changeDepartmentColor(departmentColor: DepartmentColor, pref: SharedPreferences) {
+        val tmpTagDepartment = tagDepartmentInfo.value!!
+        val preferenceKey = SharedPreferenceConst.getDepartmentKey(tmpTagDepartment.id)
+        pref.edit {
+            putInt(preferenceKey, departmentColor.colorId)
+        }
+        _tagDepartmentInfo.value = TagDepartment(
+                tmpTagDepartment.id,
+                tmpTagDepartment.name,
+                tmpTagDepartment.tags,
+                departmentColor
+        )
     }
 
 }

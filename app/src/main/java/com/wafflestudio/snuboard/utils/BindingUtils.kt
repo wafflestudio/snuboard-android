@@ -138,3 +138,10 @@ fun bindTextStyleString(view: ImageView, visibility: String) {
         else -> throw Error("Not valid style in textView")
     }
 }
+
+@BindingAdapter("click_listener_color")
+fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
+    view.setOnClickListener {
+        clickListener()
+    }
+}

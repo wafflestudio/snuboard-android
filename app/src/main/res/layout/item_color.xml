@@ -12,6 +12,10 @@
         <variable
             name="selectedColor"
             type="com.wafflestudio.snuboard.domain.model.DepartmentColor" />
+
+        <variable
+            name="colorClickListener"
+            type="com.wafflestudio.snuboard.presentation.department.ColorClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +25,7 @@
         android:paddingEnd="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        app:click_listener_color="@{() -> colorClickListener.onClick(color)}"
         tools:ignore="SmallSp">
 
         <ImageView
