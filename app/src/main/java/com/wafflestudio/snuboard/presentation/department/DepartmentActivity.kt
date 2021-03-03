@@ -3,6 +3,7 @@ package com.wafflestudio.snuboard.presentation.department
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentBinding
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
+import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,6 +32,11 @@ class DepartmentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SingleEvent.triggerToast.observe(this) {
+            it.getContentIfNotHandled()?.let { it1 ->
+                Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
+            }
+        }
         binding.run {
             lifecycleOwner = this@DepartmentActivity
             viewModel = departmentActivityViewModel
