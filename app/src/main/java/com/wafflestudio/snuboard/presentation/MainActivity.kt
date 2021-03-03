@@ -3,6 +3,7 @@ package com.wafflestudio.snuboard.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -17,6 +18,7 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.user.ProfileActivity
+import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SingleEvent.triggerToast.observe(this) {
+            it.getContentIfNotHandled()?.let { it1 ->
+                Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
+            }
+        }
         binding.run {
             lifecycleOwner = this@MainActivity
             viewModel = mainActivityViewModel
