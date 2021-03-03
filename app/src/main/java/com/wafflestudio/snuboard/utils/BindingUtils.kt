@@ -139,7 +139,7 @@ fun bindTextStyleString(view: ImageView, visibility: String) {
     }
 }
 
-@BindingAdapter("click_listener_color")
+@BindingAdapter("click_listener_constraint_layout")
 fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
     view.setOnClickListener {
         clickListener()
