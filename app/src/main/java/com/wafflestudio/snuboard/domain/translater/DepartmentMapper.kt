@@ -26,9 +26,9 @@ constructor(@ApplicationContext appContext: Context) {
             var colorId = pref.getInt(preferenceKey, -1)
             if (colorId == -1) {
                 pref.edit {
-                    putInt(preferenceKey, DepartmentColor.KOREAN_DAISY.colorId)
+                    putInt(preferenceKey, DepartmentColor.POMEGRANATE.colorId)
                 }
-                colorId = DepartmentColor.KOREAN_DAISY.colorId
+                colorId = DepartmentColor.POMEGRANATE.colorId
             }
             Department(it.id, it.name, it.tags, it.follow, DepartmentColor.fromColorId(colorId)!!)
         }
@@ -39,9 +39,9 @@ constructor(@ApplicationContext appContext: Context) {
         var colorId = pref.getInt(preferenceKey, -1)
         if (colorId == -1) {
             pref.edit {
-                putInt(preferenceKey, DepartmentColor.KOREAN_DAISY.colorId)
+                putInt(preferenceKey, DepartmentColor.POMEGRANATE.colorId)
             }
-            colorId = DepartmentColor.KOREAN_DAISY.colorId
+            colorId = DepartmentColor.POMEGRANATE.colorId
         }
         return Department(dto.id, dto.name, dto.tags, dto.follow, DepartmentColor.fromColorId(colorId)!!)
     }
