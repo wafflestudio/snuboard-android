@@ -6,6 +6,10 @@
         <variable
             name="viewModel"
             type="com.wafflestudio.snuboard.presentation.MainActivityViewModel" />
+
+        <variable
+            name="myInfo"
+            type="com.wafflestudio.snuboard.domain.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
@@ -36,7 +40,7 @@
             android:padding="16dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:text="@{viewModel.myInfo.nickname}"
+            android:text="@{myInfo.nickname}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
