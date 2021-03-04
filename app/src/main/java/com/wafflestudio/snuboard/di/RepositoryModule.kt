@@ -1,9 +1,6 @@
 package com.wafflestudio.snuboard.di
 
-import com.wafflestudio.snuboard.data.repository.DepartmentRepository
-import com.wafflestudio.snuboard.data.repository.DepartmentRepositoryImpl
-import com.wafflestudio.snuboard.data.repository.UserRepository
-import com.wafflestudio.snuboard.data.repository.UserRepositoryImpl
+import com.wafflestudio.snuboard.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +14,7 @@ interface RepositoryModule {
 
     @Binds
     fun provideDepartmentRepositoryImpl(repository: DepartmentRepositoryImpl): DepartmentRepository
+
+    @Binds
+    fun provideNoticeRepositoryImpl(repository: NoticeRepositoryImpl): NoticeRepository
 }

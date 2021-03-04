@@ -55,6 +55,12 @@ class NoticeFeedFragment : Fragment() {
                 adapter = NoticeListAdapter()
             }
         }
+        noticeFeedFragmentViewModel.apply {
+            updateNotices.observe(viewLifecycleOwner, {
+                updateNotices()
+            })
+            getNotices()
+        }
         return binding.root
     }
 }

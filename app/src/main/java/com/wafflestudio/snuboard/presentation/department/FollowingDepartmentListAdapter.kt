@@ -42,6 +42,15 @@ class FollowingDepartmentDiffCallback : DiffUtil.ItemCallback<FollowingDepartmen
 class FollowingDepartmentViewHolder(private val binding: ItemFollowingDepartmentBinding) :
         RecyclerView.ViewHolder(binding.root) {
     fun bindItems(followingDepartment: FollowingDepartment) {
+        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
+        tagRecyclerView.run {
+            adapter = TagListAdapter(null)
+            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
+        }
         binding.run {
             item = followingDepartment
             clickListener = FollowingDepartmentClickListener {
@@ -60,15 +69,7 @@ class FollowingDepartmentViewHolder(private val binding: ItemFollowingDepartment
                             )
                 }
             }
-        }
-        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
-        tagRecyclerView.run {
-            adapter = TagListAdapter(null)
-            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
-                flexWrap = FlexWrap.WRAP
-                flexDirection = FlexDirection.ROW
-                justifyContent = JustifyContent.FLEX_START
-            }
+            executePendingBindings()
         }
     }
 }

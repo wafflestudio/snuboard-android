@@ -1,5 +1,10 @@
 package com.wafflestudio.snuboard.domain.model
 
+data class NoticeList(
+        val notices: List<Notice>,
+        val nextCursor: String
+)
+
 data class Notice(
         val id: Int,
         val departmentName: String,
