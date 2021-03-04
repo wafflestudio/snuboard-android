@@ -3,6 +3,7 @@ package com.wafflestudio.snuboard.presentation.notice
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
@@ -67,4 +68,32 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
 
 class NoticeClickListener(val clickListener: (itemId: Int) -> Unit) {
     fun onClick(itemId: Int) = clickListener(itemId)
+}
+
+class NoticeInfiniteScrollListener(private val layoutManager: LinearLayoutManager, val func: () -> Unit) :
+        RecyclerView.OnScrollListener() {
+    private var previousTotal = 0
+    private var loading = true
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+
+        if (dy > 0) {
+            val visibleItemCount = recyclerView.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false
+                    previousTotal = totalItemCount
+                }
+            }
+            if (!loading && (totalItemCount - visibleItemCount)
+                    <= firstVisibleItem + 2) {
+                func()
+                loading = true
+            }
+        }
+    }
 }

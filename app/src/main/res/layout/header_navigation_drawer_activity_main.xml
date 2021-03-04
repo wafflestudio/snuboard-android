@@ -4,10 +4,6 @@
     <data>
 
         <variable
-            name="nickname"
-            type="java.lang.String" />
-
-        <variable
             name="viewModel"
             type="com.wafflestudio.snuboard.presentation.MainActivityViewModel" />
     </data>
@@ -40,7 +36,7 @@
             android:padding="16dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:text="@{nickname}"
+            android:text="@{viewModel.myInfo.nickname}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

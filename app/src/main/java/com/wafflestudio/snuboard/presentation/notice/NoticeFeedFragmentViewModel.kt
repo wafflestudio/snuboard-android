@@ -32,6 +32,8 @@ constructor(
 
     fun getNotices() {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
+        if (paginationCursor == EOP)
+            return
         getNoticesByFollowUseCase
                 .getNotices(paginationLimit, paginationCursor)
                 .subscribe({
@@ -39,7 +41,10 @@ constructor(
                         is NoticeList -> {
                             tmpNoticeList.addAll(it.notices)
                             _notices.value = tmpNoticeList
-                            paginationCursor = it.nextCursor
+                            paginationCursor = if (it.nextCursor.isEmpty())
+                                EOP
+                            else
+                                it.nextCursor
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)
@@ -59,7 +64,10 @@ constructor(
                     when (it) {
                         is NoticeList -> {
                             _notices.value = it.notices
-                            paginationCursor = it.nextCursor
+                            paginationCursor = if (it.nextCursor.isEmpty())
+                                EOP
+                            else
+                                it.nextCursor
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)
@@ -69,5 +77,10 @@ constructor(
                 }, {
                     Timber.e(it)
                 })
+    }
+
+    companion object {
+        // Used to indicate cursor that it is End of Page
+        private const val EOP = "EOP"
     }
 }

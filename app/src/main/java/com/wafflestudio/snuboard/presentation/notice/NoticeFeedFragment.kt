@@ -51,8 +51,13 @@ class NoticeFeedFragment : Fragment() {
                 }
             }
             recyclerView.run {
-                layoutManager = LinearLayoutManager(requireContext())
+                val myLayoutManager = LinearLayoutManager(requireContext())
+                layoutManager = myLayoutManager
                 adapter = NoticeListAdapter()
+                clearOnScrollListeners()
+                addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
+                    noticeFeedFragmentViewModel.getNotices()
+                })
             }
         }
         noticeFeedFragmentViewModel.apply {
