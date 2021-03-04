@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentBinding
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
+import com.wafflestudio.snuboard.domain.usecase.GetNoticesByFollowUseCase
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,6 +21,9 @@ class DepartmentActivity : AppCompatActivity() {
 
     @Inject
     lateinit var classifyDepartmentUseCase: ClassifyDepartmentUseCase
+
+    @Inject
+    lateinit var getNoticesByFollowUseCase: GetNoticesByFollowUseCase
 
     private val binding: ActivityDepartmentBinding by lazy {
         DataBindingUtil.setContentView(
@@ -64,6 +68,7 @@ class DepartmentActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         classifyDepartmentUseCase.updateDepartments()
+        getNoticesByFollowUseCase.updateNotices()
     }
 
     override fun onSupportNavigateUp(): Boolean {

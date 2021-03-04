@@ -25,4 +25,8 @@ constructor(
                 .getNoticesOfFollow(limit, cursor)
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun updateNotices() {
+        _updateNotices.value = Event(Unit)
+    }
 }
