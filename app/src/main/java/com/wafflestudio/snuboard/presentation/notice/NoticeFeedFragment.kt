@@ -61,9 +61,18 @@ class NoticeFeedFragment : Fragment() {
             }
         }
         noticeFeedFragmentViewModel.apply {
-            updateNotices.observe(viewLifecycleOwner, {
+            updateNotices.observe(viewLifecycleOwner) {
+                binding.recyclerView.run {
+                    val myLayoutManager = layoutManager as LinearLayoutManager
+                    smoothScrollToPosition(0)
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
+                        noticeFeedFragmentViewModel.getNotices()
+                    })
+
+                }
                 updateNotices()
-            })
+            }
             getNotices()
         }
         return binding.root
