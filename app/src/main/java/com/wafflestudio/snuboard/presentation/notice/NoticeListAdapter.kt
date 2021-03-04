@@ -41,6 +41,15 @@ class NoticeDiffCallback : DiffUtil.ItemCallback<Notice>() {
 class NoticeViewHolder(private val binding: ItemNoticeBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bindItems(notice: Notice) {
+        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
+        tagRecyclerView.run {
+            adapter = TagListAdapter(null)
+            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
+                flexWrap = FlexWrap.WRAP
+                flexDirection = FlexDirection.ROW
+                justifyContent = JustifyContent.FLEX_START
+            }
+        }
         binding.run {
             item = notice
             clickListener = NoticeClickListener {
@@ -52,15 +61,6 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
                 )
             }
             executePendingBindings()
-        }
-        val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
-        tagRecyclerView.run {
-            adapter = TagListAdapter(null)
-            layoutManager = FlexboxLayoutManager(binding.root.context).apply {
-                flexWrap = FlexWrap.WRAP
-                flexDirection = FlexDirection.ROW
-                justifyContent = JustifyContent.FLEX_START
-            }
         }
     }
 }

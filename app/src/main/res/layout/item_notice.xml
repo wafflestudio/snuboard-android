@@ -57,7 +57,6 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:text="@{item.title}"
-                    android:justificationMode="inter_word"
                     tools:text="@string/text_item_notice_title"
                     tools:targetApi="o" />
 
@@ -72,7 +71,6 @@
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     android:text="@{item.preview}"
-                    android:justificationMode="inter_word"
                     tools:text="@string/text_item_notice_content"
                     tools:targetApi="o" />
 

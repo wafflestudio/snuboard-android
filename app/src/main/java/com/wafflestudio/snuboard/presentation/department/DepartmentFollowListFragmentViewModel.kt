@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment.EngDepartment
 import com.wafflestudio.snuboard.domain.model.FollowingDepartment
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
+import com.wafflestudio.snuboard.utils.ErrorResponse
+import com.wafflestudio.snuboard.utils.Event
+import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import javax.inject.Inject
@@ -39,6 +42,10 @@ constructor(
                         }
                         is EngDepartment -> {
                             tmpEngDepartmentList.add(it)
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
                         }
                     }
                 }, {
