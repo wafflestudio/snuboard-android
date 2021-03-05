@@ -49,7 +49,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/background"
@@ -72,6 +72,7 @@
                     android:id="@+id/following_department_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     app:following_department_items="@{viewModel.followingDepartments}"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_following_department" />
@@ -138,6 +139,7 @@
                             android:id="@+id/department_list_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
                             app:college_department_items="@{viewModel.engDepartments}"
                             tools:itemCount="3"
                             tools:listitem="@layout/item_college_department" />
@@ -147,6 +149,6 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

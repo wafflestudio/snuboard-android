@@ -12,6 +12,10 @@
         <variable
             name="clickListener"
             type="com.wafflestudio.snuboard.presentation.notice.NoticeClickListener" />
+
+        <variable
+            name="heartClickListener"
+            type="com.wafflestudio.snuboard.presentation.notice.HeartClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,7 +80,8 @@
 
                 <include
                     layout="@layout/sub_item_notice_info"
-                    app:notice="@{item}" />
+                    app:notice="@{item}"
+                    app:heartClickListener="@{heartClickListener}" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
