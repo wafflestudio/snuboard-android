@@ -28,7 +28,7 @@ sealed class CollegeDepartment(open val id: Int, open val name: String) {
                     else -> throw Error("Cannot find College of the department")
                 }
 
-        private val engDepartmentNames = listOf("기계공학부", "컴퓨터공학부")
+        private val engDepartmentNames = listOf("기계공학부", "컴퓨터공학부", "전기정보공학부", "화학생물공학부", "에너지자원공학과")
     }
 }
 

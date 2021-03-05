@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.FragmentNoticeFeedBinding
 import com.wafflestudio.snuboard.presentation.MainActivityViewModel
@@ -53,7 +54,19 @@ class NoticeFeedFragment : Fragment() {
             recyclerView.run {
                 val myLayoutManager = LinearLayoutManager(requireContext())
                 layoutManager = myLayoutManager
-                adapter = NoticeListAdapter()
+                adapter = NoticeListAdapter(
+                        HeartClickListener {
+                            noticeFeedFragmentViewModel.toggleSavedNotice(it)
+                        }
+                )
+                (adapter as NoticeListAdapter).registerAdapterDataObserver(
+                        object : RecyclerView.AdapterDataObserver() {
+                            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                                if (positionStart == 0)
+                                    smoothScrollToPosition(0)
+                            }
+                        }
+                )
                 clearOnScrollListeners()
                 addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
                     noticeFeedFragmentViewModel.getNotices()
@@ -62,6 +75,7 @@ class NoticeFeedFragment : Fragment() {
         }
         noticeFeedFragmentViewModel.apply {
             updateNotices.observe(viewLifecycleOwner) {
+                updateNotices()
                 binding.recyclerView.run {
                     val myLayoutManager = layoutManager as LinearLayoutManager
                     smoothScrollToPosition(0)
@@ -71,10 +85,19 @@ class NoticeFeedFragment : Fragment() {
                     })
 
                 }
-                updateNotices()
+            }
+            updateNotice.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { it1 ->
+                    updateNotice(it1)
+                }
             }
             getNotices()
         }
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        noticeFeedFragmentViewModel.updateNoticesOfScrapIfNeeded()
     }
 }

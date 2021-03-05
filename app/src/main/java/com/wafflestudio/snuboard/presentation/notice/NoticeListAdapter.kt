@@ -16,14 +16,15 @@ import com.wafflestudio.snuboard.domain.model.Notice
 import com.wafflestudio.snuboard.presentation.TagListAdapter
 
 
-class NoticeListAdapter : ListAdapter<Notice, NoticeViewHolder>(NoticeDiffCallback()) {
+class NoticeListAdapter(private val heartClickListener: HeartClickListener?)
+    : ListAdapter<Notice, NoticeViewHolder>(NoticeDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         val binding = ItemNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoticeViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
-        holder.bindItems(getItem(position))
+        holder.bindItems(getItem(position), heartClickListener)
     }
 
 }
@@ -41,7 +42,7 @@ class NoticeDiffCallback : DiffUtil.ItemCallback<Notice>() {
 
 class NoticeViewHolder(private val binding: ItemNoticeBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bindItems(notice: Notice) {
+    fun bindItems(notice: Notice, heartOnClick: HeartClickListener?) {
         val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
         tagRecyclerView.run {
             adapter = TagListAdapter(null)
@@ -60,6 +61,9 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
                                 it
                         )
                 )
+            }
+            heartOnClick?.let {
+                heartClickListener = it
             }
             executePendingBindings()
         }
@@ -96,4 +100,8 @@ class NoticeInfiniteScrollListener(private val layoutManager: LinearLayoutManage
             }
         }
     }
+}
+
+class HeartClickListener(val clickListener: (itemId: Int) -> Unit) {
+    fun onClick(itemId: Int) = clickListener(itemId)
 }

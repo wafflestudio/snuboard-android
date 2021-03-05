@@ -57,10 +57,10 @@ interface NoticeService {
     @DELETE("notices/{notice_id}/scrap/")
     fun deleteNoticeScrap(
             @Path("notice_id") noticeId: Int
-    ): Single<Response<Void>>
+    ): Single<Response<NoticeDto>>
 
     @POST("notices/{notice_id}/scrap/")
     fun postNoticeScrap(
             @Path("notice_id") noticeId: Int
-    ): Single<Response<Void>>
+    ): Single<Response<NoticeDto>>
 }
