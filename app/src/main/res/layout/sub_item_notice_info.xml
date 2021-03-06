@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/heart_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:onClick="@{() -> heartClickListener.onClick(notice.id)}"
             android:contentDescription="@string/image_sub_item_notice_info_comment"
             app:heart_filled="@{notice.scrapped}"
