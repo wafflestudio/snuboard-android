@@ -112,6 +112,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:text="@={activityViewModel.passwordLoginFragment}"
+            android:imeOptions="actionDone"
             app:layout_constraintBottom_toTopOf="@id/login_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
