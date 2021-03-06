@@ -133,6 +133,7 @@ constructor(
     fun updateNoticesOfScrapIfNeeded() {
         if (isHeartToggled)
             getNoticesOfScrapUseCase.updateNotices()
+        isHeartToggled = false
     }
 
     companion object {
