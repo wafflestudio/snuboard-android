@@ -48,7 +48,7 @@
                     android:contentDescription="@string/image_view_fragment_dept_domain"
                     android:src="@drawable/ic_domain"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/college_name"
+                    app:layout_constraintEnd_toStartOf="@id/college_name_text"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
                     app:tint="@color/gray2" />
 
                 <TextView
-                    android:id="@+id/college_name"
+                    android:id="@+id/college_name_text"
                     style="@style/NotoSansBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
