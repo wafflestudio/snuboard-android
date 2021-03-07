@@ -45,13 +45,6 @@ class DepartmentFollowListFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = FollowingDepartmentListAdapter()
             }
-            engCollegeCard.setOnClickListener {
-                departmentFollowListFragmentViewModel.toggleEngDepartment()
-            }
-            engCollegeRecyclerView.run {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = CollegeDepartmentListAdapter()
-            }
         }
         departmentFollowListFragmentViewModel.apply {
             updateDepartments.observe(viewLifecycleOwner, {

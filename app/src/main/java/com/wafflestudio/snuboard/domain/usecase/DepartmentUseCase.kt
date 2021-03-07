@@ -34,11 +34,11 @@ constructor(
                                 when {
                                     it1 is Department && it1.follow.isEmpty() ->
                                         Observable.just(
-                                                CollegeDepartment.fromDepartmentIdName(it1.id, it1.name)
+                                                CollegeDepartment(it1.id, it1.name, it1.college)
                                         )
                                     it1 is Department && it1.follow.isNotEmpty() ->
                                         Observable.just(
-                                                CollegeDepartment.fromDepartmentIdName(it1.id, it1.name),
+                                                CollegeDepartment(it1.id, it1.name, it1.college),
                                                 FollowingDepartment(it1.id, it1.name, it1.follow, it1.departmentColor)
                                         )
                                     else ->
