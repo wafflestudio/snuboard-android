@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.wafflestudio.snuboard.presentation.department.DepartmentFollowListFragmentViewModel" />
+
+        <variable
+            name="collegeName"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:onClick="@{() -> viewModel.toggleCollegeDepartment(collegeName)}"
+        app:contentPadding="5dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/college_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/college_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/image_view_fragment_dept_domain"
+                    android:src="@drawable/ic_domain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/college_name"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/gray2" />
+
+                <TextView
+                    android:id="@+id/college_name"
+                    style="@style/NotoSansBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{collegeName}"
+                    android:textColor="@color/gray2"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/college_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="공과대학" />
+
+                <ImageView
+                    android:id="@+id/toggle_open_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/image_view_fragment_dept_domain"
+                    android:src="@drawable/ic_arrow_drop_down"
+                    app:view_visibility_string="@{!viewModel.isCollegeDepartmentsVisible[collegeName] ? `visible` : `gone`}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/gray2" />
+
+                <ImageView
+                    android:id="@+id/toggle_close_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/image_view_fragment_dept_domain"
+                    android:src="@drawable/ic_arrow_drop_up"
+                    app:view_visibility_string="@{viewModel.isCollegeDepartmentsVisible[collegeName] ? `visible` : `gone`}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/gray2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/college_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:view_visibility_string="@{viewModel.isCollegeDepartmentsVisible[collegeName] ? `visible` : `gone`}"
+                app:college_department_items="@{viewModel.collegeDepartments[collegeName]}"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_college_department" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

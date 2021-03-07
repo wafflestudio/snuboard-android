@@ -22,15 +22,7 @@ constructor(@ApplicationContext appContext: Context) {
 
     fun mapFromListDepartmentDto(dto: List<DepartmentDto>): List<Department> {
         return dto.map {
-            val preferenceKey = SharedPreferenceConst.getDepartmentKey(it.id)
-            var colorId = pref.getInt(preferenceKey, -1)
-            if (colorId == -1) {
-                pref.edit {
-                    putInt(preferenceKey, DepartmentColor.POMEGRANATE.colorId)
-                }
-                colorId = DepartmentColor.POMEGRANATE.colorId
-            }
-            Department(it.id, it.name, it.tags, it.follow, DepartmentColor.fromColorId(colorId)!!)
+            mapFromDepartmentDto(it)
         }
     }
 
@@ -43,6 +35,6 @@ constructor(@ApplicationContext appContext: Context) {
             }
             colorId = DepartmentColor.POMEGRANATE.colorId
         }
-        return Department(dto.id, dto.name, dto.tags, dto.follow, DepartmentColor.fromColorId(colorId)!!)
+        return Department(dto.id, dto.name, dto.college, dto.tags, dto.follow, DepartmentColor.fromColorId(colorId)!!)
     }
 }

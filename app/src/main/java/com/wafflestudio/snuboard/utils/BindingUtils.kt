@@ -89,6 +89,8 @@ fun bindTagItems(view: RecyclerView, tags: List<Tag>?) {
 
 @BindingAdapter("college_department_items")
 fun bindCollegeDepartmentItems(view: RecyclerView, items: List<CollegeDepartment>?) {
+    if (view.adapter == null)
+        view.adapter = CollegeDepartmentListAdapter()
     val adapt = view.adapter as CollegeDepartmentListAdapter
     items?.also {
         adapt.submitList(it)
