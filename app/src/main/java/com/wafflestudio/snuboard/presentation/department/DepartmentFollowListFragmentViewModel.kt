@@ -23,12 +23,17 @@ constructor(
 ) : ViewModel() {
     private val _followingDepartments = MutableLiveData<List<FollowingDepartment>>()
     private val _engDepartments = MutableLiveData<List<EngDepartment>>()
+
+    private val _isEngDepartmentsVisible = MutableLiveData<Boolean>(false)
+
     val updateDepartments = classifyDepartmentUseCase.updateDepartments
 
     val followingDepartments: LiveData<List<FollowingDepartment>>
         get() = _followingDepartments
     val engDepartments: LiveData<List<EngDepartment>>
         get() = _engDepartments
+    val isEngDepartmentsVisible: LiveData<Boolean>
+        get() = _isEngDepartmentsVisible
 
     fun getDepartments() {
         val tmpFollowingDepartmentList = mutableListOf<FollowingDepartment>()
@@ -54,5 +59,9 @@ constructor(
                     _followingDepartments.value = tmpFollowingDepartmentList
                     _engDepartments.value = tmpEngDepartmentList
                 })
+    }
+
+    fun toggleEngDepartment() {
+        _isEngDepartmentsVisible.value = !isEngDepartmentsVisible.value!!
     }
 }
