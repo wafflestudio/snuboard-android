@@ -132,14 +132,44 @@
                                 app:layout_constraintStart_toEndOf="@id/eng_college_icon"
                                 app:layout_constraintTop_toTopOf="parent" />
 
+                            <ImageView
+                                android:id="@+id/toggle_open_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="5dp"
+                                android:contentDescription="@string/image_view_fragment_dept_domain"
+                                android:src="@drawable/ic_arrow_drop_down"
+                                app:view_visibility_string="@{!viewModel.isEngDepartmentsVisible ? `visible` : `gone`}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/gray2" />
+
+                            <ImageView
+                                android:id="@+id/toggle_close_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="5dp"
+                                android:contentDescription="@string/image_view_fragment_dept_domain"
+                                android:src="@drawable/ic_arrow_drop_up"
+                                app:view_visibility_string="@{viewModel.isEngDepartmentsVisible ? `visible` : `gone`}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:tint="@color/gray2" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/department_list_recycler_view"
+                            android:id="@+id/eng_college_recycler_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:nestedScrollingEnabled="false"
+                            app:view_visibility_string="@{viewModel.isEngDepartmentsVisible ? `visible` : `gone`}"
                             app:college_department_items="@{viewModel.engDepartments}"
                             tools:itemCount="3"
                             tools:listitem="@layout/item_college_department" />

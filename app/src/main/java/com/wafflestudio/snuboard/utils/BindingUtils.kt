@@ -130,12 +130,12 @@ fun bindTextStyleString(view: TextView, style: String) {
     }
 }
 
-@BindingAdapter("image_visibility_string")
-fun bindTextStyleString(view: ImageView, visibility: String) {
+@BindingAdapter("view_visibility_string")
+fun bindVisibilityString(view: View, visibility: String) {
     when (visibility) {
         "visible" -> view.visibility = View.VISIBLE
         "gone" -> view.visibility = View.GONE
-        else -> throw Error("Not valid style in textView")
+        else -> throw Error("Not valid visibility in View")
     }
 }
 

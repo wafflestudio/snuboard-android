@@ -65,7 +65,7 @@
             android:layout_height="14dp"
             android:contentDescription="@string/image_view_item_color_check"
             android:src="@drawable/ic_check"
-            app:image_visibility_string="@{color.colorId == selectedColor.colorId ? `visible` : `gone`}"
+            app:view_visibility_string="@{color.colorId == selectedColor.colorId ? `visible` : `gone`}"
             app:layout_constraintStart_toEndOf="@id/color_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
