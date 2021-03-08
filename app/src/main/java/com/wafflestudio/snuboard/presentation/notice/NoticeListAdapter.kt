@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation.notice
 
+import android.app.Activity
+import android.content.ContextWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -55,12 +57,20 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
         binding.run {
             item = notice
             clickListener = NoticeClickListener {
-                binding.root.context.startActivity(
-                        NoticeDetailActivity.intent(
-                                binding.root.context,
-                                it
-                        )
-                )
+                binding.root.context.apply {
+                    startActivity(
+                            NoticeDetailActivity.intent(
+                                    binding.root.context,
+                                    it
+                            )
+                    )
+                    ((this as ContextWrapper)
+                            .baseContext as Activity)
+                            .overridePendingTransition(
+                                    R.anim.slide_from_right,
+                                    R.anim.nav_default_exit_anim
+                            )
+                }
             }
             heartOnClick?.let {
                 heartClickListener = it

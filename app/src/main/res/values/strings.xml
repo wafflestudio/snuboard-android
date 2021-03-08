@@ -40,4 +40,5 @@
     <string name="text_view_fragement_dept_feed_color">색</string>
     <string name="image_view_item_color_color_preview">color_preview</string>
     <string name="image_view_item_color_check">check</string>
+    <string name="fragment_department_home_app_bar_favoirite_border">좋아요</string>
 </resources>

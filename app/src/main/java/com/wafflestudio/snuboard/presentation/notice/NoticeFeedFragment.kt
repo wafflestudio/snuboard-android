@@ -40,8 +40,10 @@ class NoticeFeedFragment : Fragment() {
                 tb.inflateMenu(R.menu.app_bar_fragment_notice_feed)
                 tb.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.search_button ->
+                        R.id.search_button -> {
                             startActivity(NoticeSearchActivity.intent(requireContext()))
+                            activity?.overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
+                        }
                         else -> return@setOnMenuItemClickListener false
                     }
                     return@setOnMenuItemClickListener true
