@@ -64,6 +64,20 @@ constructor(
 }
 
 @Singleton
+class GetNoticeByIdUseCase
+@Inject
+constructor(
+        private val noticeRepository: NoticeRepository
+) {
+
+    fun getNotice(noticeId: Int): Single<Any> {
+        return noticeRepository
+                .getNoticeById(noticeId)
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+}
+
+@Singleton
 class DeleteNoticeScrapUseCase
 @Inject
 constructor(
