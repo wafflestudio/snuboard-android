@@ -20,6 +20,7 @@ import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.presentation.TagListAdapter
 import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
+import com.wafflestudio.snuboard.presentation.notice.FileListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
 
 @SuppressLint("RtlHardcoded")
@@ -101,6 +102,16 @@ fun bindCollegeDepartmentItems(view: RecyclerView, items: List<CollegeDepartment
 @BindingAdapter("following_department_items")
 fun bindFollowingDepartmentItems(view: RecyclerView, items: List<FollowingDepartment>?) {
     val adapt = view.adapter as FollowingDepartmentListAdapter
+    items?.also {
+        adapt.submitList(it)
+    }
+}
+
+@BindingAdapter("file_items")
+fun bindFileItems(view: RecyclerView, items: List<NoticeFile>?) {
+    if (view.adapter == null)
+        view.adapter = FileListAdapter()
+    val adapt = view.adapter as FileListAdapter
     items?.also {
         adapt.submitList(it)
     }
