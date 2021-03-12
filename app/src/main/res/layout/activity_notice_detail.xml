@@ -100,7 +100,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:text="@{viewModel.notice.createdAtYYMMDDhhmm}"
                             android:textColor="@color/gray4"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
