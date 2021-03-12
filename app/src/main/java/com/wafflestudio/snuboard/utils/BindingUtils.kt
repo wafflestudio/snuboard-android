@@ -1,11 +1,17 @@
 package com.wafflestudio.snuboard.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Insets
 import android.graphics.Typeface
+import android.os.Build
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import android.view.WindowInsets
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +28,7 @@ import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAd
 import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.notice.FileListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
+
 
 @SuppressLint("RtlHardcoded")
 @BindingAdapter("drawer_open")
@@ -162,6 +169,19 @@ fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
 
 @BindingAdapter("web_view_load_content")
 fun bindLoadContent(view: WebView, content: String?) {
+    val width = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val windowMetrics = (view.context as Activity).windowManager.currentWindowMetrics
+        val insets: Insets = windowMetrics.windowInsets
+                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+        ((windowMetrics.bounds.width() - insets.left - insets.right) /
+                Resources.getSystem().displayMetrics.density) - 40
+    } else {
+        val displayMetrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
+        (view.context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        (displayMetrics.widthPixels / Resources.getSystem().displayMetrics.density) - 40
+    }
+
     content?.let {
         val parsedHTML =
                 """
@@ -174,6 +194,11 @@ fun bindLoadContent(view: WebView, content: String?) {
                 margin: 0px; 
                 padding: 0px; 
                 } 
+            img {
+                height: auto;
+                width: ${width}px;
+                object-fit: contain;
+            }
             </style>
             </head>
             <body>
