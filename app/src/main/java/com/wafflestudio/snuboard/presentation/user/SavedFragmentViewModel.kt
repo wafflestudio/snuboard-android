@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.Notice
 import com.wafflestudio.snuboard.domain.model.NoticeList
 import com.wafflestudio.snuboard.domain.usecase.DeleteNoticeScrapUseCase
+import com.wafflestudio.snuboard.domain.usecase.GetNoticesByFollowUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetNoticesOfScrapUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class SavedFragmentViewModel
 @Inject
 constructor(
+        private val getNoticesByFollowUseCase: GetNoticesByFollowUseCase,
         private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val savedStateHandle: SavedStateHandle
@@ -26,6 +28,7 @@ constructor(
 
     private val _savedNotices = MutableLiveData<List<Notice>>()
     val updateSavedNotices = getNoticesOfScrapUseCase.updateNotices
+    val updateSavedNotice = getNoticesOfScrapUseCase.updateNotice
 
     val savedNotices: LiveData<List<Notice>>
         get() = _savedNotices
@@ -82,6 +85,13 @@ constructor(
                 })
     }
 
+    fun updateSavedNotice(notice: Notice) {
+        val tmpNoticeList = _savedNotices.value?.toMutableList() ?: mutableListOf()
+        _savedNotices.value = tmpNoticeList.filter { it1 ->
+            notice.id != it1.id
+        }
+    }
+
     fun toggleSavedNotice(noticeId: Int) {
         val tmpNoticeList = _savedNotices.value?.toMutableList() ?: mutableListOf()
         tmpNoticeList.find {
@@ -99,7 +109,7 @@ constructor(
                             _savedNotices.value = tmpNoticeList.filter { it1 ->
                                 it.id != it1.id
                             }
-                            getNoticesOfScrapUseCase.updateNotice(it)
+                            getNoticesByFollowUseCase.updateNotice(it)
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

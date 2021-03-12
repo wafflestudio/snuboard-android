@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.Notice
-import com.wafflestudio.snuboard.domain.usecase.DeleteNoticeScrapUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetNoticeByIdUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetNoticesOfScrapUseCase
-import com.wafflestudio.snuboard.domain.usecase.PostNoticeScrapUseCase
+import com.wafflestudio.snuboard.domain.usecase.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -21,6 +18,7 @@ class NoticeDetailActivityViewModel
 @Inject
 constructor(
         private val getNoticeByIdUseCase: GetNoticeByIdUseCase,
+        private val getNoticesByFollowUseCase: GetNoticesByFollowUseCase,
         private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
@@ -63,6 +61,7 @@ constructor(
                         is Notice -> {
                             _notice.value = it
                             getNoticesOfScrapUseCase.updateNotice(it)
+                            getNoticesByFollowUseCase.updateNotice(it)
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

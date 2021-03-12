@@ -79,6 +79,11 @@ class SavedFragment : Fragment() {
                     })
                 }
             }
+            updateSavedNotice.observe(viewLifecycleOwner) {
+                it.getContentIfNotHandled()?.let { it1 ->
+                    updateSavedNotice(it1)
+                }
+            }
             getSavedNotices()
         }
         return binding.root
