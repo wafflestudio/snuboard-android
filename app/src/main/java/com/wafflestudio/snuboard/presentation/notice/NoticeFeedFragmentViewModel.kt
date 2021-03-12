@@ -29,7 +29,7 @@ constructor(
 ) : ViewModel() {
     private val _notices = MutableLiveData<List<Notice>>()
     val updateNotices = getNoticesByFollowUseCase.updateNotices
-    val updateNotice = getNoticesOfScrapUseCase.updateNotice
+    val updateNotice = getNoticesByFollowUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
         get() = _notices

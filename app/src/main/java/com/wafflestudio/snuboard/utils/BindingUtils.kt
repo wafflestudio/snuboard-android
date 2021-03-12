@@ -163,9 +163,10 @@ fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
 @BindingAdapter("web_view_load_content")
 fun bindLoadContent(view: WebView, content: String?) {
     content?.let {
-        val parsedHTML = "<head><style type=\"text/css\"> html, body " +
-                "{ width:100%; height: 100%; margin: 0px; padding: 0px; } </style></head><body>" +
-                it + "</body>"
+        val parsedHTML =
+                """
+            <head><style type="text/css"> html, body { width:100%; height: 100%; margin: 0px; padding: 0px; } </style></head><body>
+            """ + it + "</body>"
         view.loadData(parsedHTML, "text/html; charset=utf-8", "UTF-8")
     }
 }

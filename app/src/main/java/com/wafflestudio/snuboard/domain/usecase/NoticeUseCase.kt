@@ -18,8 +18,12 @@ constructor(
 ) {
 
     private val _updateNotices = MutableLiveData<Event<Unit>>()
+    private val _updateNotice = MutableLiveData<Event<Notice>>()
+
     val updateNotices: LiveData<Event<Unit>>
         get() = _updateNotices
+    val updateNotice: LiveData<Event<Notice>>
+        get() = _updateNotice
 
     fun getNotices(limit: Int, cursor: String?): Single<Any> {
         return noticeRepository
@@ -29,6 +33,10 @@ constructor(
 
     fun updateNotices() {
         _updateNotices.value = Event(Unit)
+    }
+
+    fun updateNotice(notice: Notice) {
+        _updateNotice.value = Event(notice)
     }
 }
 
