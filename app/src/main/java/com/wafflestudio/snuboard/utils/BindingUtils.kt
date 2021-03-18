@@ -61,7 +61,7 @@ fun bindNoticeItems(view: RecyclerView, items: List<Notice>?) {
 }
 
 @BindingAdapter("notice_tag_items")
-fun bindNoticeTagItems(view: RecyclerView, item: Notice?) {
+fun bindNoticeTagItems(view: RecyclerView, item: NoticeInterface?) {
     val adapt = view.adapter as TagListAdapter
     item?.also {
         val items = mutableListOf<Tag>(

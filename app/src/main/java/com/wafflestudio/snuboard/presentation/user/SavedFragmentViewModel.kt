@@ -99,7 +99,7 @@ constructor(
         }?.let {
             if (it.isScrapped)
                 deleteNoticeScrapUseCase
-                        .deleteNoticeScrap(noticeId)
+                        .deleteNoticeScrapSimple(noticeId)
             else
                 throw Error("App logic error. Notice should be scrapped in this page.")
         }

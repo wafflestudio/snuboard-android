@@ -7,7 +7,7 @@
 
         <variable
             name="notice"
-            type="com.wafflestudio.snuboard.domain.model.Notice" />
+            type="com.wafflestudio.snuboard.domain.model.NoticeInterface" />
 
         <variable
             name="contents"

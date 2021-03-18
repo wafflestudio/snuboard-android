@@ -5,22 +5,43 @@ data class NoticeList(
         val nextCursor: String
 )
 
+// Used in bindNoticeTagItems in BindingUtils.kt
+sealed class NoticeInterface(
+        open val id: Int,
+        open val departmentName: String,
+        open val departmentColor: DepartmentColor,
+        open val tags: List<String>
+)
+
 data class Notice(
-        val id: Int,
-        val departmentName: String,
+        override val id: Int,
+        override val departmentName: String,
         val departmentId: Int,
-        val departmentColor: DepartmentColor,
+        override val departmentColor: DepartmentColor,
+        val title: String,
+        val preview: String,
+        val createdAtYYMMDD: String,
+        override val tags: List<String>,
+        val isPinned: Boolean,
+        val isScrapped: Boolean
+) : NoticeInterface(id, departmentName, departmentColor, tags)
+
+data class NoticeDetail(
+        override val id: Int,
+        override val departmentName: String,
+        val departmentId: Int,
+        override val departmentColor: DepartmentColor,
         val title: String,
         val preview: String,
         val content: String,
         val createdAtYYMMDD: String,
         val createdAtYYMMDDhhmm: String,
-        val tags: List<String>,
+        override val tags: List<String>,
         val isPinned: Boolean,
         val link: String,
         val files: List<NoticeFile>,
         val isScrapped: Boolean
-)
+) : NoticeInterface(id, departmentName, departmentColor, tags)
 
 data class NoticeFile(
         val id: Int,

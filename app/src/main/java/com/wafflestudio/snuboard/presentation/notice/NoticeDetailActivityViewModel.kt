@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.wafflestudio.snuboard.domain.model.Notice
+import com.wafflestudio.snuboard.domain.model.NoticeDetail
 import com.wafflestudio.snuboard.domain.usecase.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
@@ -25,8 +25,8 @@ constructor(
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _notice = MutableLiveData<Notice>()
-    val notice: LiveData<Notice>
+    private val _notice = MutableLiveData<NoticeDetail>()
+    val notice: LiveData<NoticeDetail>
         get() = _notice
 
     fun getNotice(noticeId: Int) {
@@ -34,7 +34,7 @@ constructor(
                 .getNotice(noticeId)
                 .subscribe({
                     when (it) {
-                        is Notice -> {
+                        is NoticeDetail -> {
                             _notice.value = it
                         }
                         is ErrorResponse -> {
@@ -58,10 +58,10 @@ constructor(
         }
                 ?.subscribe({
                     when (it) {
-                        is Notice -> {
+                        is NoticeDetail -> {
                             _notice.value = it
-                            getNoticesOfScrapUseCase.updateNotice(it)
-                            getNoticesByFollowUseCase.updateNotice(it)
+                            getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
+                            getNoticesByFollowUseCase.updateNoticeWithNoticeDetail(it)
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)
