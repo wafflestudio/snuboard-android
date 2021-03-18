@@ -61,7 +61,7 @@ constructor(
                 .map {
                     if (it.isSuccessful) {
                         it.body()?.let { it1 ->
-                            return@map noticeMapper.mapFromNoticeDto(it1)
+                            return@map noticeMapper.mapToNoticeDetailFromNoticeDto(it1)
                         }
                     } else
                         return@map parseErrorResponse(it.errorBody()!!)
@@ -74,7 +74,7 @@ constructor(
                 .map {
                     if (it.isSuccessful) {
                         it.body()?.let { it1 ->
-                            return@map noticeMapper.mapFromNoticeDto(it1)
+                            return@map noticeMapper.mapToNoticeDetailFromNoticeDto(it1)
                         }
                     } else
                         return@map parseErrorResponse(it.errorBody()!!)
@@ -87,7 +87,7 @@ constructor(
                 .map {
                     if (it.isSuccessful) {
                         it.body()?.let { it1 ->
-                            return@map noticeMapper.mapFromNoticeDto(it1)
+                            return@map noticeMapper.mapToNoticeDetailFromNoticeDto(it1)
                         }
                     } else
                         return@map parseErrorResponse(it.errorBody()!!)

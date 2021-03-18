@@ -104,10 +104,10 @@ constructor(
         }?.let {
             if (it.isScrapped)
                 deleteNoticeScrapUseCase
-                        .deleteNoticeScrap(noticeId)
+                        .deleteNoticeScrapSimple(noticeId)
             else
                 postNoticeScrapUseCase
-                        .postNoticeScrap(noticeId)
+                        .postNoticeScrapSimple(noticeId)
         }
                 ?.subscribe({
                     when (it) {
