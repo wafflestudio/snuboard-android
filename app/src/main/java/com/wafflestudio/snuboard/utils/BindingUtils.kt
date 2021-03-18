@@ -185,6 +185,8 @@ fun bindLoadContent(view: WebView, content: String?) {
     content?.let {
         val parsedHTML =
                 """
+            <!DOCTYPE html>
+            <html lang="ko">
             <head>
             <style type="text/css"> 
             html, body { 
@@ -202,7 +204,7 @@ fun bindLoadContent(view: WebView, content: String?) {
             </style>
             </head>
             <body>
-            """ + it + "</body>"
+            """ + it + "</body></html>"
         view.loadData(parsedHTML, "text/html; charset=utf-8", "UTF-8")
     }
 }
