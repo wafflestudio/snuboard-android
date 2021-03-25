@@ -36,6 +36,10 @@ class NoticeSearchActivity : AppCompatActivity() {
             searchText.postDelayed({
                 showSoftKeyboard(searchText)
             }, 200)
+           
+            cancelButton.setOnClickListener {
+                finish()
+            }
 
         }
     }
