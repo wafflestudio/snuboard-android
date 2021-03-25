@@ -47,6 +47,7 @@ class SignUpFragment : Fragment() {
                         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
                                 as InputMethodManager
                         imm.hideSoftInputFromWindow(v!!.windowToken, 0)
+                        signUpButton.performClick()
                         return true
                     }
                     return false

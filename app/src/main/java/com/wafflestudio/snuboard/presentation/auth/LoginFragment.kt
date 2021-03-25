@@ -51,6 +51,7 @@ class LoginFragment : Fragment() {
                         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
                                 as InputMethodManager
                         imm.hideSoftInputFromWindow(v!!.windowToken, 0)
+                        loginButton.performClick()
                         return true
                     }
                     return false
