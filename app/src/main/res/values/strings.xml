@@ -46,4 +46,5 @@
     <string name="edit_text_activity_notice_search_hint">글 제목, 내용을 검색하세요</string>
     <string name="search_icon">search_icon</string>
     <string name="text_activity_notice_search_cancel">취소</string>
+    <string name="cancel_icon">cancel_icon</string>
 </resources>
