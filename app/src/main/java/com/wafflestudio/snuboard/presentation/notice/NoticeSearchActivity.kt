@@ -3,14 +3,22 @@ package com.wafflestudio.snuboard.presentation.notice
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityNoticeSearchBinding
+import com.wafflestudio.snuboard.utils.SingleEvent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NoticeSearchActivity : AppCompatActivity() {
 
     private val binding: ActivityNoticeSearchBinding by lazy {
@@ -33,14 +41,49 @@ class NoticeSearchActivity : AppCompatActivity() {
                 setDisplayShowTitleEnabled(false)
             }
 
-            searchText.postDelayed({
-                showSoftKeyboard(searchText)
-            }, 200)
-           
+            searchText.apply {
+                postDelayed({
+                    showSoftKeyboard(searchText)
+                }, 200)
+                setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            val imm = this@NoticeSearchActivity.getSystemService(Context.INPUT_METHOD_SERVICE)
+                                    as InputMethodManager
+                            imm.hideSoftInputFromWindow(v!!.windowToken, 0)
+                            noticeSearchActivityViewModel.apply {
+                                cleanCursor()
+                                getNotices()
+                            }
+                            return true
+                        }
+                        return false
+                    }
+                })
+            }
             cancelButton.setOnClickListener {
                 finish()
             }
 
+            recyclerView.run {
+                val myLayoutManager = LinearLayoutManager(this@NoticeSearchActivity)
+                layoutManager = myLayoutManager
+                adapter = NoticeListAdapter(
+                        HeartClickListener {
+                            noticeSearchActivityViewModel.toggleSavedNotice(it)
+                        }
+                )
+                clearOnScrollListeners()
+                addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
+                    noticeSearchActivityViewModel.getNotices()
+                })
+            }
+
+            SingleEvent.triggerToast.observe(this@NoticeSearchActivity) {
+                it.getContentIfNotHandled()?.let { it1 ->
+                    Toast.makeText(this@NoticeSearchActivity, it1, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

@@ -12,6 +12,8 @@ interface NoticeRepository {
 
     fun getNoticesOfFollow(limit: Int, cursor: String?): Single<Any>
 
+    fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?): Single<Any>
+
     fun getNoticesOfScrap(limit: Int, cursor: String?): Single<Any>
 
     fun getNoticeById(noticeId: Int): Single<Any>
@@ -31,6 +33,19 @@ constructor(
 
     override fun getNoticesOfFollow(limit: Int, cursor: String?): Single<Any> {
         return noticeService.getNoticesOfFollow(limit, cursor)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map noticeMapper.mapFromListNoticeDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
+    }
+
+    override fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?): Single<Any> {
+        return noticeService.getNoticesOfFollowSearch(keywords, limit, cursor, content, title)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {

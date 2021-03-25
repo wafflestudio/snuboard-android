@@ -81,6 +81,8 @@
                                     android:layout_marginEnd="7dp"
                                     android:importantForAutofill="no"
                                     android:inputType="text"
+                                    android:text="@={viewModel.keywords}"
+                                    android:imeOptions="actionDone"
                                     android:textSize="13sp"
                                     android:textColor="@color/gray3"
                                     android:background="@null"
@@ -106,5 +108,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:clipToPadding="false"
+            app:notice_items="@{viewModel.notices}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            tools:listitem="@layout/item_notice" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

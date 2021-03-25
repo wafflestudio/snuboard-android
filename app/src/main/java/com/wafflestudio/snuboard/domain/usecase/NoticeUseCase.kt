@@ -49,6 +49,26 @@ constructor(
 }
 
 @Singleton
+class GetNoticeOfFollowSearchUseCase
+@Inject
+constructor(
+        private val noticeRepository: NoticeRepository,
+        private val noticeMapper: NoticeMapper
+) {
+
+    private val _updateNotice = MutableLiveData<Event<Notice>>()
+
+    val updateNotice: LiveData<Event<Notice>>
+        get() = _updateNotice
+
+    fun getNotices(keyword: String, limit: Int, cursor: String?): Single<Any> {
+        return noticeRepository
+                .getNoticeOfFollowSearch(keyword, limit, cursor, content = true, title = true)
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+}
+
+@Singleton
 class GetNoticesOfScrapUseCase
 @Inject
 constructor(

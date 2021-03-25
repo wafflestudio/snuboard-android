@@ -36,7 +36,7 @@ interface NoticeService {
 
     @GET("notices/follow/search/")
     fun getNoticesOfFollowSearch(
-            @Query("keyword") keyword: String,
+            @Query("keywords") keywords: String,
             @Query("limit") limit: Int,
             @Query("cursor") cursor: String?,
             @Query("content") content: Boolean?,

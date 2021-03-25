@@ -27,6 +27,7 @@ constructor(
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    
     private val _notices = MutableLiveData<List<Notice>>()
     val updateNotices = getNoticesByFollowUseCase.updateNotices
     val updateNotice = getNoticesByFollowUseCase.updateNotice

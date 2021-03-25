@@ -64,12 +64,19 @@ class NoticeViewHolder(private val binding: ItemNoticeBinding) :
                                     it
                             )
                     )
-                    ((this as ContextWrapper)
-                            .baseContext as Activity)
-                            .overridePendingTransition(
+                    when (this) {
+                        is Activity ->
+                            this.overridePendingTransition(
                                     R.anim.slide_from_right,
                                     R.anim.nav_default_exit_anim
                             )
+                        is ContextWrapper ->
+                            (this.baseContext as Activity)
+                                    .overridePendingTransition(
+                                            R.anim.slide_from_right,
+                                            R.anim.nav_default_exit_anim
+                                    )
+                    }
                 }
             }
             heartOnClick?.let {
