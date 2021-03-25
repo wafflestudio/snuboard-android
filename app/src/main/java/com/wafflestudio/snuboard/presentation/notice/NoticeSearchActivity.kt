@@ -32,6 +32,11 @@ class NoticeSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SingleEvent.triggerToast.observe(this@NoticeSearchActivity) {
+            it.getContentIfNotHandled()?.let { it1 ->
+                Toast.makeText(this@NoticeSearchActivity, it1, Toast.LENGTH_SHORT).show()
+            }
+        }
         binding.run {
             lifecycleOwner = this@NoticeSearchActivity
             viewModel = noticeSearchActivityViewModel
@@ -78,10 +83,11 @@ class NoticeSearchActivity : AppCompatActivity() {
                     noticeSearchActivityViewModel.getNotices()
                 })
             }
-
-            SingleEvent.triggerToast.observe(this@NoticeSearchActivity) {
+        }
+        noticeSearchActivityViewModel.apply {
+            updateNotice.observe(this@NoticeSearchActivity) {
                 it.getContentIfNotHandled()?.let { it1 ->
-                    Toast.makeText(this@NoticeSearchActivity, it1, Toast.LENGTH_SHORT).show()
+                    updateNotice(it1)
                 }
             }
         }

@@ -19,6 +19,7 @@ class NoticeDetailActivityViewModel
 constructor(
         private val getNoticeByIdUseCase: GetNoticeByIdUseCase,
         private val getNoticesByFollowUseCase: GetNoticesByFollowUseCase,
+        private val getNoticesOfFollowSearchUseCase: GetNoticeOfFollowSearchUseCase,
         private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
@@ -60,8 +61,9 @@ constructor(
                     when (it) {
                         is NoticeDetail -> {
                             _notice.value = it
-                            getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesByFollowUseCase.updateNoticeWithNoticeDetail(it)
+                            getNoticesOfFollowSearchUseCase.updateNoticeWithNoticeDetail(it)
+                            getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

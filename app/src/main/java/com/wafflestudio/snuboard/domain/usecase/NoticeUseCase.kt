@@ -66,6 +66,11 @@ constructor(
                 .getNoticeOfFollowSearch(keyword, limit, cursor, content = true, title = true)
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
+        val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
+        _updateNotice.value = Event(notice)
+    }
 }
 
 @Singleton
