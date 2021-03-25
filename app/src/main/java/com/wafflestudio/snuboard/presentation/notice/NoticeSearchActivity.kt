@@ -53,13 +53,13 @@ class NoticeSearchActivity : AppCompatActivity() {
                 setOnEditorActionListener(object : TextView.OnEditorActionListener {
                     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            val imm = this@NoticeSearchActivity.getSystemService(Context.INPUT_METHOD_SERVICE)
-                                    as InputMethodManager
-                            imm.hideSoftInputFromWindow(v!!.windowToken, 0)
+                            hideSoftKeyboard(searchText)
                             noticeSearchActivityViewModel.apply {
                                 cleanCursor()
+                                clearNotices()
                                 getNotices()
                             }
+                            searchText.clearFocus()
                             return true
                         }
                         return false
@@ -68,6 +68,11 @@ class NoticeSearchActivity : AppCompatActivity() {
             }
             cancelButton.setOnClickListener {
                 finish()
+            }
+            eraseButton.setOnClickListener {
+                noticeSearchActivityViewModel.cleanText()
+                searchText.requestFocus()
+                showSoftKeyboard(searchText)
             }
 
             recyclerView.run {
@@ -104,6 +109,12 @@ class NoticeSearchActivity : AppCompatActivity() {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
+    }
+
+    private fun hideSoftKeyboard(view: View) {
+        val imm = this@NoticeSearchActivity.getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     companion object {

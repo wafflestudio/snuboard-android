@@ -29,7 +29,7 @@ constructor(
 ) : ViewModel() {
 
     private val _notices = MutableLiveData<List<Notice>>()
-    val keywords = MutableLiveData<String>()
+    val keywords = MutableLiveData("")
     val updateNotice = getNoticesOfFollowSearchUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
@@ -42,32 +42,44 @@ constructor(
         paginationCursor = null
     }
 
+    fun cleanText() {
+        keywords.value = ""
+    }
+
+    fun clearNotices() {
+        _notices.value = listOf()
+    }
+
     fun getNotices() {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
         if (paginationCursor == EOP)
             return
-        keywords.value?.let { keyword_string ->
-            getNoticesOfFollowSearchUseCase
-                    .getNotices(keyword_string, paginationLimit, paginationCursor)
-                    .subscribe({
-                        when (it) {
-                            is NoticeList -> {
-                                tmpNoticeList.addAll(it.notices)
-                                _notices.value = tmpNoticeList
-                                paginationCursor = if (it.nextCursor.isEmpty())
-                                    EOP
-                                else
-                                    it.nextCursor
-                            }
-                            is ErrorResponse -> {
-                                SingleEvent.triggerToast.value = Event(it.message)
-                                Timber.e(it.message)
-                            }
-                        }
-                    }, {
-                        Timber.e(it)
-                    })
+        keywords.value?.apply {
+            if (isEmpty())
+                return
         }
+                ?.let { keyword_string ->
+                    getNoticesOfFollowSearchUseCase
+                            .getNotices(keyword_string, paginationLimit, paginationCursor)
+                            .subscribe({
+                                when (it) {
+                                    is NoticeList -> {
+                                        tmpNoticeList.addAll(it.notices)
+                                        _notices.value = tmpNoticeList
+                                        paginationCursor = if (it.nextCursor.isEmpty())
+                                            EOP
+                                        else
+                                            it.nextCursor
+                                    }
+                                    is ErrorResponse -> {
+                                        SingleEvent.triggerToast.value = Event(it.message)
+                                        Timber.e(it.message)
+                                    }
+                                }
+                            }, {
+                                Timber.e(it)
+                            })
+                }
     }
 
     fun updateNotice(notice: Notice) {
