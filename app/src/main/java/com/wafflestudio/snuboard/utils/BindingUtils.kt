@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.Typeface
 import android.os.Build
+import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
@@ -184,7 +185,7 @@ fun bindLoadContent(view: WebView, content: String?) {
 
     content?.let {
         val parsedHTML =
-                """
+            """
             <!DOCTYPE html>
             <html lang="ko">
             <head>
@@ -205,6 +206,7 @@ fun bindLoadContent(view: WebView, content: String?) {
             </head>
             <body>
             """ + it + "</body></html>"
-        view.loadData(parsedHTML, "text/html; charset=utf-8", "UTF-8")
+        val encodedHtml = Base64.encodeToString(parsedHTML.toByteArray(), Base64.NO_PADDING)
+        view.loadData(encodedHtml, "text/html; charset=utf-8", "base64")
     }
 }
