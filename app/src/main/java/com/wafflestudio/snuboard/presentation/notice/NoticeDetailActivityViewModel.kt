@@ -63,7 +63,10 @@ constructor(
                             _notice.value = it
                             getNoticesByFollowUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesOfFollowSearchUseCase.updateNoticeWithNoticeDetail(it)
-                            getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
+                            if (!it.isScrapped)
+                                getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
+                            else
+                                getNoticesOfScrapUseCase.updateNotices()
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

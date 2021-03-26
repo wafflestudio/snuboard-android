@@ -87,9 +87,10 @@ constructor(
 
     fun updateSavedNotice(notice: Notice) {
         val tmpNoticeList = _savedNotices.value?.toMutableList() ?: mutableListOf()
-        _savedNotices.value = tmpNoticeList.filter { it1 ->
-            notice.id != it1.id
-        }
+        if (!notice.isScrapped)
+            _savedNotices.value = tmpNoticeList.filter { it1 ->
+                notice.id != it1.id
+            }
     }
 
     fun toggleSavedNotice(noticeId: Int) {
