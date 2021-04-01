@@ -80,7 +80,7 @@ constructor(
                 }
     }
 
-    fun updateNotice(notice: Notice) {
+    private fun updateNotice(notice: Notice) {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
         _notices.value = tmpNoticeList.map {
             if (it.id == notice.id)
@@ -89,6 +89,15 @@ constructor(
                 it
         }
     }
+
+    fun observeUpdateNotice(event: Event<List<Notice>>) {
+        event.getContentIfNotHandled()?.let {
+            it.forEach { notice ->
+                updateNotice(notice)
+            }
+        }
+    }
+
 
     fun toggleSavedNotice(noticeId: Int) {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
@@ -112,10 +121,7 @@ constructor(
                                     it1
                             }
                             getNoticesByFollowUseCase.updateNotice(it)
-                            if (!it.isScrapped)
-                                getNoticesOfScrapUseCase.updateNotice(it)
-                            else
-                                getNoticesOfScrapUseCase.updateNotices()
+                            getNoticesOfScrapUseCase.updateNotices()
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

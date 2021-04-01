@@ -89,9 +89,7 @@ class NoticeFeedFragment : Fragment() {
                 }
             }
             updateNotice.observe(viewLifecycleOwner) {
-                it.getContentIfNotHandled()?.let { it1 ->
-                    updateNotice(it1)
-                }
+                observeUpdateNotice(it)
             }
             getNotices()
         }

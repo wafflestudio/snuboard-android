@@ -85,12 +85,20 @@ constructor(
                 })
     }
 
-    fun updateSavedNotice(notice: Notice) {
+    private fun updateSavedNotice(notice: Notice) {
         val tmpNoticeList = _savedNotices.value?.toMutableList() ?: mutableListOf()
         if (!notice.isScrapped)
             _savedNotices.value = tmpNoticeList.filter { it1 ->
                 notice.id != it1.id
             }
+    }
+
+    fun observeUpdateNotice(event: Event<List<Notice>>) {
+        event.getContentIfNotHandled()?.let {
+            it.forEach { notice ->
+                updateSavedNotice(notice)
+            }
+        }
     }
 
     fun toggleSavedNotice(noticeId: Int) {
