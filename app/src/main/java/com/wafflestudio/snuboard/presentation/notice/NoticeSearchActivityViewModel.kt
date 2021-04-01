@@ -6,10 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.Notice
 import com.wafflestudio.snuboard.domain.model.NoticeList
-import com.wafflestudio.snuboard.domain.usecase.DeleteNoticeScrapUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetNoticeOfFollowSearchUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetNoticesByFollowUseCase
-import com.wafflestudio.snuboard.domain.usecase.PostNoticeScrapUseCase
+import com.wafflestudio.snuboard.domain.usecase.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -23,6 +20,7 @@ class NoticeSearchActivityViewModel
 constructor(
         private val getNoticesByFollowUseCase: GetNoticesByFollowUseCase,
         private val getNoticesOfFollowSearchUseCase: GetNoticeOfFollowSearchUseCase,
+        private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
         private val savedStateHandle: SavedStateHandle
@@ -114,6 +112,10 @@ constructor(
                                     it1
                             }
                             getNoticesByFollowUseCase.updateNotice(it)
+                            if (!it.isScrapped)
+                                getNoticesOfScrapUseCase.updateNotice(it)
+                            else
+                                getNoticesOfScrapUseCase.updateNotices()
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

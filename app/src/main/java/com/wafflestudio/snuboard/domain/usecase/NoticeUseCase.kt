@@ -13,6 +13,56 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+class GetNoticesOfDepartmentUseCase
+@Inject
+constructor(
+        private val noticeRepository: NoticeRepository,
+        private val noticeMapper: NoticeMapper
+) {
+
+    private val _updateNotice = MutableLiveData<Event<Notice>>()
+
+    val updateNotice: LiveData<Event<Notice>>
+        get() = _updateNotice
+
+    fun getNotices(departmentId: Int, limit: Int, cursor: String?, tags: String?): Single<Any> {
+        return noticeRepository
+                .getNoticesOfDepartment(departmentId, limit, cursor, true, tags)
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
+        val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
+        _updateNotice.value = Event(notice)
+    }
+}
+
+@Singleton
+class GetNoticesOfDepartmentIdSearchUseCase
+@Inject
+constructor(
+        private val noticeRepository: NoticeRepository,
+        private val noticeMapper: NoticeMapper
+) {
+
+    private val _updateNotice = MutableLiveData<Event<Notice>>()
+
+    val updateNotice: LiveData<Event<Notice>>
+        get() = _updateNotice
+
+    fun getNotices(departmentId: Int, keywords: String, limit: Int, cursor: String?, tags: String?): Single<Any> {
+        return noticeRepository
+                .getNoticesOfDepartmentIdSearch(departmentId, keywords, limit, cursor, content = true, title = true, null, tags)
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
+        val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
+        _updateNotice.value = Event(notice)
+    }
+}
+
+@Singleton
 class GetNoticesByFollowUseCase
 @Inject
 constructor(
@@ -61,9 +111,9 @@ constructor(
     val updateNotice: LiveData<Event<Notice>>
         get() = _updateNotice
 
-    fun getNotices(keyword: String, limit: Int, cursor: String?): Single<Any> {
+    fun getNotices(keywords: String, limit: Int, cursor: String?): Single<Any> {
         return noticeRepository
-                .getNoticeOfFollowSearch(keyword, limit, cursor, content = true, title = true)
+                .getNoticeOfFollowSearch(keywords, limit, cursor, content = true, title = true)
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -99,6 +149,9 @@ constructor(
         _updateNotices.value = Event(Unit)
     }
 
+    fun updateNotice(notice: Notice) {
+        _updateNotice.value = Event(notice)
+    }
 
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
