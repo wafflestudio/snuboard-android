@@ -19,7 +19,7 @@ interface NoticeService {
     @GET("notices/department/{department_id}/search/")
     fun getNoticesOfDepartmentIdSearch(
             @Path("department_id") departmentId: Int,
-            @Query("keyword") keyword: String,
+            @Query("keywords") keyword: String,
             @Query("limit") limit: Int,
             @Query("cursor") cursor: String?,
             @Query("content") content: Boolean?,
