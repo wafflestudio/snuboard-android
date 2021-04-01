@@ -20,9 +20,9 @@ constructor(
         private val noticeMapper: NoticeMapper
 ) {
 
-    private val _updateNotice = MutableLiveData<Event<Notice>>()
+    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
 
-    val updateNotice: LiveData<Event<Notice>>
+    val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
     fun getNotices(departmentId: Int, limit: Int, cursor: String?, tags: String?): Single<Any> {
@@ -31,10 +31,35 @@ constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun updateNotice(notice: Notice) {
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
+    }
+
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
+
 }
 
 @Singleton
@@ -45,9 +70,9 @@ constructor(
         private val noticeMapper: NoticeMapper
 ) {
 
-    private val _updateNotice = MutableLiveData<Event<Notice>>()
+    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
 
-    val updateNotice: LiveData<Event<Notice>>
+    val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
     fun getNotices(departmentId: Int, keywords: String, limit: Int, cursor: String?, tags: String?): Single<Any> {
@@ -58,8 +83,19 @@ constructor(
 
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
+
 }
 
 @Singleton
@@ -71,11 +107,11 @@ constructor(
 ) {
 
     private val _updateNotices = MutableLiveData<Event<Unit>>()
-    private val _updateNotice = MutableLiveData<Event<Notice>>()
+    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
 
     val updateNotices: LiveData<Event<Unit>>
         get() = _updateNotices
-    val updateNotice: LiveData<Event<Notice>>
+    val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
     fun getNotices(limit: Int, cursor: String?): Single<Any> {
@@ -89,12 +125,32 @@ constructor(
     }
 
     fun updateNotice(notice: Notice) {
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
 
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
 }
 
@@ -106,9 +162,9 @@ constructor(
         private val noticeMapper: NoticeMapper
 ) {
 
-    private val _updateNotice = MutableLiveData<Event<Notice>>()
+    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
 
-    val updateNotice: LiveData<Event<Notice>>
+    val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
     fun getNotices(keywords: String, limit: Int, cursor: String?): Single<Any> {
@@ -119,8 +175,19 @@ constructor(
 
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
+
 }
 
 @Singleton
@@ -132,11 +199,11 @@ constructor(
 ) {
 
     private val _updateNotices = MutableLiveData<Event<Unit>>()
-    private val _updateNotice = MutableLiveData<Event<Notice>>()
+    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
 
     val updateNotices: LiveData<Event<Unit>>
         get() = _updateNotices
-    val updateNotice: LiveData<Event<Notice>>
+    val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
     fun getNotices(limit: Int, cursor: String?): Single<Any> {
@@ -149,14 +216,21 @@ constructor(
         _updateNotices.value = Event(Unit)
     }
 
-    fun updateNotice(notice: Notice) {
-        _updateNotice.value = Event(notice)
-    }
-
     fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
         val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value = Event(notice)
+        _updateNotice.value?.let {
+            if (it.hasBeenHandled) {
+                _updateNotice.value = Event(listOf(notice))
+            } else {
+                it.peekContent()?.let { it1 ->
+                    val tmpUpdateNotice = it1.toMutableList()
+                    tmpUpdateNotice.add(notice)
+                    _updateNotice.value = Event(tmpUpdateNotice)
+                }
+            }
+        }
     }
+
 }
 
 @Singleton

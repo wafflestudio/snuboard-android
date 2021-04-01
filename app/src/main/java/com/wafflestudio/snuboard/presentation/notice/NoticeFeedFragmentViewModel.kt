@@ -88,13 +88,21 @@ constructor(
                 })
     }
 
-    fun updateNotice(notice: Notice) {
+    private fun updateNotice(notice: Notice) {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
         _notices.value = tmpNoticeList.map {
             if (it.id == notice.id)
                 notice
             else
                 it
+        }
+    }
+
+    fun observeUpdateNotice(event: Event<List<Notice>>) {
+        event.getContentIfNotHandled()?.let {
+            it.forEach { notice ->
+                updateNotice(notice)
+            }
         }
     }
 

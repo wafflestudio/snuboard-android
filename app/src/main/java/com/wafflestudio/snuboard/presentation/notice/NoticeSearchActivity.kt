@@ -91,9 +91,7 @@ class NoticeSearchActivity : AppCompatActivity() {
         }
         noticeSearchActivityViewModel.apply {
             updateNotice.observe(this@NoticeSearchActivity) {
-                it.getContentIfNotHandled()?.let { it1 ->
-                    updateNotice(it1)
-                }
+                observeUpdateNotice(it)
             }
         }
     }
