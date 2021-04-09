@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.data.retrofit.dto.NoticeDto
 import com.wafflestudio.snuboard.data.retrofit.dto.NoticeFileDto
 import com.wafflestudio.snuboard.data.retrofit.dto.NoticeListDto
+import com.wafflestudio.snuboard.data.retrofit.dto.NoticeSimpleDto
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.domain.model.*
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,7 +24,7 @@ constructor(@ApplicationContext appContext: Context) {
 
     fun mapFromListNoticeDto(dto: NoticeListDto): NoticeList {
         val notices = dto.notices.map {
-            mapToNoticeFromNoticeDto(it)
+            mapToNoticeFromNoticeSimpleDto(it)
         }
 
         return NoticeList(
@@ -32,7 +33,7 @@ constructor(@ApplicationContext appContext: Context) {
         )
     }
 
-    private fun mapToNoticeFromNoticeDto(dto: NoticeDto): Notice {
+    private fun mapToNoticeFromNoticeSimpleDto(dto: NoticeSimpleDto): Notice {
 
         val preferenceKey = SharedPreferenceConst.getDepartmentKey(dto.departmentId)
         var departmentColorId = pref.getInt(preferenceKey, -1)
