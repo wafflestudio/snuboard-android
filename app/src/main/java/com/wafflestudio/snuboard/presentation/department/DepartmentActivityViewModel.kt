@@ -8,11 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
-import com.wafflestudio.snuboard.domain.model.DepartmentColor
-import com.wafflestudio.snuboard.domain.model.Tag
-import com.wafflestudio.snuboard.domain.model.TagDepartment
-import com.wafflestudio.snuboard.domain.model.TagDepartmentFull
+import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.domain.usecase.DeleteFollowingTagUseCase
+import com.wafflestudio.snuboard.domain.usecase.GetNoticesOfDepartmentUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetTagDepartmentInfoUseCase
 import com.wafflestudio.snuboard.domain.usecase.PostFollowingTagUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
@@ -30,6 +28,7 @@ constructor(
     private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
     private val postFollowingTagUseCase: PostFollowingTagUseCase,
     private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
+    private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
     @ApplicationContext appContext: Context,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -37,6 +36,8 @@ constructor(
     private val pref = PreferenceManager.getDefaultSharedPreferences(
         appContext
     )
+
+    //    Tag Part
     private var homeTagString = listOf<String>()
 
     private val _tagDepartmentInfo = MutableLiveData<TagDepartmentFull>()
@@ -51,6 +52,77 @@ constructor(
     val isFilterOn: LiveData<Boolean>
         get() = _isFilterOn
 
+    //    Notice Part
+    private val _notices = MutableLiveData<List<Notice>>()
+    val updateNotices = getNoticesOfDepartmentUseCase.updateNotice
+
+    val notices: LiveData<List<Notice>>
+        get() = _notices
+
+    private val paginationLimit = 10
+    private var paginationCursor: String? = null
+
+    fun getNotices() {
+        val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
+        if (paginationCursor == EOP)
+            return
+        getNoticesOfDepartmentUseCase
+            .getNotices(
+                tagDepartmentInfo.value!!.id,
+                paginationLimit,
+                paginationCursor,
+                homeTagString
+            )
+            .subscribe({
+                when (it) {
+                    is NoticeList -> {
+                        tmpNoticeList.addAll(it.notices)
+                        _notices.value = tmpNoticeList
+                        paginationCursor = if (it.nextCursor.isEmpty())
+                            EOP
+                        else
+                            it.nextCursor
+                    }
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                Timber.e(it)
+            })
+    }
+
+    private fun updateNotices() {
+        paginationCursor = null
+        getNoticesOfDepartmentUseCase
+            .getNotices(
+                tagDepartmentInfo.value!!.id,
+                paginationLimit,
+                paginationCursor,
+                homeTagString
+            )
+            .subscribe({
+                when (it) {
+                    is NoticeList -> {
+                        _notices.value = it.notices
+                        paginationCursor = if (it.nextCursor.isEmpty())
+                            EOP
+                        else
+                            it.nextCursor
+                    }
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                Timber.e(it)
+            })
+    }
+
+
+    //    Tag Part
     private fun getHomeTagString(departmentId: Int) {
         val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(departmentId)
         val departmentHomeTagString = pref.getString(preferenceKey, "EMPTY")
@@ -127,6 +199,7 @@ constructor(
             putString(preferenceKey, homeTagString.joinToString(separator = ","))
         }
         _isFilterOn.value = homeTagString.isNotEmpty()
+        updateNotices()
         SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
     }
 
@@ -153,6 +226,7 @@ constructor(
         )
         _tagDepartmentInfo.value = tagDepartmentFull
         _isFilterOn.value = homeTagString.isNotEmpty()
+        updateNotices()
         SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
     }
 
@@ -184,6 +258,7 @@ constructor(
                         )
 
                         _tagDepartmentInfo.value = tagDepartmentFull
+                        getNotices()
                     }
                     is ErrorResponse -> {
                         SingleEvent.triggerToast.value = Event(it.message)
@@ -246,4 +321,9 @@ constructor(
         )
     }
 
+    companion object {
+        // Used to indicate cursor that it is End of Page
+        private const val EOP = "EOP"
+
+    }
 }

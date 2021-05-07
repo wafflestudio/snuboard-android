@@ -32,7 +32,7 @@ constructor(
         tags: List<String>
     ): Single<Any> {
         return noticeRepository
-            .getNoticesOfDepartment(departmentId, limit, cursor, true, tags.joinToString(","))
+            .getNoticesOfDepartment(departmentId, limit, cursor, null, tags.joinToString(","))
             .observeOn(AndroidSchedulers.mainThread())
     }
 
