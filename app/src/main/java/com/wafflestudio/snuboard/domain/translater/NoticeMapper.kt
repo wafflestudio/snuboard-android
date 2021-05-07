@@ -35,7 +35,7 @@ constructor(@ApplicationContext appContext: Context) {
 
     private fun mapToNoticeFromNoticeSimpleDto(dto: NoticeSimpleDto): Notice {
 
-        val preferenceKey = SharedPreferenceConst.getDepartmentKey(dto.departmentId)
+        val preferenceKey = SharedPreferenceConst.getDepartmentColorKey(dto.departmentId)
         var departmentColorId = pref.getInt(preferenceKey, -1)
         if (departmentColorId == -1) {
             pref.edit {
@@ -70,7 +70,7 @@ constructor(@ApplicationContext appContext: Context) {
 
         val files = dto.files.map { mapToFileFromFileDto(it) }
 
-        val preferenceKey = SharedPreferenceConst.getDepartmentKey(dto.departmentId)
+        val preferenceKey = SharedPreferenceConst.getDepartmentColorKey(dto.departmentId)
         var departmentColorId = pref.getInt(preferenceKey, -1)
         if (departmentColorId == -1) {
             pref.edit {

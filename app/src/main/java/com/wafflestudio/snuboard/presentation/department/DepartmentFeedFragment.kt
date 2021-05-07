@@ -5,7 +5,6 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.preference.PreferenceManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -22,11 +21,6 @@ class DepartmentFeedFragment : Fragment() {
 
     lateinit var binding: FragmentDepartmentFeedBinding
     private val departmentActivityViewModel: DepartmentActivityViewModel by activityViewModels()
-    private val pref by lazy {
-        PreferenceManager.getDefaultSharedPreferences(
-                activity
-        )
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +37,7 @@ class DepartmentFeedFragment : Fragment() {
             lifecycleOwner = this@DepartmentFeedFragment
             activityViewModel = departmentActivityViewModel
             colorClickListener = ColorClickListener { departmentColor ->
-                departmentActivityViewModel.changeDepartmentColor(departmentColor, pref)
+                departmentActivityViewModel.changeDepartmentColor(departmentColor)
             }
             tagRecyclerView.run {
                 adapter = TagListAdapter(
