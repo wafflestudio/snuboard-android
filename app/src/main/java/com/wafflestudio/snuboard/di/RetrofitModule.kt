@@ -59,7 +59,7 @@ class RetrofitModule {
         Retrofit.Builder()
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.TEST_SERVER_BASE_URL)
+            .baseUrl(BuildConfig.SERVER_BASE_URL)
             .client(okHttpClient)
             .build()
 
