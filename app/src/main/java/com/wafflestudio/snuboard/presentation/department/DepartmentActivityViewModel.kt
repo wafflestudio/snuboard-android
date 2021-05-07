@@ -47,18 +47,23 @@ constructor(
     val isHomeTagsVisible: LiveData<Boolean>
         get() = _isHomeTagsVisible
 
+    private val _isFilterOn = MutableLiveData(false)
+    val isFilterOn: LiveData<Boolean>
+        get() = _isFilterOn
+
     private fun getHomeTagString(departmentId: Int) {
         val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(departmentId)
         val departmentHomeTagString = pref.getString(preferenceKey, "EMPTY")
         var departmentHomeTags = listOf<String>()
-        if (departmentHomeTagString == "EMPTY") {
+        if (departmentHomeTagString == "EMPTY" || departmentHomeTagString!!.isBlank()) {
             pref.edit {
                 putString(preferenceKey, "")
             }
         } else {
-            departmentHomeTags = departmentHomeTagString!!.split(",")
+            departmentHomeTags = departmentHomeTagString.split(",")
         }
         homeTagString = departmentHomeTags
+        _isFilterOn.value = homeTagString.isNotEmpty()
     }
 
     fun toggleHomeTag(tagContent: String) {
@@ -71,11 +76,6 @@ constructor(
         }
 
         val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
-
-        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(tmpTagDepartmentInfo.id)
-        pref.edit {
-            putString(preferenceKey, homeTagString.joinToString(separator = ","))
-        }
 
         val homeTags = tmpTagDepartmentInfo.homeTags.map {
             if (it.content in homeTagString) {
@@ -97,7 +97,63 @@ constructor(
     }
 
     fun toggleHomeTagCard() {
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+
+        if (isHomeTagsVisible.value!!) {
+            getHomeTagString(tmpTagDepartmentInfo.id)
+            val homeTags = tmpTagDepartmentInfo.homeTags.map {
+                if (it.content in homeTagString) {
+                    Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
+                } else {
+                    Tag(it.content, DepartmentColor.TAG_COLOR)
+                }
+            }
+            val tagDepartmentFull = TagDepartmentFull(
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
+            )
+            _tagDepartmentInfo.value = tagDepartmentFull
+        }
         _isHomeTagsVisible.value = !isHomeTagsVisible.value!!
+    }
+
+    fun applyHomeTags() {
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(tmpTagDepartmentInfo.id)
+        pref.edit {
+            putString(preferenceKey, homeTagString.joinToString(separator = ","))
+        }
+        _isFilterOn.value = homeTagString.isNotEmpty()
+        SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
+    }
+
+    fun eraseHomeTags() {
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(tmpTagDepartmentInfo.id)
+        pref.edit {
+            putString(preferenceKey, "")
+        }
+        homeTagString = listOf()
+        val homeTags = tmpTagDepartmentInfo.homeTags.map {
+            if (it.content in homeTagString) {
+                Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
+            } else {
+                Tag(it.content, DepartmentColor.TAG_COLOR)
+            }
+        }
+        val tagDepartmentFull = TagDepartmentFull(
+            tmpTagDepartmentInfo.id,
+            tmpTagDepartmentInfo.name,
+            tmpTagDepartmentInfo.tags,
+            homeTags,
+            tmpTagDepartmentInfo.departmentColor
+        )
+        _tagDepartmentInfo.value = tagDepartmentFull
+        _isFilterOn.value = homeTagString.isNotEmpty()
+        SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
     }
 
     fun getTagDepartmentInfo(departmentId: Int) {
