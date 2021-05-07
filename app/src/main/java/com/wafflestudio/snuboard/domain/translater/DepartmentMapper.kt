@@ -27,7 +27,7 @@ constructor(@ApplicationContext appContext: Context) {
     }
 
     fun mapFromDepartmentDto(dto: DepartmentDto): Department {
-        val preferenceKey = SharedPreferenceConst.getDepartmentKey(dto.id)
+        val preferenceKey = SharedPreferenceConst.getDepartmentColorKey(dto.id)
         var colorId = pref.getInt(preferenceKey, -1)
         if (colorId == -1) {
             pref.edit {
