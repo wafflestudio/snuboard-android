@@ -47,5 +47,7 @@
     <string name="search_icon">search_icon</string>
     <string name="text_activity_notice_search_cancel">취소</string>
     <string name="cancel_icon">cancel_icon</string>
-    <string name="text_view_fragement_dept_home_home">홈</string>
+    <string name="text_view_fragement_dept_home_home">카테고리 필터</string>
+    <string name="button_fragment_department_home_apply">필터 적용</string>
+    <string name="button_fragment_department_home_erase">지우기</string>
 </resources>

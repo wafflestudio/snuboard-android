@@ -47,6 +47,12 @@ class DepartmentHomeFragment : Fragment() {
                     justifyContent = JustifyContent.FLEX_START
                 }
             }
+            applyButton.setOnClickListener {
+                departmentActivityViewModel.applyHomeTags()
+            }
+            eraseButton.setOnClickListener {
+                departmentActivityViewModel.eraseHomeTags()
+            }
         }
         setHasOptionsMenu(true)
         return binding.root

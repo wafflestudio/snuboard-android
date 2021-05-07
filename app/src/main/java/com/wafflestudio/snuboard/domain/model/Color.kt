@@ -18,8 +18,19 @@ enum class DepartmentColor(val colorName: String, val colorId: Int) {
 
     companion object {
         fun fromColorId(colorId: Int): DepartmentColor? =
-                values().find { it.colorId == colorId }
+            values().find { it.colorId == colorId }
     }
+}
+
+enum class BasicColor(val colorId: Int) {
+    GRAY1(R.color.gray1),
+    GRAY2(R.color.gray2),
+    RED(R.color.red),
+    ORANGE(R.color.orange),
+    GREEN1(R.color.green1),
+    BLUE1(R.color.blue1),
+    PURPLE1(R.color.purple1),
+    LAVENDER(R.color.lavender);
 }
 
 data class Tag(val content: String, val color: DepartmentColor)
