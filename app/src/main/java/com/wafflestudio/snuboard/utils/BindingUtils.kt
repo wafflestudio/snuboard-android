@@ -26,6 +26,7 @@ import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.presentation.TagListAdapter
 import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAdapter
+import com.wafflestudio.snuboard.presentation.department.FilterNoticeListAdapter
 import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.notice.FileListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
@@ -58,6 +59,15 @@ fun bindNoticeItems(view: RecyclerView, items: List<Notice>?) {
     val adapt = view.adapter as NoticeListAdapter
     items?.also {
         adapt.submitList(it)
+    }
+}
+
+@BindingAdapter("filter_notice_items")
+fun bindFilterNoticeItems(view: RecyclerView, items: List<Notice>?) {
+    val adapt = view.adapter as FilterNoticeListAdapter
+    items?.also {
+        adapt.items = it
+        adapt.notifyDataSetChanged()
     }
 }
 
