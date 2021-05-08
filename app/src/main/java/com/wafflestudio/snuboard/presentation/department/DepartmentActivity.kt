@@ -12,6 +12,7 @@ import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentBinding
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetNoticesByFollowUseCase
+import com.wafflestudio.snuboard.domain.usecase.GetNoticesOfScrapUseCase
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -24,6 +25,9 @@ class DepartmentActivity : AppCompatActivity() {
 
     @Inject
     lateinit var getNoticesByFollowUseCase: GetNoticesByFollowUseCase
+
+    @Inject
+    lateinit var getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase
 
     private val binding: ActivityDepartmentBinding by lazy {
         DataBindingUtil.setContentView(
@@ -62,13 +66,19 @@ class DepartmentActivity : AppCompatActivity() {
 
         val departmentId = intent.getIntExtra(EXTRA_DEPARTMENT_ID, -1)
         if (departmentId == -1) finish()
-        departmentActivityViewModel.getTagDepartmentInfo(departmentId)
+        departmentActivityViewModel.apply {
+            updateNotice.observe(this@DepartmentActivity) {
+                observeUpdateNotice(it)
+            }
+            getTagDepartmentInfo(departmentId)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         classifyDepartmentUseCase.updateDepartments()
         getNoticesByFollowUseCase.updateNotices()
+        getNoticesOfScrapUseCase.updateNotices()
     }
 
     override fun onSupportNavigateUp(): Boolean {

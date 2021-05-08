@@ -9,10 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.domain.model.*
-import com.wafflestudio.snuboard.domain.usecase.DeleteFollowingTagUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetNoticesOfDepartmentUseCase
-import com.wafflestudio.snuboard.domain.usecase.GetTagDepartmentInfoUseCase
-import com.wafflestudio.snuboard.domain.usecase.PostFollowingTagUseCase
+import com.wafflestudio.snuboard.domain.usecase.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -25,12 +22,14 @@ import javax.inject.Inject
 class DepartmentActivityViewModel
 @Inject
 constructor(
-    private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
-    private val postFollowingTagUseCase: PostFollowingTagUseCase,
-    private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
-    private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
-    @ApplicationContext appContext: Context,
-    private val savedStateHandle: SavedStateHandle
+        private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
+        private val postFollowingTagUseCase: PostFollowingTagUseCase,
+        private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
+        private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
+        private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
+        private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
+        @ApplicationContext appContext: Context,
+        private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val pref = PreferenceManager.getDefaultSharedPreferences(
@@ -59,7 +58,7 @@ constructor(
 
     // Notice Members
     private val _notices = MutableLiveData<List<Notice>>()
-    val updateNotices = getNoticesOfDepartmentUseCase.updateNotice
+    val updateNotice = getNoticesOfDepartmentUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
         get() = _notices
@@ -339,7 +338,56 @@ constructor(
             })
     }
 
+    private fun updateNotice(notice: Notice) {
+        val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
+        _notices.value = tmpNoticeList.map {
+            if (it.id == notice.id)
+                notice
+            else
+                it
+        }
+    }
 
+
+    fun observeUpdateNotice(event: Event<List<Notice>>) {
+        event.getContentIfNotHandled()?.let {
+            it.forEach { notice ->
+                updateNotice(notice)
+            }
+        }
+    }
+
+    fun toggleSavedNotice(noticeId: Int) {
+        val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
+        tmpNoticeList.find {
+            it.id == noticeId
+        }?.let {
+            if (it.isScrapped)
+                deleteNoticeScrapUseCase
+                        .deleteNoticeScrapSimple(noticeId)
+            else
+                postNoticeScrapUseCase
+                        .postNoticeScrapSimple(noticeId)
+        }
+                ?.subscribe({
+                    when (it) {
+                        is Notice -> {
+                            _notices.value = tmpNoticeList.map { it1 ->
+                                if (it1.id == noticeId)
+                                    it
+                                else
+                                    it1
+                            }
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                        }
+                    }
+                }, {
+                    Timber.e(it)
+                })
+    }
 
     companion object {
         // Used to indicate cursor that it is End of Page

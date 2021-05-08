@@ -38,7 +38,7 @@ class DepartmentHomeFragment : Fragment() {
                 layoutManager = myLayoutManager
                 val filterNoticeListAdapter = FilterNoticeListAdapter(
                         HeartClickListener {
-//                        departmentActivityViewModel.toggleSavedNotice(it)
+                            departmentActivityViewModel.toggleSavedNotice(it)
                         },
                         departmentActivityViewModel
                 )
