@@ -18,180 +18,20 @@
         android:background="@color/background"
         tools:context=".presentation.department.DepartmentHomeFragment">
 
-
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filter_notice_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:clipToPadding="false"
+            app:filter_notice_items="@{activityViewModel.notices}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/tags_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@color/white"
-                    android:onClick="@{() -> activityViewModel.toggleHomeTagCard()}"
-                    app:contentPadding="12dp"
-                    app:cardCornerRadius="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/tags_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/tags_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="4dp"
-                                android:contentDescription="@string/image_fragment_dept_feed_tag"
-                                android:src="@drawable/ic_home"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/tags_name"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintHorizontal_chainStyle="packed"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
-
-                            <TextView
-                                android:id="@+id/tags_name"
-                                style="@style/NotoSansBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/text_view_fragement_dept_home_home"
-                                android:textColor="@{activityViewModel.isFilterOn ? @color/lavender : @color/gray2}"
-                                android:textSize="16sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/tags_icon"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:id="@+id/toggle_open_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:contentDescription="@string/image_view_fragment_dept_domain"
-                                android:src="@drawable/ic_arrow_drop_down"
-                                app:view_visibility_string="@{!activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
-
-                            <ImageView
-                                android:id="@+id/toggle_close_icon"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="5dp"
-                                android:contentDescription="@string/image_view_fragment_dept_domain"
-                                android:src="@drawable/ic_arrow_drop_up"
-                                app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/tag_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:nestedScrollingEnabled="false"
-                            app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                            app:tag_items="@{activityViewModel.tagDepartmentInfo.homeTags}"
-                            tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-                            tools:listitem="@layout/sub_item_tag" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                            tools:context=".presentation.auth.LoginFragment">
-
-                            <Button
-                                android:id="@+id/apply_button"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:backgroundTint="@color/green3"
-                                android:text="@string/button_fragment_department_home_apply"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:layout_marginStart="20dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/erase_button"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:ignore="SmallSp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                android:id="@+id/erase_button"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:text="@string/button_fragment_department_home_erase"
-                                android:textSize="11sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/gray1"
-                                app:backgroundTint="@color/white"
-                                app:strokeColor="@color/gray1"
-                                app:strokeWidth="1dp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/apply_button"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:ignore="SmallSp" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notice_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    app:notice_items="@{activityViewModel.notices}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/app_bar"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:listitem="@layout/item_notice" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/item_notice" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
