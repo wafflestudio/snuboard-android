@@ -22,6 +22,7 @@ constructor(
         private val getNoticesOfFollowSearchUseCase: GetNoticeOfFollowSearchUseCase,
         private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
         private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
+        private val getNoticesOfDepartmentIdSearchUseCase: GetNoticesOfDepartmentIdSearchUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
         private val savedStateHandle: SavedStateHandle
@@ -65,6 +66,7 @@ constructor(
                             getNoticesByFollowUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesOfFollowSearchUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesOfDepartmentUseCase.updateNoticeWithNoticeDetail(it)
+                            getNoticesOfDepartmentIdSearchUseCase.updateNoticeWithNoticeDetail(it)
                             if (!it.isScrapped)
                                 getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)
                             else

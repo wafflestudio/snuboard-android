@@ -38,7 +38,7 @@ class RetrofitModule {
         authenticator: TokenAuthenticator
     ) = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC)
 
         OkHttpClient.Builder()
                 .addInterceptor(authInterceptor)

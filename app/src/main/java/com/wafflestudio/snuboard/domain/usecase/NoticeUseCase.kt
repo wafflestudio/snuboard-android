@@ -80,9 +80,17 @@ constructor(
     val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
-    fun getNotices(departmentId: Int, keywords: String, limit: Int, cursor: String?, tags: String?): Single<Any> {
+    fun getNotices(departmentId: Int, keywords: String, limit: Int, cursor: String?, tags: List<String>): Single<Any> {
         return noticeRepository
-                .getNoticesOfDepartmentIdSearch(departmentId, keywords, limit, cursor, content = true, title = true, null, tags)
+                .getNoticesOfDepartmentIdSearch(
+                        departmentId,
+                        keywords,
+                        limit,
+                        cursor,
+                        content = true,
+                        title = true,
+                        null,
+                        tags.joinToString(","))
                 .observeOn(AndroidSchedulers.mainThread())
     }
 

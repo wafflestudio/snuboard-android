@@ -70,4 +70,18 @@ class DepartmentHomeFragment : Fragment() {
         menu.clear()
         inflater.inflate(R.menu.app_bar_fragment_department_home, menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.search_button -> {
+                departmentActivityViewModel.tagDepartmentInfo.value?.let {
+                    startActivity(DepartmentSearchActivity
+                            .intentWithDepartmentInfo(requireContext(), it))
+                    activity?.overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
+                }
+                true
+            }
+            else -> false
+        }
+    }
 }
