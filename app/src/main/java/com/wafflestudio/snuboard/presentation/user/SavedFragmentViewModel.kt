@@ -115,7 +115,7 @@ constructor(
                 ?.subscribe({
                     when (it) {
                         is Notice -> {
-                            _savedNotices.value = tmpNoticeList.filter { it1 ->
+                            _savedNotices.value = _savedNotices.value!!.filter { it1 ->
                                 it.id != it1.id
                             }
                             getNoticesByFollowUseCase.updateNotice(it)
