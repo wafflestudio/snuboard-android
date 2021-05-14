@@ -121,7 +121,7 @@ constructor(
                 ?.subscribe({
                     when (it) {
                         is Notice -> {
-                            _notices.value = tmpNoticeList.map { it1 ->
+                            _notices.value = _notices.value!!.map { it1 ->
                                 if (it1.id == noticeId)
                                     it
                                 else
