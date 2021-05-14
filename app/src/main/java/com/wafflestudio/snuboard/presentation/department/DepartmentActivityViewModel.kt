@@ -207,9 +207,10 @@ constructor(
             putString(preferenceKey, homeTagString.joinToString(separator = ","))
         }
         _isFilterOn.value = homeTagString.isNotEmpty()
-        updateNotices()
-        SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
-        notifyList()
+        updateNotices {
+            SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
+            notifyList()
+        }
     }
 
     fun eraseHomeTags() {
@@ -235,9 +236,10 @@ constructor(
         )
         _tagDepartmentInfo.value = tagDepartmentFull
         _isFilterOn.value = homeTagString.isNotEmpty()
-        updateNotices()
-        SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
-        notifyList()
+        updateNotices {
+            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
+            notifyList()
+        }
     }
 
 
@@ -310,32 +312,33 @@ constructor(
                 })
     }
 
-    private fun updateNotices() {
+    private fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
         getNoticesOfDepartmentUseCase
-            .getNotices(
-                tagDepartmentInfo.value!!.id,
-                paginationLimit,
-                paginationCursor,
-                homeTagString
-            )
-            .subscribe({
-                when (it) {
-                    is NoticeList -> {
-                        _notices.value = it.notices
-                        paginationCursor = if (it.nextCursor.isEmpty())
-                            EOP
-                        else
-                            it.nextCursor
+                .getNotices(
+                        tagDepartmentInfo.value!!.id,
+                        paginationLimit,
+                        paginationCursor,
+                        homeTagString
+                )
+                .subscribe({
+                    when (it) {
+                        is NoticeList -> {
+                            _notices.value = it.notices
+                            paginationCursor = if (it.nextCursor.isEmpty())
+                                EOP
+                            else
+                                it.nextCursor
+                            postWork()
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                        }
                     }
-                    is ErrorResponse -> {
-                        SingleEvent.triggerToast.value = Event(it.message)
-                        Timber.e(it.message)
-                    }
-                }
-            }, {
-                Timber.e(it)
-            })
+                }, {
+                    Timber.e(it)
+                })
     }
 
     private fun updateNotice(notice: Notice) {
