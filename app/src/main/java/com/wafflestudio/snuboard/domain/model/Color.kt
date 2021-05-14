@@ -1,6 +1,7 @@
 package com.wafflestudio.snuboard.domain.model
 
 import com.wafflestudio.snuboard.R
+import java.io.Serializable
 
 enum class DepartmentColor(val colorName: String, val colorId: Int) {
     BLACK("검정", R.color.black),
@@ -33,4 +34,4 @@ enum class BasicColor(val colorId: Int) {
     LAVENDER(R.color.lavender);
 }
 
-data class Tag(val content: String, val color: DepartmentColor)
+data class Tag(val content: String, val color: DepartmentColor) : Serializable

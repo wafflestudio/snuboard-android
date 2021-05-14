@@ -209,7 +209,6 @@ constructor(
         _isFilterOn.value = homeTagString.isNotEmpty()
         updateNotices {
             SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
-            notifyList()
         }
     }
 
@@ -238,7 +237,6 @@ constructor(
         _isFilterOn.value = homeTagString.isNotEmpty()
         updateNotices {
             SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
-            notifyList()
         }
     }
 
@@ -276,7 +274,6 @@ constructor(
                     }, { it1 ->
                         Timber.e(it1)
                     })
-            notifyList()
         }
     }
 
@@ -357,6 +354,7 @@ constructor(
             it.forEach { notice ->
                 updateNotice(notice)
             }
+            Timber.i("NOWW")
         }
     }
 

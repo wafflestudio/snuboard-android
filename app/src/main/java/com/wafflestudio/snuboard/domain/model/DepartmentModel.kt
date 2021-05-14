@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.domain.model
 
+import java.io.Serializable
+
 data class Department(
         val id: Int,
         val name: String,
@@ -45,9 +47,9 @@ data class TagDepartment(
 )
 
 data class TagDepartmentFull(
-    val id: Int,
-    val name: String,
-    val tags: List<Tag>,
-    val homeTags: List<Tag>,
-    val departmentColor: DepartmentColor
-)
+        val id: Int,
+        val name: String,
+        val tags: List<Tag>,
+        val homeTags: List<Tag>,
+        val departmentColor: DepartmentColor
+) : Serializable
