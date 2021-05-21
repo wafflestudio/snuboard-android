@@ -5,12 +5,16 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/group1_subtitle"
-            android:title="@string/navigation_drawer_activity_main_category">
+            android:title="@string/navigation_drawer_activity_main_category1">
             <menu>
                 <item
                     android:id="@+id/group1_item1"
-                    android:icon="@drawable/ic_person"
-                    android:title="@string/navigation_drawer_activity_main_profile" />
+                    android:icon="@drawable/ic_system_update"
+                    android:title="@string/navigation_drawer_activity_main_item1" />
+                <item
+                    android:id="@+id/group1_item2"
+                    android:icon="@drawable/ic_library_books"
+                    android:title="@string/navigation_drawer_activity_main_item2" />
             </menu>
         </item>
     </group>
@@ -19,16 +23,16 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/group2_subtitle"
-            android:title="@string/navigation_drawer_activity_main_app">
+            android:title="@string/navigation_drawer_activity_main_category2">
             <menu>
                 <item
                     android:id="@+id/group2_item1"
-                    android:icon="@drawable/ic_system_update"
-                    android:title="@string/navigation_drawer_activity_main_version" />
+                    android:icon="@drawable/ic_notifications_none"
+                    android:title="@string/navigation_drawer_activity_main_item3" />
                 <item
                     android:id="@+id/group2_item2"
-                    android:icon="@drawable/ic_library_books"
-                    android:title="@string/navigation_drawer_activity_main_license" />
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/navigation_drawer_activity_main_item4" />
             </menu>
         </item>
     </group>
@@ -39,5 +43,9 @@
             android:id="@+id/group3_item1"
             android:icon="@drawable/ic_logout"
             android:title="@string/navigation_drawer_activity_main_logout" />
+        <item
+            android:id="@+id/group3_item2"
+            android:icon="@drawable/ic_phonelink_erase"
+            android:title="@string/navigation_drawer_activity_main_signout" />
     </group>
 </menu>

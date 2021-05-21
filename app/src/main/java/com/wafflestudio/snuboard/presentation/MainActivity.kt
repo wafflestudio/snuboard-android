@@ -17,7 +17,6 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
 import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
-import com.wafflestudio.snuboard.presentation.user.ProfileActivity
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,13 +60,6 @@ class MainActivity : AppCompatActivity() {
             }
             navigationView.setNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.group1_item1 -> {
-                        startActivity(ProfileActivity.intent(this@MainActivity))
-                        overridePendingTransition(
-                                R.anim.slide_from_right,
-                                R.anim.nav_default_exit_anim
-                        )
-                    }
                     R.id.group3_item1 -> {
                         val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
                         pref.edit {
