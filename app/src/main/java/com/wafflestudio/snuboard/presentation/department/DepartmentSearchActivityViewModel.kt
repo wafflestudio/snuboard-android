@@ -37,18 +37,152 @@ constructor(
     private val paginationLimit = 10
     private var paginationCursor: String? = null
 
-    private val departmentInfo = MutableLiveData<TagDepartment>()
+    private val _tagDepartmentInfo = MutableLiveData<TagDepartmentFull>()
+    val tagDepartmentInfo: LiveData<TagDepartmentFull>
+        get() = _tagDepartmentInfo
 
 
+    // Tag members
+    private var homeTagString = listOf<String>()
+    private var homeTagStringFixed = listOf<String>()
+
+    private val _isHomeTagsVisible = MutableLiveData(false)
+    val isHomeTagsVisible: LiveData<Boolean>
+        get() = _isHomeTagsVisible
+
+    private val _isFilterOn = MutableLiveData(false)
+    val isFilterOn: LiveData<Boolean>
+        get() = _isFilterOn
+
+    private val _notifyFilterNoticeList = MutableLiveData<Event<Unit>>()
+    val notifyFilterNoticeList: LiveData<Event<Unit>>
+        get() = _notifyFilterNoticeList
+
+
+    // Tag Functions
+
+
+    private fun notifyList() {
+        _notifyFilterNoticeList.value = Event(Unit)
+    }
+
+    private fun getHomeTagString() {
+        val tmpHomeTagString = mutableListOf<String>()
+        tmpHomeTagString.addAll(homeTagStringFixed)
+        homeTagString = tmpHomeTagString
+        _isFilterOn.value = homeTagStringFixed.isNotEmpty()
+        notifyList()
+    }
+
+    fun toggleHomeTag(tagContent: String) {
+        homeTagString = if (tagContent in homeTagString) {
+            homeTagString.filter { it != tagContent }
+        } else {
+            val mutableHomeTagString = homeTagString.toMutableList()
+            mutableHomeTagString.add(tagContent)
+            mutableHomeTagString
+        }
+
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+
+        val homeTags = tmpTagDepartmentInfo.homeTags.map {
+            if (it.content in homeTagString) {
+                Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
+            } else {
+                Tag(it.content, DepartmentColor.TAG_COLOR)
+            }
+        }
+
+        val tagDepartmentFull = TagDepartmentFull(
+            tmpTagDepartmentInfo.id,
+            tmpTagDepartmentInfo.name,
+            tmpTagDepartmentInfo.tags,
+            homeTags,
+            tmpTagDepartmentInfo.departmentColor
+        )
+
+        _tagDepartmentInfo.value = tagDepartmentFull
+        notifyList()
+    }
+
+    fun toggleHomeTagCard() {
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+        getHomeTagString()
+        if (isHomeTagsVisible.value!!) {
+            val homeTags = tmpTagDepartmentInfo.homeTags.map {
+                if (it.content in homeTagString) {
+                    Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
+                } else {
+                    Tag(it.content, DepartmentColor.TAG_COLOR)
+                }
+            }
+
+            val tagDepartmentFull = TagDepartmentFull(
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
+            )
+            _tagDepartmentInfo.value = tagDepartmentFull
+        }
+        _isHomeTagsVisible.value = !isHomeTagsVisible.value!!
+        notifyList()
+    }
+
+    fun applyHomeTags() {
+        val tmpHomeTagString = homeTagString.toMutableList()
+        homeTagStringFixed = tmpHomeTagString
+        _isFilterOn.value = homeTagStringFixed.isNotEmpty()
+        updateNotices {
+            SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
+        }
+        if (keywords.value!!.isBlank()) {
+            SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
+            notifyList()
+        }
+    }
+
+    fun eraseHomeTags() {
+        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
+        homeTagString = listOf()
+        homeTagStringFixed = listOf()
+        val homeTags = tmpTagDepartmentInfo.homeTags.map {
+            if (it.content in homeTagString) {
+                Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
+            } else {
+                Tag(it.content, DepartmentColor.TAG_COLOR)
+            }
+        }
+        val tagDepartmentFull = TagDepartmentFull(
+            tmpTagDepartmentInfo.id,
+            tmpTagDepartmentInfo.name,
+            tmpTagDepartmentInfo.tags,
+            homeTags,
+            tmpTagDepartmentInfo.departmentColor
+        )
+        _tagDepartmentInfo.value = tagDepartmentFull
+        _isFilterOn.value = homeTagStringFixed.isNotEmpty()
+        updateNotices {
+            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
+        }
+        if (keywords.value!!.isBlank()) {
+            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
+            notifyList()
+        }
+    }
+
+    // Search Functions
     fun initiateDepartment(tagDepartmentInfo: TagDepartmentFull) {
         val newTags = tagDepartmentInfo.tags.map {
             Tag(it.content, DepartmentColor.TAG_COLOR)
         }
-        departmentInfo.value = TagDepartment(
-                tagDepartmentInfo.id,
-                tagDepartmentInfo.name,
-                newTags,
-                tagDepartmentInfo.departmentColor
+        _tagDepartmentInfo.value = TagDepartmentFull(
+            tagDepartmentInfo.id,
+            tagDepartmentInfo.name,
+            tagDepartmentInfo.tags,
+            newTags,
+            tagDepartmentInfo.departmentColor
         )
     }
 
@@ -74,11 +208,13 @@ constructor(
         }
                 ?.let { keyword_string ->
                     getNoticesOfDepartmentIdSearchUseCase
-                            .getNotices(departmentInfo.value!!.id,
-                                    keyword_string,
-                                    paginationLimit,
-                                    paginationCursor,
-                                    departmentInfo.value!!.tags.map { it.content })
+                        .getNotices(
+                            tagDepartmentInfo.value!!.id,
+                            keyword_string,
+                            paginationLimit,
+                            paginationCursor,
+                            homeTagStringFixed
+                        )
                             .subscribe({
                                 when (it) {
                                     is NoticeList -> {
@@ -98,6 +234,42 @@ constructor(
                                 Timber.e(it)
                             })
                 }
+    }
+
+    private fun updateNotices(postWork: () -> Unit = {}) {
+        paginationCursor = null
+        keywords.value?.apply {
+            if (isEmpty())
+                return
+        }
+            ?.let { keyword_string ->
+                getNoticesOfDepartmentIdSearchUseCase
+                    .getNotices(
+                        tagDepartmentInfo.value!!.id,
+                        keyword_string,
+                        paginationLimit,
+                        paginationCursor,
+                        homeTagStringFixed
+                    )
+                    .subscribe({
+                        when (it) {
+                            is NoticeList -> {
+                                _notices.value = it.notices
+                                paginationCursor = if (it.nextCursor.isEmpty())
+                                    EOP
+                                else
+                                    it.nextCursor
+                                postWork()
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                    }, {
+                        Timber.e(it)
+                    })
+            }
     }
 
     private fun updateNotice(notice: Notice) {

@@ -27,6 +27,7 @@ import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.presentation.TagListAdapter
 import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.department.FilterNoticeListAdapter
+import com.wafflestudio.snuboard.presentation.department.FilterSearchNoticeListAdapter
 import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.notice.FileListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
@@ -71,17 +72,26 @@ fun bindFilterNoticeItems(view: RecyclerView, items: List<Notice>?) {
     }
 }
 
+@BindingAdapter("filter_search_notice_items")
+fun bindFilterSearchNoticeItems(view: RecyclerView, items: List<Notice>?) {
+    val adapt = view.adapter as FilterSearchNoticeListAdapter
+    items?.also {
+        adapt.items = it
+        adapt.notifyDataSetChanged()
+    }
+}
+
 @BindingAdapter("notice_tag_items")
 fun bindNoticeTagItems(view: RecyclerView, item: NoticeInterface?) {
     val adapt = view.adapter as TagListAdapter
     item?.also {
         val items = mutableListOf<Tag>(
-                Tag(it.departmentName, it.departmentColor)
+            Tag(it.departmentName, it.departmentColor)
         )
         items.addAll(
-                it.tags.map { it1 ->
-                    Tag(it1, DepartmentColor.TAG_COLOR)
-                }
+            it.tags.map { it1 ->
+                Tag(it1, DepartmentColor.TAG_COLOR)
+            }
         )
         adapt.submitList(items)
     }

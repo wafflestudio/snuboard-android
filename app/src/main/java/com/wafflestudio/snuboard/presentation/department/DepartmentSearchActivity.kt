@@ -13,12 +13,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityDepartmentSearchBinding
 import com.wafflestudio.snuboard.domain.model.TagDepartmentFull
 import com.wafflestudio.snuboard.presentation.notice.HeartClickListener
 import com.wafflestudio.snuboard.presentation.notice.NoticeInfiniteScrollListener
-import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
@@ -48,6 +48,31 @@ class DepartmentSearchActivity : AppCompatActivity() {
             lifecycleOwner = this@DepartmentSearchActivity
             viewModel = departmentSearchActivityViewModel
 
+            filterRecyclerView.run {
+                val myLayoutManager = LinearLayoutManager(this@DepartmentSearchActivity)
+                layoutManager = myLayoutManager
+                val filterNoticeListAdapter = FilterSearchNoticeListAdapter(
+                    HeartClickListener {
+                        departmentSearchActivityViewModel.toggleSavedNotice(it)
+                    },
+                    departmentSearchActivityViewModel
+                )
+                filterNoticeListAdapter.setHasStableIds(true)
+                adapter = filterNoticeListAdapter
+                (adapter as FilterSearchNoticeListAdapter).registerAdapterDataObserver(
+                    object : RecyclerView.AdapterDataObserver() {
+                        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                            if (positionStart == 0)
+                                smoothScrollToPosition(0)
+                        }
+                    }
+                )
+                clearOnScrollListeners()
+                addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
+                    departmentSearchActivityViewModel.getNotices()
+                })
+            }
+
             setSupportActionBar(toolBar)
             supportActionBar!!.apply {
                 setDisplayShowTitleEnabled(false)
@@ -58,7 +83,11 @@ class DepartmentSearchActivity : AppCompatActivity() {
                     showSoftKeyboard(searchText)
                 }, 200)
                 setOnEditorActionListener(object : TextView.OnEditorActionListener {
-                    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                    override fun onEditorAction(
+                        v: TextView?,
+                        actionId: Int,
+                        event: KeyEvent?
+                    ): Boolean {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
                             hideSoftKeyboard(searchText)
                             departmentSearchActivityViewModel.apply {
@@ -82,18 +111,8 @@ class DepartmentSearchActivity : AppCompatActivity() {
                 showSoftKeyboard(searchText)
             }
 
-            recyclerView.run {
-                val myLayoutManager = LinearLayoutManager(this@DepartmentSearchActivity)
-                layoutManager = myLayoutManager
-                adapter = NoticeListAdapter(
-                        HeartClickListener {
-                            departmentSearchActivityViewModel.toggleSavedNotice(it)
-                        }
-                )
-                clearOnScrollListeners()
-                addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
-                    departmentSearchActivityViewModel.getNotices()
-                })
+            departmentSearchActivityViewModel.notifyFilterNoticeList.observe(this@DepartmentSearchActivity) {
+                filterRecyclerView.adapter?.notifyItemChanged(0, Unit)
             }
 
         }
