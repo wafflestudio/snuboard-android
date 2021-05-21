@@ -122,13 +122,13 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/filter_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:clipToPadding="false"
-            app:notice_items="@{viewModel.notices}"
+            app:filter_search_notice_items="@{viewModel.notices}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
