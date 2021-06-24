@@ -58,4 +58,5 @@
     <string name="text_view_activity_profile_nickname">닉네임</string>
     <string name="header_image">header image</string>
     <string name="snuboard_icon">snuboard_icon</string>
+    <string name="placeholder_image">placeholder_image</string>
 </resources>
