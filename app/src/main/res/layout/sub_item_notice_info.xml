@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:text="@{notice.createdAtYYMMDD}"
-            android:textColor="@color/gray4"
+            android:textColor="@color/tag_default"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

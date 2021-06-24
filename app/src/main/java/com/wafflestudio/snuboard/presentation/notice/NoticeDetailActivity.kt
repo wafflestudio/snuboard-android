@@ -109,7 +109,7 @@ class NoticeDetailActivity : AppCompatActivity() {
         if (noticeDetailActivityViewModel.notice.value?.isScrapped == true) {
             val icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite, null)
             icon?.setTintList(ColorStateList
-                    .valueOf(ContextCompat.getColor(this, R.color.purple1)))
+                    .valueOf(ContextCompat.getColor(this, R.color.tag_selected)))
             menu?.findItem(R.id.scrap_button)?.icon = icon
         } else {
             val icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_favorite_border, null)

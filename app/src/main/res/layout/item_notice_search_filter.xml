@@ -55,7 +55,7 @@
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
+                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
 
                     <TextView
                         android:id="@+id/tags_name"
@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/text_view_fragement_dept_home_home"
-                        android:textColor="@{activityViewModel.isFilterOn ? @color/lavender : @color/gray2}"
+                        android:textColor="@{activityViewModel.isFilterOn ? @color/filter_on : @color/filter_default}"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
                         app:layout_constraintHorizontal_bias="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
+                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
 
                     <ImageView
                         android:id="@+id/toggle_close_icon"
@@ -98,7 +98,7 @@
                         app:layout_constraintHorizontal_bias="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.LAVENDER.colorId : BasicColor.GRAY2.colorId}" />
+                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -125,7 +125,7 @@
                         android:id="@+id/apply_button"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:backgroundTint="@color/green3"
+                        android:backgroundTint="@color/tag_selected"
                         android:text="@string/button_fragment_department_home_apply"
                         android:textSize="11sp"
                         android:textStyle="bold"
