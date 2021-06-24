@@ -14,24 +14,18 @@ enum class DepartmentColor(val colorName: String, val colorId: Int) {
     MEDITERRANEAN("지중해", R.color.mediterranean),
     AMETHYST("자수정", R.color.amethyst),
     LAVENDER("라벤더", R.color.lavender),
-    TAG_COLOR("태그", R.color.gray4),
-    TAG_SELECTED_COLOR("태그선택", R.color.purple1);
+    TAG_COLOR("태그", R.color.tag_default),
+    TAG_SELECTED_COLOR("태그선택", R.color.tag_selected);
 
     companion object {
         fun fromColorId(colorId: Int): DepartmentColor? =
-            values().find { it.colorId == colorId }
+                values().find { it.colorId == colorId }
     }
 }
 
 enum class BasicColor(val colorId: Int) {
-    GRAY1(R.color.gray1),
-    GRAY2(R.color.gray2),
-    RED(R.color.red),
-    ORANGE(R.color.orange),
-    GREEN1(R.color.green1),
-    BLUE1(R.color.blue1),
-    PURPLE1(R.color.purple1),
-    LAVENDER(R.color.lavender);
+    FILTER_COLOR(R.color.filter_default),
+    FILTER_ON_COLOR(R.color.filter_on);
 }
 
 data class Tag(val content: String, val color: DepartmentColor) : Serializable

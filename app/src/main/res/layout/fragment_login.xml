@@ -124,7 +124,7 @@
             android:id="@+id/login_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green3"
+            android:backgroundTint="@color/tag_selected"
             android:text="@string/button_fragment_login_login"
             android:textSize="12sp"
             android:textStyle="bold"

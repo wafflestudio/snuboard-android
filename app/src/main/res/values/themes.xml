@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.SNUBoard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple1</item>
+        <item name="colorPrimary">@color/tag_selected</item>
         <item name="colorPrimaryVariant">@color/purple2</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

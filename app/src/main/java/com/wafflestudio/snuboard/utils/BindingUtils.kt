@@ -47,11 +47,11 @@ fun bindHeartFilled(view: ImageView, bool: Boolean) {
     if (bool) {
         view.setImageResource(R.drawable.ic_favorite)
         view.imageTintList = ColorStateList
-                .valueOf(ContextCompat.getColor(view.context, R.color.purple1))
+                .valueOf(ContextCompat.getColor(view.context, R.color.tag_selected))
     } else {
         view.setImageResource(R.drawable.ic_favorite_border)
         view.imageTintList = ColorStateList
-                .valueOf(ContextCompat.getColor(view.context, R.color.gray3))
+                .valueOf(ContextCompat.getColor(view.context, R.color.tag_default))
     }
 }
 

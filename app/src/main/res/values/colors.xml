@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FFF2F2F2</color>
-    <color name="sky">#FF4A97E3</color>
+    <color name="sky">#FF47B8E0</color>
     <color name="pomegranate">#FFE54459</color>
     <color name="citrus">#FFF68D3D</color>
     <color name="jade">#FF60C070</color>
@@ -31,4 +31,10 @@
     <color name="blue3">#FF56CCF2</color>
     <color name="purple1">#FF9B51E0</color>
     <color name="purple2">#FFBB6BD9</color>
+
+    <color name="tag_default">#FFB2C3D7</color>
+    <color name="tag_selected">#FF4A97E3</color>
+
+    <color name="filter_default">#FF4F4F4F</color>
+    <color name="filter_on">#FF2F80ED</color>
 </resources>
