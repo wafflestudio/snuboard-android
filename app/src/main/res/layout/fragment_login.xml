@@ -15,15 +15,12 @@
         android:layout_height="match_parent"
         tools:context=".presentation.auth.LoginFragment">
 
-        <TextView
+        <ImageView
             android:id="@+id/app_name_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sriracha_regular"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:gravity="center"
+            android:src="@drawable/snuboard_icon"
+            android:layout_width="141dp"
+            android:layout_height="141dp"
+            android:contentDescription="@string/snuboard_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
