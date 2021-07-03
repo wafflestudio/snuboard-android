@@ -32,10 +32,16 @@ constructor(
     val notice: LiveData<NoticeDetail>
         get() = _notice
 
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
     fun getNotice(noticeId: Int) {
+        _isLoading.value = true
         getNoticeByIdUseCase
                 .getNotice(noticeId)
                 .subscribe({
+                    _isLoading.value = false
                     when (it) {
                         is NoticeDetail -> {
                             _notice.value = it
@@ -46,6 +52,7 @@ constructor(
                         }
                     }
                 }, {
+                    _isLoading.value = false
                     Timber.e(it)
                 })
     }

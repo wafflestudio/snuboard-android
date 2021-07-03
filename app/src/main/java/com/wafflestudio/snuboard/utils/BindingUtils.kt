@@ -145,6 +145,14 @@ fun bindFileItems(view: RecyclerView, items: List<NoticeFile>?) {
     }
 }
 
+@BindingAdapter("bottom_padding")
+fun bindRecyclerViewBottomPadding(view: View, padding: Int) {
+    val scale = view.resources.displayMetrics.density
+    val dpAsPixels: Int = (scale * padding + 0.5f).toInt()
+    val topDp = (scale * 5 + 0.5f).toInt()
+    view.setPadding(0, topDp, 0, dpAsPixels)
+}
+
 @BindingAdapter("tag_color")
 fun bindTagColor(view: CardView, colorId: Int) {
     val colorString = String.format("#%08x", ContextCompat.getColor(view.context, colorId))

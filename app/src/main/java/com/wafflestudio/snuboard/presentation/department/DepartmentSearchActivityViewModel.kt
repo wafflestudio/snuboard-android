@@ -28,11 +28,20 @@ constructor(
 ) : ViewModel() {
 
     private val _notices = MutableLiveData<List<Notice>>()
+    private val _isNewLoading = MutableLiveData<Boolean>(false)
+    private val _isAddLoading = MutableLiveData<Boolean>(false)
+    private val _isPageEnd = MutableLiveData<Boolean>(false)
     val keywords = MutableLiveData("")
     val updateNotice = getNoticesOfDepartmentIdSearchUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
         get() = _notices
+    val isNewLoading: LiveData<Boolean>
+        get() = _isNewLoading
+    val isAddLoading: LiveData<Boolean>
+        get() = _isAddLoading
+    val isPageEnd: LiveData<Boolean>
+        get() = _isPageEnd
 
     private val paginationLimit = 10
     private var paginationCursor: String? = null
@@ -188,6 +197,7 @@ constructor(
 
     fun cleanCursor() {
         paginationCursor = null
+        _isPageEnd.value = false
     }
 
     fun cleanText() {
@@ -200,22 +210,30 @@ constructor(
 
     fun getNotices() {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
-        if (paginationCursor == EOP)
+        if (paginationCursor == EOP) {
+            _isPageEnd.value = true
             return
+        }
+        if (tmpNoticeList.isEmpty())
+            _isNewLoading.value = true
+        else
+            _isAddLoading.value = true
         keywords.value?.apply {
             if (isEmpty())
                 return
         }
                 ?.let { keyword_string ->
                     getNoticesOfDepartmentIdSearchUseCase
-                        .getNotices(
-                            tagDepartmentInfo.value!!.id,
-                            keyword_string,
-                            paginationLimit,
-                            paginationCursor,
-                            homeTagStringFixed
-                        )
+                            .getNotices(
+                                    tagDepartmentInfo.value!!.id,
+                                    keyword_string,
+                                    paginationLimit,
+                                    paginationCursor,
+                                    homeTagStringFixed
+                            )
                             .subscribe({
+                                _isNewLoading.value = false
+                                _isAddLoading.value = false
                                 when (it) {
                                     is NoticeList -> {
                                         tmpNoticeList.addAll(it.notices)
@@ -231,6 +249,9 @@ constructor(
                                     }
                                 }
                             }, {
+                                _isNewLoading.value = false
+                                _isAddLoading.value = false
+                                SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
                                 Timber.e(it)
                             })
                 }
@@ -238,6 +259,7 @@ constructor(
 
     private fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
+        _isPageEnd.value = false
         keywords.value?.apply {
             if (isEmpty())
                 return
