@@ -36,6 +36,18 @@ constructor(
             appContext
     )
 
+    // Loading Status
+    private val _isNewLoading = MutableLiveData<Boolean>(false)
+    private val _isAddLoading = MutableLiveData<Boolean>(false)
+    private val _isPageEnd = MutableLiveData<Boolean>(false)
+
+    val isNewLoading: LiveData<Boolean>
+        get() = _isNewLoading
+    val isAddLoading: LiveData<Boolean>
+        get() = _isAddLoading
+    val isPageEnd: LiveData<Boolean>
+        get() = _isPageEnd
+
     // Department members
     private val _tagDepartmentInfo = MutableLiveData<TagDepartmentFull>()
     val tagDepartmentInfo: LiveData<TagDepartmentFull>
@@ -280,8 +292,14 @@ constructor(
     // Notice functions
     fun getNotices() {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
-        if (paginationCursor == EOP)
+        if (paginationCursor == EOP) {
+            _isPageEnd.value = true
             return
+        }
+        if (tmpNoticeList.isEmpty())
+            _isNewLoading.value = true
+        else
+            _isAddLoading.value = true
         getNoticesOfDepartmentUseCase
                 .getNotices(
                         tagDepartmentInfo.value!!.id,
@@ -290,6 +308,8 @@ constructor(
                         homeTagString
                 )
                 .subscribe({
+                    _isNewLoading.value = false
+                    _isAddLoading.value = false
                     when (it) {
                         is NoticeList -> {
                             tmpNoticeList.addAll(it.notices)
@@ -305,12 +325,16 @@ constructor(
                         }
                     }
                 }, {
+                    _isNewLoading.value = false
+                    _isAddLoading.value = false
+                    SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
                     Timber.e(it)
                 })
     }
 
     private fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
+        _isPageEnd.value = false
         getNoticesOfDepartmentUseCase
                 .getNotices(
                         tagDepartmentInfo.value!!.id,

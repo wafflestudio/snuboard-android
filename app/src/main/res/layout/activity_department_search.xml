@@ -121,13 +121,35 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:view_visibility_string="@{viewModel.isNewLoading ? `visible`: `gone`}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ProgressBar
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:indeterminate="true"
+            android:background="@android:color/transparent"
+            style="?android:attr/progressBarStyle"
+            app:view_visibility_string="@{viewModel.isAddLoading ? `visible`: `gone`}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filter_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="35dp"
             android:clipToPadding="false"
+            app:bottom_padding="@{viewModel.isPageEnd ? 5: 35}"
             app:filter_search_notice_items="@{viewModel.notices}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -48,6 +48,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:view_visibility_string="@{fragmentViewModel.isNewLoading ? `visible`: `gone`}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,13 +69,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:contentDescription="@string/placeholder_image" />
 
+        <ProgressBar
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:indeterminate="true"
+            android:background="@android:color/transparent"
+            style="?android:attr/progressBarStyle"
+            app:view_visibility_string="@{fragmentViewModel.isAddLoading ? `visible`: `gone`}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="35dp"
             android:clipToPadding="false"
+            app:bottom_padding="@{fragmentViewModel.isPageEnd ? 5: 35}"
             app:notice_items="@{fragmentViewModel.notices}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
