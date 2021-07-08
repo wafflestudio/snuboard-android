@@ -198,17 +198,29 @@ fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
 
 @BindingAdapter("web_view_load_content")
 fun bindLoadContent(view: WebView, content: String?) {
+
+    // For webview inside fragment, ignore images
     val width = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        val windowMetrics = (view.context as Activity).windowManager.currentWindowMetrics
-        val insets: Insets = windowMetrics.windowInsets
-                .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-        ((windowMetrics.bounds.width() - insets.left - insets.right) /
-                Resources.getSystem().displayMetrics.density) - 40
+        when (view.context) {
+            is Activity -> {
+                val windowMetrics = (view.context as Activity).windowManager.currentWindowMetrics
+                val insets: Insets = windowMetrics.windowInsets
+                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+                ((windowMetrics.bounds.width() - insets.left - insets.right) /
+                        Resources.getSystem().displayMetrics.density) - 40
+            }
+            else -> 0
+        }
     } else {
-        val displayMetrics = DisplayMetrics()
-        @Suppress("DEPRECATION")
-        (view.context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-        (displayMetrics.widthPixels / Resources.getSystem().displayMetrics.density) - 40
+        when (view.context) {
+            is Activity -> {
+                val displayMetrics = DisplayMetrics()
+                @Suppress("DEPRECATION")
+                (view.context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+                (displayMetrics.widthPixels / Resources.getSystem().displayMetrics.density) - 40
+            }
+            else -> 0
+        }
     }
 
     content?.let {
