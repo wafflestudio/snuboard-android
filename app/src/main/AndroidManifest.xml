@@ -15,6 +15,7 @@
         android:theme="@style/Theme.SNUBoard"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".presentation.auth.PolicyReadActivity"></activity>
         <activity android:name=".presentation.auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
