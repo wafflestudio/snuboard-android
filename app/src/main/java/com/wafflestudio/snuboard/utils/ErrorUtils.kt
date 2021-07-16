@@ -11,6 +11,6 @@ fun parseErrorResponse(responseBody: ResponseBody): ErrorResponse {
 }
 
 data class ErrorResponse(
-        val statusCode: String,
+        val statusCode: Int,
         val message: String
 )

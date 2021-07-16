@@ -22,11 +22,14 @@ constructor(
 ) : ViewModel() {
     private val _isDrawerOpen = MutableLiveData(false)
     private val _myInfo = MutableLiveData<User>()
+    private val _navigateToAuthActivity = MutableLiveData<Event<Unit>>()
 
     val isDrawerOpen: LiveData<Boolean>
         get() = _isDrawerOpen
     val myInfo: LiveData<User>
         get() = _myInfo
+    val navigateToAuthActivity: LiveData<Event<Unit>>
+        get() = _navigateToAuthActivity
 
     fun setDrawer(bool: Boolean) {
         _isDrawerOpen.value = bool
@@ -34,20 +37,23 @@ constructor(
 
     fun getMyInfo() {
         getMyInfoUseCase
-            .getMyInfo()
-            .subscribe({
-                when (it) {
-                    is User -> {
-                        _myInfo.value = it
+                .getMyInfo()
+                .subscribe({
+                    when (it) {
+                        is User -> {
+                            _myInfo.value = it
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                            if (it.statusCode == 401) {
+                                _navigateToAuthActivity.value = Event(Unit)
+                            }
+                        }
                     }
-                    is ErrorResponse -> {
-                        SingleEvent.triggerToast.value = Event(it.message)
-                        Timber.e(it.message)
-                    }
-                }
-            }, {
-                Timber.e(it)
-            })
+                }, {
+                    Timber.e(it)
+                })
     }
 
 }
