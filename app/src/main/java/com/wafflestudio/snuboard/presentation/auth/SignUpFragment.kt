@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.FragmentSignUpBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +41,7 @@ class SignUpFragment : Fragment() {
             signUpButton.setOnClickListener {
                 authActivityViewModel.signUp()
             }
-            nicknameEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            confirmPasswordEditText.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_DONE
                             || (event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER))) {
@@ -54,6 +55,12 @@ class SignUpFragment : Fragment() {
                 }
             }
             )
+            backIcon.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            policyAgreement.setOnClickListener {
+                startActivity(PolicyReadActivity.intent(requireContext()))
+            }
         }
         return binding.root
     }

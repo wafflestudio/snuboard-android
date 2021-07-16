@@ -38,9 +38,6 @@ class LoginFragment : Fragment() {
         binding.run {
             activityViewModel = authActivityViewModel
             lifecycleOwner = this@LoginFragment
-            signUpButton.setOnClickListener {
-                findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
-            }
             loginButton.setOnClickListener {
                 authActivityViewModel.login()
             }
@@ -58,6 +55,12 @@ class LoginFragment : Fragment() {
                 }
             }
             )
+            backIcon.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            policyAgreement.setOnClickListener {
+                startActivity(PolicyReadActivity.intent(requireContext()))
+            }
         }
         return binding.root
     }

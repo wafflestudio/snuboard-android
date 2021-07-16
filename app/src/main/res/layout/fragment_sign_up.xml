@@ -15,43 +15,27 @@
         android:layout_height="match_parent"
         tools:context=".presentation.auth.LoginFragment">
 
-        <TextView
-            android:id="@+id/app_name_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sriracha_regular"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.1" />
 
         <TextView
             android:id="@+id/username_label_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:fontFamily="@font/roboto_thin"
             android:gravity="center"
             android:text="@string/textview_fragment_login_username"
             android:textColor="@color/gray3"
             android:textSize="12sp"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@id/username_edit_text"
             app:layout_constraintEnd_toEndOf="@id/username_edit_text"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/username_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/username_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:ems="12"
             android:background="@drawable/et_bottom_line"
             android:textColor="@color/black"
@@ -60,9 +44,45 @@
             android:text="@={activityViewModel.usernameSignUpFragment}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_name_text"
+            app:layout_constraintTop_toBottomOf="@id/username_label_text"
+            app:layout_constraintBottom_toTopOf="@id/email_label_text"
             android:importantForAutofill="no"
             android:inputType="text"
+            tools:ignore="LabelFor" />
+
+        <TextView
+            android:id="@+id/email_label_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto_thin"
+            android:gravity="center"
+            android:text="@string/textview_fragment_login_email"
+            android:textColor="@color/gray3"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/email_edit_text"
+            app:layout_constraintEnd_toEndOf="@id/email_edit_text"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/email_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/username_edit_text" />
+
+        <EditText
+            android:id="@+id/email_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_bottom_line"
+            android:ems="12"
+            android:fontFamily="@font/roboto_thin"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="@={activityViewModel.nicknameSignUpFragment}"
+            android:imeOptions="actionDone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_label_text"
+            app:layout_constraintBottom_toTopOf="@id/password_label_text"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -79,14 +99,13 @@
             app:layout_constraintEnd_toEndOf="@id/password_edit_text"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/password_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_edit_text"
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/password_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:background="@drawable/et_bottom_line"
             android:ems="12"
             android:fontFamily="@font/roboto_thin"
@@ -97,7 +116,8 @@
             android:text="@={activityViewModel.passwordSignUpFragment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/password_label_text"
+            app:layout_constraintBottom_toTopOf="@id/confirm_password_label_text"
             tools:ignore="LabelFor" />
 
         <TextView
@@ -114,14 +134,13 @@
             app:layout_constraintEnd_toEndOf="@id/confirm_password_edit_text"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/confirm_password_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password_edit_text"
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/confirm_password_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:background="@drawable/et_bottom_line"
             android:ems="12"
             android:fontFamily="@font/roboto_thin"
@@ -132,75 +151,25 @@
             android:text="@={activityViewModel.confirmPasswordSignUpFragment}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_edit_text"
+            app:layout_constraintTop_toBottomOf="@id/confirm_password_label_text"
+            app:layout_constraintBottom_toTopOf="@id/sign_up_button"
             tools:ignore="LabelFor" />
 
-        <TextView
-            android:id="@+id/nickname_label_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_thin"
-            android:gravity="center"
-            android:text="@string/textview_fragment_login_nickname"
-            android:textColor="@color/gray3"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/nickname_edit_text"
-            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <EditText
-            android:id="@+id/nickname_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/et_bottom_line"
-            android:ems="12"
-            android:fontFamily="@font/roboto_thin"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="@={activityViewModel.nicknameSignUpFragment}"
-            android:imeOptions="actionDone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/confirm_password_edit_text"
-            tools:ignore="LabelFor" />
 
         <TextView
-            android:id="@+id/account_explanation_link"
+            android:id="@+id/policy_agreement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/roboto_thin"
-            android:gravity="center"
-            android:text="@string/textview_fragment_login_account_explanation"
-            android:textColor="@color/gray3"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
-            app:layout_constraintTop_toBottomOf="@id/nickname_edit_text"
-            tools:ignore="SmallSp" />
-
-        <TextView
-            android:id="@+id/personal_info_explanation_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/roboto_thin"
             android:gravity="center"
             android:text="@string/textview_fragment_login_personal_info_explanation"
             android:textColor="@color/gray3"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@id/nickname_edit_text"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/nickname_edit_text"
-            app:layout_constraintTop_toBottomOf="@id/account_explanation_link"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_up_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="SmallSp" />
 
 
@@ -211,6 +180,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginTop="51dp"
             android:text="@string/button_fragment_login_sign_up"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -218,12 +188,26 @@
             app:backgroundTint="@color/white"
             app:strokeColor="@color/gray1"
             app:strokeWidth="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/policy_agreement"
             app:layout_constraintEnd_toEndOf="@id/confirm_password_edit_text"
             app:layout_constraintStart_toStartOf="@id/confirm_password_edit_text"
-            app:layout_constraintTop_toBottomOf="@id/personal_info_explanation_link"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintTop_toBottomOf="@id/confirm_password_edit_text" />
 
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/before_icon"
+            android:src="@drawable/ic_navigate_before"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
