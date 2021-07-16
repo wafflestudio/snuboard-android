@@ -18,6 +18,7 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
+import com.wafflestudio.snuboard.utils.EmailUtils
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,6 +64,9 @@ class MainActivity : AppCompatActivity() {
                 when (it.itemId) {
                     R.id.group1_item2 -> {
                         startActivity(PolicyReadActivity.intent(this@MainActivity))
+                    }
+                    R.id.group1_item3 -> {
+                        EmailUtils.sendEmailToAdmin(this@MainActivity, "개발자에게 메일 보내기", Array<String?>(1) { "snuboard@wafflestudio.com" })
                     }
                     R.id.group3_item1 -> {
                         val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)

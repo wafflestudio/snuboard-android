@@ -15,6 +15,10 @@
                     android:id="@+id/group1_item2"
                     android:icon="@drawable/ic_library_books"
                     android:title="@string/navigation_drawer_activity_main_item2" />
+                <item
+                    android:id="@+id/group1_item3"
+                    android:icon="@drawable/ic_email"
+                    android:title="@string/navigation_drawer_activity_main_item5" />
             </menu>
         </item>
     </group>
