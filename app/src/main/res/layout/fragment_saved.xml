@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@{fragmentViewModel.savedNotices.empty ? @color/white : @color/background}"
         tools:context=".presentation.notice.NoticeFeedFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -48,6 +48,17 @@
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cat_saved"
+            app:view_visibility_string="@{fragmentViewModel.savedNotices.empty ? `visible`: `gone`}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/placeholder_image" />
 
         <ProgressBar
             android:layout_width="wrap_content"
