@@ -58,6 +58,6 @@ constructor(@ApplicationContext appContext: Context) {
                 else -> throw error("Not right random number.")
             }
         }
-        return Department(dto.id, dto.name, dto.college, dto.tags, dto.follow, DepartmentColor.fromColorId(colorId)!!)
+        return Department(dto.id, dto.name, dto.college, dto.link, dto.tags, dto.follow, DepartmentColor.fromColorId(colorId)!!)
     }
 }

@@ -4,6 +4,7 @@ data class DepartmentDto(
         val id: Int,
         val name: String,
         val college: String,
+        val link: String,
         val tags: List<String>,
         val follow: List<String>
 )

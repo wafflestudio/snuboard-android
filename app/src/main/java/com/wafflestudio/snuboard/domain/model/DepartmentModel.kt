@@ -6,6 +6,7 @@ data class Department(
         val id: Int,
         val name: String,
         val college: String,
+        val link: String,
         val tags: List<String>,
         val follow: List<String>,
         val departmentColor: DepartmentColor
@@ -40,15 +41,17 @@ data class CollegeDepartment(val id: Int, val name: String, val college: String)
 }
 
 data class TagDepartment(
-    val id: Int,
-    val name: String,
-    val tags: List<Tag>,
-    val departmentColor: DepartmentColor
+        val id: Int,
+        val name: String,
+        val link: String,
+        val tags: List<Tag>,
+        val departmentColor: DepartmentColor
 )
 
 data class TagDepartmentFull(
         val id: Int,
         val name: String,
+        val link: String,
         val tags: List<Tag>,
         val homeTags: List<Tag>,
         val departmentColor: DepartmentColor

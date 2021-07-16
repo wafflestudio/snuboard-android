@@ -103,11 +103,12 @@ constructor(
         }
 
         val tagDepartmentFull = TagDepartmentFull(
-            tmpTagDepartmentInfo.id,
-            tmpTagDepartmentInfo.name,
-            tmpTagDepartmentInfo.tags,
-            homeTags,
-            tmpTagDepartmentInfo.departmentColor
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
         )
 
         _tagDepartmentInfo.value = tagDepartmentFull
@@ -127,11 +128,12 @@ constructor(
             }
 
             val tagDepartmentFull = TagDepartmentFull(
-                tmpTagDepartmentInfo.id,
-                tmpTagDepartmentInfo.name,
-                tmpTagDepartmentInfo.tags,
-                homeTags,
-                tmpTagDepartmentInfo.departmentColor
+                    tmpTagDepartmentInfo.id,
+                    tmpTagDepartmentInfo.name,
+                    tmpTagDepartmentInfo.link,
+                    tmpTagDepartmentInfo.tags,
+                    homeTags,
+                    tmpTagDepartmentInfo.departmentColor
             )
             _tagDepartmentInfo.value = tagDepartmentFull
         }
@@ -164,11 +166,12 @@ constructor(
             }
         }
         val tagDepartmentFull = TagDepartmentFull(
-            tmpTagDepartmentInfo.id,
-            tmpTagDepartmentInfo.name,
-            tmpTagDepartmentInfo.tags,
-            homeTags,
-            tmpTagDepartmentInfo.departmentColor
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
         )
         _tagDepartmentInfo.value = tagDepartmentFull
         _isFilterOn.value = homeTagStringFixed.isNotEmpty()
@@ -187,11 +190,12 @@ constructor(
             Tag(it.content, DepartmentColor.TAG_COLOR)
         }
         _tagDepartmentInfo.value = TagDepartmentFull(
-            tagDepartmentInfo.id,
-            tagDepartmentInfo.name,
-            tagDepartmentInfo.tags,
-            newTags,
-            tagDepartmentInfo.departmentColor
+                tagDepartmentInfo.id,
+                tagDepartmentInfo.name,
+                tagDepartmentInfo.link,
+                tagDepartmentInfo.tags,
+                newTags,
+                tagDepartmentInfo.departmentColor
         )
     }
 
