@@ -17,6 +17,7 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
 import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
+import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -60,6 +61,9 @@ class MainActivity : AppCompatActivity() {
             }
             navigationView.setNavigationItemSelectedListener {
                 when (it.itemId) {
+                    R.id.group1_item2 -> {
+                        startActivity(PolicyReadActivity.intent(this@MainActivity))
+                    }
                     R.id.group3_item1 -> {
                         val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
                         pref.edit {
@@ -74,6 +78,17 @@ class MainActivity : AppCompatActivity() {
                 }
                 drawerLayout.close()
                 return@setNavigationItemSelectedListener true
+            }
+        }
+        mainActivityViewModel.navigateToAuthActivity.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+                pref.edit {
+                    remove(REFRESH_TOKEN_KEY)
+                    remove(ACCESS_TOKEN_KEY)
+                }
+                startActivity(AuthActivity.intent(this@MainActivity))
+                finish()
             }
         }
         mainActivityViewModel.getMyInfo()
