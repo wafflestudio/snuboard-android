@@ -101,6 +101,7 @@ constructor(
                             val tagDepartmentFull = TagDepartmentFull(
                                     it.id,
                                     it.name,
+                                    it.link,
                                     it.tags,
                                     homeTags,
                                     it.departmentColor
@@ -128,6 +129,7 @@ constructor(
         _tagDepartmentInfo.value = TagDepartmentFull(
                 tmpTagDepartment.id,
                 tmpTagDepartment.name,
+                tmpTagDepartment.link,
                 tmpTagDepartment.tags,
                 tmpTagDepartment.homeTags,
                 departmentColor
@@ -178,6 +180,7 @@ constructor(
         val tagDepartmentFull = TagDepartmentFull(
                 tmpTagDepartmentInfo.id,
                 tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
                 tmpTagDepartmentInfo.tags,
                 homeTags,
                 tmpTagDepartmentInfo.departmentColor
@@ -202,6 +205,7 @@ constructor(
             val tagDepartmentFull = TagDepartmentFull(
                     tmpTagDepartmentInfo.id,
                     tmpTagDepartmentInfo.name,
+                    tmpTagDepartmentInfo.link,
                     tmpTagDepartmentInfo.tags,
                     homeTags,
                     tmpTagDepartmentInfo.departmentColor
@@ -241,6 +245,7 @@ constructor(
         val tagDepartmentFull = TagDepartmentFull(
                 tmpTagDepartmentInfo.id,
                 tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
                 tmpTagDepartmentInfo.tags,
                 homeTags,
                 tmpTagDepartmentInfo.departmentColor
@@ -272,6 +277,7 @@ constructor(
                                 val tagDepartmentFull = TagDepartmentFull(
                                         it1.id,
                                         it1.name,
+                                        it1.link,
                                         it1.tags,
                                         it.homeTags,
                                         it1.departmentColor

@@ -80,7 +80,7 @@ constructor(
                                     Tag(it1, DepartmentColor.TAG_COLOR)
                                 }
                             }
-                            return@map TagDepartment(it.id, it.name, tmpTags, it.departmentColor)
+                            return@map TagDepartment(it.id, it.name, it.link, tmpTags, it.departmentColor)
                         }
                         is ErrorResponse ->
                             return@map it
@@ -111,7 +111,7 @@ constructor(
                                     Tag(it1, DepartmentColor.TAG_COLOR)
                                 }
                             }
-                            return@map TagDepartment(it.id, it.name, tmpTags, it.departmentColor)
+                            return@map TagDepartment(it.id, it.name, it.link, tmpTags, it.departmentColor)
                         }
                         is ErrorResponse ->
                             return@map it
@@ -144,7 +144,7 @@ constructor(
                                     Tag(it1, DepartmentColor.TAG_COLOR)
                                 }
                             }
-                            return@map TagDepartment(it.id, it.name, tmpTags, it.departmentColor)
+                            return@map TagDepartment(it.id, it.name, it.link, tmpTags, it.departmentColor)
                         }
                         is ErrorResponse ->
                             return@map it
