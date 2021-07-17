@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -103,6 +104,11 @@ dependencies {
 
     // FlexboxLayout
     implementation 'com.google.android:flexbox:2.0.1'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+
 }
 
 kapt {

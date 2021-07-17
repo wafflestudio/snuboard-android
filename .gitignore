@@ -86,3 +86,6 @@ lint/tmp/
 
 # Mac
 .DS_Store
+
+# FCM
+google-services.json
