@@ -42,7 +42,7 @@ constructor(
     val usernameSignUpFragment = MutableLiveData<String>()
     val passwordSignUpFragment = MutableLiveData<String>()
     val confirmPasswordSignUpFragment = MutableLiveData<String>()
-    val nicknameSignUpFragment = MutableLiveData<String>()
+    val emailSignUpFragment = MutableLiveData<String>()
 
     val navigateToMainActivity: LiveData<Event<Unit>>
         get() = _navigateToMainActivity
@@ -52,9 +52,9 @@ constructor(
         when {
             usernameSignUpFragment.value == null ->
                 triggerToast.value = Event("Username이 비어있습니다.")
-            nicknameSignUpFragment.value == null ->
+            emailSignUpFragment.value == null ->
                 triggerToast.value = Event("Email이 비어있습니다.")
-            !isEmailValid(nicknameSignUpFragment.value!!) ->
+            !isEmailValid(emailSignUpFragment.value!!) ->
                 triggerToast.value = Event("이메일이 옳지 않은 형식입니다.")
             passwordSignUpFragment.value == null ->
                 triggerToast.value = Event("Password가 비어있습니다.")
@@ -67,7 +67,7 @@ constructor(
                         .signUp(
                                 usernameSignUpFragment.value!!,
                                 passwordSignUpFragment.value!!,
-                                nicknameSignUpFragment.value!!
+                                emailSignUpFragment.value!!
                         )
                         .subscribe({
                             when (it) {

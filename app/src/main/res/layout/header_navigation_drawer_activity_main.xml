@@ -33,21 +33,21 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/my_nickname"
+            android:id="@+id/my_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:padding="16dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:text="@{myInfo.nickname}"
+            android:text="@{myInfo.email}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            tools:text="my_nickname" />
+            tools:text="my_email" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
