@@ -12,10 +12,10 @@ class SignUpUseCase
 constructor(
     private val userRepository: UserRepository
 ) {
-    fun signUp(username: String, password: String, nickname: String): Single<Any> {
+    fun signUp(username: String, password: String, email: String): Single<Any> {
         return userRepository
-            .signUp(username, password, nickname)
-            .observeOn(AndroidSchedulers.mainThread())
+                .signUp(username, password, email)
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }
 

@@ -17,7 +17,7 @@ interface UserRepository {
 
     fun login(username: String, password: String): Single<Any>
 
-    fun signUp(username: String, password: String, nickname: String): Single<Any>
+    fun signUp(username: String, password: String, email: String): Single<Any>
 
     fun getUserMe(): Single<Any>
 }
@@ -52,18 +52,18 @@ constructor(
             }
     }
 
-    override fun signUp(username: String, password: String, nickname: String): Single<Any> {
-        return userService.postUser(username, password, nickname)
-            .subscribeOn(Schedulers.io())
-            .map {
-                if (it.isSuccessful) {
-                    it.body()?.let { it1 ->
-                        pref.edit {
-                            putString(SharedPreferenceConst.REFRESH_TOKEN_KEY, it1.refreshToken)
-                            putString(SharedPreferenceConst.ACCESS_TOKEN_KEY, it1.accessToken)
+    override fun signUp(username: String, password: String, email: String): Single<Any> {
+        return userService.postUser(username, password, email)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            pref.edit {
+                                putString(SharedPreferenceConst.REFRESH_TOKEN_KEY, it1.refreshToken)
+                                putString(SharedPreferenceConst.ACCESS_TOKEN_KEY, it1.accessToken)
+                            }
+                            return@map userMapper.mapFromUserTokenDto(it1)
                         }
-                        return@map userMapper.mapFromUserTokenDto(it1)
-                    }
                 } else
                     return@map parseErrorResponse(it.errorBody()!!)
             }

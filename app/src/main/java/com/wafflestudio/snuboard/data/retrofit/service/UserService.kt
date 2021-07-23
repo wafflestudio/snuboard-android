@@ -13,9 +13,9 @@ interface UserService {
     @FormUrlEncoded
     @POST("users/")
     fun postUser(
-        @Field("username") username: String,
-        @Field("password") password: String,
-        @Field("nickname") nickname: String
+            @Field("username") username: String,
+            @Field("password") password: String,
+            @Field("email") email: String
     ): Single<Response<UserTokenDto>>
 
     @FormUrlEncoded

@@ -9,10 +9,10 @@ class UserMapper
 @Inject
 constructor() {
     fun mapFromUserDto(dto: UserDto): User {
-        return User(dto.id, dto.username, dto.nickname, dto.keywords)
+        return User(dto.id, dto.username, dto.email, dto.keywords)
     }
 
     fun mapFromUserTokenDto(dto: UserTokenDto): User {
-        return User(dto.id, dto.username, dto.nickname, dto.keywords)
+        return User(dto.id, dto.username, dto.email, dto.keywords)
     }
 }
