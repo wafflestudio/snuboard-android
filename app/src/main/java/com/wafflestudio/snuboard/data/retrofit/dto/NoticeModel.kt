@@ -43,7 +43,8 @@ data class NoticeDto(
         val link: String,
         val files: List<NoticeFileDto>,
         @SerializedName("is_scrapped")
-        val isScrapped: Boolean
+        val isScrapped: Boolean,
+        val style: String
 )
 
 data class NoticeFileDto(

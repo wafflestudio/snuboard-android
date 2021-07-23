@@ -196,8 +196,8 @@ fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
     }
 }
 
-@BindingAdapter("web_view_load_content")
-fun bindLoadContent(view: WebView, content: String?) {
+@BindingAdapter(value = ["web_view_load_content", "web_view_load_style"], requireAll = false)
+fun bindLoadContent(view: WebView, content: String?, style: String? = "") {
 
     // For webview inside fragment, ignore images
     val width = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -205,7 +205,7 @@ fun bindLoadContent(view: WebView, content: String?) {
             is Activity -> {
                 val windowMetrics = (view.context as Activity).windowManager.currentWindowMetrics
                 val insets: Insets = windowMetrics.windowInsets
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+                        .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
                 ((windowMetrics.bounds.width() - insets.left - insets.right) /
                         Resources.getSystem().displayMetrics.density) - 40
             }
@@ -242,6 +242,9 @@ fun bindLoadContent(view: WebView, content: String?) {
                 width: ${width}px;
                 object-fit: contain;
             }
+            """ +
+                    style +
+                    """
             </style>
             </head>
             <body>
