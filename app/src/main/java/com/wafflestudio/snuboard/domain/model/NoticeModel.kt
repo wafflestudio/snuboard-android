@@ -40,7 +40,8 @@ data class NoticeDetail(
         val isPinned: Boolean,
         val link: String,
         val files: List<NoticeFile>,
-        val isScrapped: Boolean
+        val isScrapped: Boolean,
+        val style: String
 ) : NoticeInterface(id, departmentName, departmentColor, tags)
 
 data class NoticeFile(

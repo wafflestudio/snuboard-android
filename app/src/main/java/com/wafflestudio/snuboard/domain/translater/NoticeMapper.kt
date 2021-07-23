@@ -104,8 +104,8 @@ constructor(@ApplicationContext appContext: Context) {
                 dto.isPinned,
                 dto.link,
                 files,
-                dto.isScrapped
-
+                dto.isScrapped,
+                dto.style
         )
     }
 
