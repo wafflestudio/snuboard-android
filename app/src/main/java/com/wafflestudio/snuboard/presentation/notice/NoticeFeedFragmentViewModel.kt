@@ -85,7 +85,7 @@ constructor(
                 })
     }
 
-    fun updateNotices() {
+    fun updateNotices(callback: (() -> Unit)? = null) {
         paginationCursor = null
         _isPageEnd.value = false
         getNoticesByFollowUseCase
@@ -104,8 +104,10 @@ constructor(
                             Timber.e(it.message)
                         }
                     }
+                    callback?.let { it() }
                 }, {
                     Timber.e(it)
+                    callback?.let { it() }
                 })
     }
 
