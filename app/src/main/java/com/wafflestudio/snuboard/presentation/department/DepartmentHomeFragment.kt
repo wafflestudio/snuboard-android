@@ -62,6 +62,11 @@ class DepartmentHomeFragment : Fragment() {
             departmentActivityViewModel.notifyFilterNoticeList.observe(viewLifecycleOwner) {
                 filterNoticeRecyclerView.adapter?.notifyItemChanged(0, Unit)
             }
+            refreshLayout.setOnRefreshListener {
+                departmentActivityViewModel.updateNotices {
+                    refreshLayout.isRefreshing = false
+                }
+            }
         }
         setHasOptionsMenu(true)
         return binding.root

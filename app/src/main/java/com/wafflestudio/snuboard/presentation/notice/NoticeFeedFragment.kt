@@ -74,6 +74,11 @@ class NoticeFeedFragment : Fragment() {
                     noticeFeedFragmentViewModel.getNotices()
                 })
             }
+            refreshLayout.setOnRefreshListener {
+                noticeFeedFragmentViewModel.updateNotices {
+                    refreshLayout.isRefreshing = false
+                }
+            }
         }
         noticeFeedFragmentViewModel.apply {
             updateNotices.observe(viewLifecycleOwner) {

@@ -338,7 +338,7 @@ constructor(
                 })
     }
 
-    private fun updateNotices(postWork: () -> Unit = {}) {
+    fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
         _isPageEnd.value = false
         getNoticesOfDepartmentUseCase
@@ -361,10 +361,12 @@ constructor(
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)
                             Timber.e(it.message)
+                            postWork()
                         }
                     }
                 }, {
                     Timber.e(it)
+                    postWork()
                 })
     }
 
