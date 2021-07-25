@@ -12,11 +12,11 @@ interface NoticeRepository {
 
     fun getNoticesOfDepartment(departmentId: Int, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any>
 
-    fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?, pinned: Boolean?, tags: String?): Single<Any>
+    fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any>
 
     fun getNoticesOfFollow(limit: Int, cursor: String?): Single<Any>
 
-    fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?): Single<Any>
+    fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?): Single<Any>
 
     fun getNoticesOfScrap(limit: Int, cursor: String?): Single<Any>
 
@@ -47,8 +47,8 @@ constructor(
                 }
     }
 
-    override fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?, pinned: Boolean?, tags: String?): Single<Any> {
-        return noticeService.getNoticesOfDepartmentIdSearch(departmentId, keywords, limit, cursor, content, title, pinned, tags)
+    override fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any> {
+        return noticeService.getNoticesOfDepartmentIdSearch(departmentId, keywords, limit, cursor, pinned, tags)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {
@@ -73,8 +73,8 @@ constructor(
                 }
     }
 
-    override fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?, content: Boolean?, title: Boolean?): Single<Any> {
-        return noticeService.getNoticesOfFollowSearch(keywords, limit, cursor, content, title)
+    override fun getNoticeOfFollowSearch(keywords: String, limit: Int, cursor: String?): Single<Any> {
+        return noticeService.getNoticesOfFollowSearch(keywords, limit, cursor)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {

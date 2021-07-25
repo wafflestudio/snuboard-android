@@ -22,8 +22,6 @@ interface NoticeService {
             @Query("keywords") keyword: String,
             @Query("limit") limit: Int,
             @Query("cursor") cursor: String?,
-            @Query("content") content: Boolean?,
-            @Query("title") title: Boolean?,
             @Query("pinned") pinned: Boolean?,
             @Query("tags") tags: String?
     ): Single<Response<NoticeListDto>>
@@ -39,8 +37,6 @@ interface NoticeService {
             @Query("keywords") keywords: String,
             @Query("limit") limit: Int,
             @Query("cursor") cursor: String?,
-            @Query("content") content: Boolean?,
-            @Query("title") title: Boolean?,
     ): Single<Response<NoticeListDto>>
 
     @GET("notices/scrap/")
