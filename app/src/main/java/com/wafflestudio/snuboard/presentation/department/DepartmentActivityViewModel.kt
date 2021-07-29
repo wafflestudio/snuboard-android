@@ -22,18 +22,18 @@ import javax.inject.Inject
 class DepartmentActivityViewModel
 @Inject
 constructor(
-        private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
-        private val postFollowingTagUseCase: PostFollowingTagUseCase,
-        private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
-        private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
-        private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
-        private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
-        @ApplicationContext appContext: Context,
-        private val savedStateHandle: SavedStateHandle
+    private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
+    private val postFollowingTagUseCase: PostFollowingTagUseCase,
+    private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
+    private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
+    private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
+    private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
+    @ApplicationContext appContext: Context,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val pref = PreferenceManager.getDefaultSharedPreferences(
-            appContext
+        appContext
     )
 
     // Loading Status
@@ -82,42 +82,42 @@ constructor(
     fun getTagDepartmentInfo(departmentId: Int) {
         getHomeTagString(departmentId)
         getTagDepartmentInfoUseCase
-                .getTagDepartmentInfo(departmentId)
-                .subscribe({
-                    when (it) {
-                        is TagDepartment -> {
-                            var homeTags = listOf<Tag>()
-                            tagDepartmentInfo.value?.also { org ->
-                                homeTags = org.homeTags
-                            } ?: run {
-                                homeTags = it.tags.map { tag ->
-                                    if (tag.content in homeTagString) {
-                                        Tag(tag.content, DepartmentColor.TAG_SELECTED_COLOR)
-                                    } else {
-                                        Tag(tag.content, DepartmentColor.TAG_COLOR)
-                                    }
+            .getTagDepartmentInfo(departmentId)
+            .subscribe({
+                when (it) {
+                    is TagDepartment -> {
+                        var homeTags = listOf<Tag>()
+                        tagDepartmentInfo.value?.also { org ->
+                            homeTags = org.homeTags
+                        } ?: run {
+                            homeTags = it.tags.map { tag ->
+                                if (tag.content in homeTagString) {
+                                    Tag(tag.content, DepartmentColor.TAG_SELECTED_COLOR)
+                                } else {
+                                    Tag(tag.content, DepartmentColor.TAG_COLOR)
                                 }
                             }
-                            val tagDepartmentFull = TagDepartmentFull(
-                                    it.id,
-                                    it.name,
-                                    it.link,
-                                    it.tags,
-                                    homeTags,
-                                    it.departmentColor
-                            )
+                        }
+                        val tagDepartmentFull = TagDepartmentFull(
+                            it.id,
+                            it.name,
+                            it.link,
+                            it.tags,
+                            homeTags,
+                            it.departmentColor
+                        )
 
-                            _tagDepartmentInfo.value = tagDepartmentFull
-                            getNotices()
-                        }
-                        is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
-                            Timber.e(it.message)
-                        }
+                        _tagDepartmentInfo.value = tagDepartmentFull
+                        getNotices()
                     }
-                }, {
-                    Timber.e(it)
-                })
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                Timber.e(it)
+            })
     }
 
     fun changeDepartmentColor(departmentColor: DepartmentColor) {
@@ -127,12 +127,12 @@ constructor(
             putInt(preferenceKey, departmentColor.colorId)
         }
         _tagDepartmentInfo.value = TagDepartmentFull(
-                tmpTagDepartment.id,
-                tmpTagDepartment.name,
-                tmpTagDepartment.link,
-                tmpTagDepartment.tags,
-                tmpTagDepartment.homeTags,
-                departmentColor
+            tmpTagDepartment.id,
+            tmpTagDepartment.name,
+            tmpTagDepartment.link,
+            tmpTagDepartment.tags,
+            tmpTagDepartment.homeTags,
+            departmentColor
         )
     }
 
@@ -178,12 +178,12 @@ constructor(
         }
 
         val tagDepartmentFull = TagDepartmentFull(
-                tmpTagDepartmentInfo.id,
-                tmpTagDepartmentInfo.name,
-                tmpTagDepartmentInfo.link,
-                tmpTagDepartmentInfo.tags,
-                homeTags,
-                tmpTagDepartmentInfo.departmentColor
+            tmpTagDepartmentInfo.id,
+            tmpTagDepartmentInfo.name,
+            tmpTagDepartmentInfo.link,
+            tmpTagDepartmentInfo.tags,
+            homeTags,
+            tmpTagDepartmentInfo.departmentColor
         )
 
         _tagDepartmentInfo.value = tagDepartmentFull
@@ -203,12 +203,12 @@ constructor(
                 }
             }
             val tagDepartmentFull = TagDepartmentFull(
-                    tmpTagDepartmentInfo.id,
-                    tmpTagDepartmentInfo.name,
-                    tmpTagDepartmentInfo.link,
-                    tmpTagDepartmentInfo.tags,
-                    homeTags,
-                    tmpTagDepartmentInfo.departmentColor
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
             )
             _tagDepartmentInfo.value = tagDepartmentFull
         }
@@ -243,12 +243,12 @@ constructor(
             }
         }
         val tagDepartmentFull = TagDepartmentFull(
-                tmpTagDepartmentInfo.id,
-                tmpTagDepartmentInfo.name,
-                tmpTagDepartmentInfo.link,
-                tmpTagDepartmentInfo.tags,
-                homeTags,
-                tmpTagDepartmentInfo.departmentColor
+            tmpTagDepartmentInfo.id,
+            tmpTagDepartmentInfo.name,
+            tmpTagDepartmentInfo.link,
+            tmpTagDepartmentInfo.tags,
+            homeTags,
+            tmpTagDepartmentInfo.departmentColor
         )
         _tagDepartmentInfo.value = tagDepartmentFull
         _isFilterOn.value = homeTagString.isNotEmpty()
@@ -262,36 +262,40 @@ constructor(
         tagDepartmentInfo.value?.let {
             val designatedColor = it.tags.find { tag -> tag.content == tagContent }?.color
             when (designatedColor) {
-                DepartmentColor.TAG_COLOR ->
+                DepartmentColor.TAG_COLOR -> {
+                    subscribeFollowingTag(it.name, tagContent)
                     postFollowingTagUseCase
-                            .postFollowingTag(it.id, tagContent)
-                DepartmentColor.TAG_SELECTED_COLOR ->
+                        .postFollowingTag(it.id, tagContent)
+                }
+                DepartmentColor.TAG_SELECTED_COLOR -> {
+                    unsubscribeFollowingTag(it.name, tagContent)
                     deleteFollowingTagUseCase
-                            .deleteFollowingTag(it.id, tagContent)
+                        .deleteFollowingTag(it.id, tagContent)
+                }
                 else ->
                     null
             }
-                    ?.subscribe({ it1 ->
-                        when (it1) {
-                            is TagDepartment -> {
-                                val tagDepartmentFull = TagDepartmentFull(
-                                        it1.id,
-                                        it1.name,
-                                        it1.link,
-                                        it1.tags,
-                                        it.homeTags,
-                                        it1.departmentColor
-                                )
-                                _tagDepartmentInfo.value = tagDepartmentFull
-                            }
-                            is ErrorResponse -> {
-                                SingleEvent.triggerToast.value = Event(it1.message)
-                                Timber.e(it1.message)
-                            }
+                ?.subscribe({ it1 ->
+                    when (it1) {
+                        is TagDepartment -> {
+                            val tagDepartmentFull = TagDepartmentFull(
+                                it1.id,
+                                it1.name,
+                                it1.link,
+                                it1.tags,
+                                it.homeTags,
+                                it1.departmentColor
+                            )
+                            _tagDepartmentInfo.value = tagDepartmentFull
                         }
-                    }, { it1 ->
-                        Timber.e(it1)
-                    })
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it1.message)
+                            Timber.e(it1.message)
+                        }
+                    }
+                }, { it1 ->
+                    Timber.e(it1)
+                })
         }
     }
 
@@ -307,65 +311,65 @@ constructor(
         else
             _isAddLoading.value = true
         getNoticesOfDepartmentUseCase
-                .getNotices(
-                        tagDepartmentInfo.value!!.id,
-                        paginationLimit,
-                        paginationCursor,
-                        homeTagString
-                )
-                .subscribe({
-                    _isNewLoading.value = false
-                    _isAddLoading.value = false
-                    when (it) {
-                        is NoticeList -> {
-                            tmpNoticeList.addAll(it.notices)
-                            _notices.value = tmpNoticeList
-                            paginationCursor = if (it.nextCursor.isEmpty())
-                                EOP
-                            else
-                                it.nextCursor
-                        }
-                        is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
-                            Timber.e(it.message)
-                        }
+            .getNotices(
+                tagDepartmentInfo.value!!.id,
+                paginationLimit,
+                paginationCursor,
+                homeTagString
+            )
+            .subscribe({
+                _isNewLoading.value = false
+                _isAddLoading.value = false
+                when (it) {
+                    is NoticeList -> {
+                        tmpNoticeList.addAll(it.notices)
+                        _notices.value = tmpNoticeList
+                        paginationCursor = if (it.nextCursor.isEmpty())
+                            EOP
+                        else
+                            it.nextCursor
                     }
-                }, {
-                    _isNewLoading.value = false
-                    _isAddLoading.value = false
-                    SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
-                    Timber.e(it)
-                })
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                _isNewLoading.value = false
+                _isAddLoading.value = false
+                SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
+                Timber.e(it)
+            })
     }
 
     private fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
         _isPageEnd.value = false
         getNoticesOfDepartmentUseCase
-                .getNotices(
-                        tagDepartmentInfo.value!!.id,
-                        paginationLimit,
-                        paginationCursor,
-                        homeTagString
-                )
-                .subscribe({
-                    when (it) {
-                        is NoticeList -> {
-                            _notices.value = it.notices
-                            paginationCursor = if (it.nextCursor.isEmpty())
-                                EOP
-                            else
-                                it.nextCursor
-                            postWork()
-                        }
-                        is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
-                            Timber.e(it.message)
-                        }
+            .getNotices(
+                tagDepartmentInfo.value!!.id,
+                paginationLimit,
+                paginationCursor,
+                homeTagString
+            )
+            .subscribe({
+                when (it) {
+                    is NoticeList -> {
+                        _notices.value = it.notices
+                        paginationCursor = if (it.nextCursor.isEmpty())
+                            EOP
+                        else
+                            it.nextCursor
+                        postWork()
                     }
-                }, {
-                    Timber.e(it)
-                })
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                Timber.e(it)
+            })
     }
 
     private fun updateNotice(notice: Notice) {
@@ -394,29 +398,29 @@ constructor(
         }?.let {
             if (it.isScrapped)
                 deleteNoticeScrapUseCase
-                        .deleteNoticeScrapSimple(noticeId)
+                    .deleteNoticeScrapSimple(noticeId)
             else
                 postNoticeScrapUseCase
-                        .postNoticeScrapSimple(noticeId)
+                    .postNoticeScrapSimple(noticeId)
         }
-                ?.subscribe({
-                    when (it) {
-                        is Notice -> {
-                            _notices.value = _notices.value!!.map { it1 ->
-                                if (it1.id == noticeId)
-                                    it
-                                else
-                                    it1
-                            }
-                        }
-                        is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
-                            Timber.e(it.message)
+            ?.subscribe({
+                when (it) {
+                    is Notice -> {
+                        _notices.value = _notices.value!!.map { it1 ->
+                            if (it1.id == noticeId)
+                                it
+                            else
+                                it1
                         }
                     }
-                }, {
-                    Timber.e(it)
-                })
+                    is ErrorResponse -> {
+                        SingleEvent.triggerToast.value = Event(it.message)
+                        Timber.e(it.message)
+                    }
+                }
+            }, {
+                Timber.e(it)
+            })
     }
 
     companion object {
