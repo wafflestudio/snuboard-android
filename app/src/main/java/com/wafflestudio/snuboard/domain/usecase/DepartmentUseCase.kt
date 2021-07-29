@@ -2,6 +2,8 @@ package com.wafflestudio.snuboard.domain.usecase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.wafflestudio.snuboard.data.repository.DepartmentRepository
 import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.utils.ErrorResponse
@@ -9,6 +11,8 @@ import com.wafflestudio.snuboard.utils.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import okio.ByteString.Companion.encodeUtf8
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -154,4 +158,29 @@ constructor(
                 }
                 .observeOn(AndroidSchedulers.mainThread())
     }
+}
+
+private fun createTopicString(departmentName: String, tagName: String): String {
+    val plainText = "$departmentName/$tagName"
+    return plainText.encodeUtf8().base64Url().replace('=', '%')
+}
+
+fun subscribeFollowingTag(departmentName: String, tagName: String) {
+    val topicString = createTopicString(departmentName, tagName)
+    Timber.d("Subscribing to Topic String: %s", topicString)
+    Firebase.messaging.subscribeToTopic(topicString)
+        .addOnCompleteListener {
+            Timber.d("Subscribe success: %b", it.isSuccessful)
+            // TODO handle failure
+        }
+}
+
+fun unsubscribeFollowingTag(departmentName: String, tagName: String) {
+    val topicString = createTopicString(departmentName, tagName)
+    Timber.d("Unsubscribing to Topic String: %s", topicString)
+    Firebase.messaging.unsubscribeFromTopic(topicString)
+        .addOnCompleteListener {
+            Timber.d("Unsubscribe success: %b", it.isSuccessful)
+            // TODO handle failure
+        }
 }
