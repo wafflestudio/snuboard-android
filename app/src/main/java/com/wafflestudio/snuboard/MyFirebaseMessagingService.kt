@@ -86,7 +86,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // icon, color는 메타 데이터에서 설정한 것으로 설정해주면 된다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_app_icon_v1_foreground)
+            .setSmallIcon(R.drawable.ic_noti_trim)
             .setContentTitle(messageBody["title"])
             .setContentText(messageBody["body"])
             .setAutoCancel(true)
