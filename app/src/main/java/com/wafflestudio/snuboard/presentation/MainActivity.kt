@@ -98,6 +98,26 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.getMyInfo()
     }
 
+    override fun onBackPressed() {
+        binding.run {
+            var pageId: Int? = null
+            when (pager.currentItem) {
+                NOTICE -> {
+                    finish()
+                }
+                DEPT -> {
+                    pageId = R.id.notice_feed_fragment
+                }
+                SAVED -> {
+                    pageId = R.id.notice_feed_fragment
+                }
+            }
+            pageId?.let {
+                bottomNavigation.selectedItemId = it
+            }
+        }
+    }
+
     companion object {
         fun intent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
