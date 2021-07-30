@@ -8,7 +8,7 @@
     <string name="fragment_notice_feed_app_bar_search">검색</string>
     <string name="header_navigation_drawer_close">close button</string>
     <string name="navigation_drawer_activity_main_category1">App</string>
-    <string name="navigation_drawer_activity_main_item1">버전 정보 0.0.0</string>
+    <string name="navigation_drawer_activity_main_item1">버전 정보</string>
     <string name="navigation_drawer_activity_main_item2">개인정보 처리방침</string>
     <string name="navigation_drawer_activity_main_category2">Notification</string>
     <string name="navigation_drawer_activity_main_version">버전 정보</string>
@@ -22,7 +22,7 @@
     <string name="text_item_notice_title">2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업운영 계획 안내</string>
     <string name="text_item_notice_content">2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다. 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.</string>
     <string name="image_sub_item_notice_info_comment">Comment icon for notice</string>
-    <string name="app_explanation">스누보드에서 서울대학교의 모든 공지사항을 모아보세요</string>
+    <string name="app_explanation">모든 공지사항을 스누보드에서</string>
     <string name="textview_fragment_login_username">Username</string>
     <string name="textview_fragment_login_password">Password</string>
     <string name="button_fragment_login_login">로그인</string>
@@ -144,4 +144,8 @@ SNUTT 담당자&lt;br&gt;
     <string name="textview_fragment_login_email">Email</string>
     <string name="navigation_drawer_activity_main_item5">개발자 괴롭히기</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="version_info">버전 정보</string>
+    <string name="navigation_drawer_activity_main_item6">팀 스누보드</string>
+    <string name="team_info">팀 스누보드</string>
+    <string name="version_info_explanation">버전 %1$s\n최신 업데이트 %2$s</string>
 </resources>
