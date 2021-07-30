@@ -15,6 +15,8 @@
         android:theme="@style/Theme.SNUBoard"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".presentation.info.TeamInfoActivity"></activity>
+        <activity android:name=".presentation.info.VersionInfoActivity" />
         <activity android:name=".presentation.auth.PolicyReadActivity" />
         <activity android:name=".presentation.auth.AuthActivity">
             <intent-filter>
@@ -41,17 +43,20 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+ Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_app_icon_v1_foreground" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/white" />
-        <!-- Set color used with incoming notification messages (알림 채널 메타 데이터 추가) -->
+            android:resource="@color/white" /> <!-- Set color used with incoming notification messages (알림 채널 메타 데이터 추가) -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

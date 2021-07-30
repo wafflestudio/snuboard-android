@@ -18,6 +18,8 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
+import com.wafflestudio.snuboard.presentation.info.TeamInfoActivity
+import com.wafflestudio.snuboard.presentation.info.VersionInfoActivity
 import com.wafflestudio.snuboard.utils.EmailUtils
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,9 +53,9 @@ class MainActivity : AppCompatActivity() {
             }
             bottomNavigation.setOnNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.notice_feed_fragment -> pager.setCurrentItem(NOTICE, false)
-                    R.id.department_follow_list_fragment -> pager.setCurrentItem(DEPT, false)
-                    R.id.saved_fragment -> pager.setCurrentItem(SAVED, false)
+                    R.id.notice_feed_fragment -> pager.setCurrentItem(NOTICE, true)
+                    R.id.department_follow_list_fragment -> pager.setCurrentItem(DEPT, true)
+                    R.id.saved_fragment -> pager.setCurrentItem(SAVED, true)
                     else -> {
                         throw Error("Invalid itemId in bottomNavigation")
                     }
@@ -62,11 +64,20 @@ class MainActivity : AppCompatActivity() {
             }
             navigationView.setNavigationItemSelectedListener {
                 when (it.itemId) {
+                    R.id.group1_item1 -> {
+                        startActivity(VersionInfoActivity.intent(this@MainActivity))
+                    }
                     R.id.group1_item2 -> {
                         startActivity(PolicyReadActivity.intent(this@MainActivity))
                     }
                     R.id.group1_item3 -> {
-                        EmailUtils.sendEmailToAdmin(this@MainActivity, "개발자에게 메일 보내기", Array<String?>(1) { "snuboard@wafflestudio.com" })
+                        EmailUtils.sendEmailToAdmin(
+                            this@MainActivity,
+                            "개발자에게 메일 보내기",
+                            Array<String?>(1) { "snuboard@wafflestudio.com" })
+                    }
+                    R.id.group1_item4 -> {
+                        startActivity(TeamInfoActivity.intent(this@MainActivity))
                     }
                     R.id.group3_item1 -> {
                         val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
