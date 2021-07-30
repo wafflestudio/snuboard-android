@@ -73,6 +73,14 @@ class DepartmentSearchActivity : AppCompatActivity() {
                 })
             }
 
+            refreshLayout.setOnRefreshListener {
+                departmentSearchActivityViewModel.updateNotices(
+                    callback = {
+                        refreshLayout.isRefreshing = false
+                    }
+                )
+            }
+
             setSupportActionBar(toolBar)
             supportActionBar!!.apply {
                 setDisplayShowTitleEnabled(false)
