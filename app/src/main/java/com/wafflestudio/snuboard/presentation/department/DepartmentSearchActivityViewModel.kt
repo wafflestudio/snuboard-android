@@ -145,9 +145,9 @@ constructor(
         val tmpHomeTagString = homeTagString.toMutableList()
         homeTagStringFixed = tmpHomeTagString
         _isFilterOn.value = homeTagStringFixed.isNotEmpty()
-        updateNotices {
+        updateNotices(postWork = {
             SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
-        }
+        })
         if (keywords.value!!.isBlank()) {
             SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
             notifyList()
@@ -175,9 +175,9 @@ constructor(
         )
         _tagDepartmentInfo.value = tagDepartmentFull
         _isFilterOn.value = homeTagStringFixed.isNotEmpty()
-        updateNotices {
+        updateNotices(postWork = {
             SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
-        }
+        })
         if (keywords.value!!.isBlank()) {
             SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
             notifyList()
@@ -261,7 +261,7 @@ constructor(
                 }
     }
 
-    private fun updateNotices(postWork: () -> Unit = {}) {
+    fun updateNotices(postWork: () -> Unit = {}, callback: (() -> Unit)? = null) {
         paginationCursor = null
         _isPageEnd.value = false
         keywords.value?.apply {
@@ -292,8 +292,10 @@ constructor(
                                 Timber.e(it.message)
                             }
                         }
+                        callback?.let { it() }
                     }, {
                         Timber.e(it)
+                        callback?.let { it() }
                     })
             }
     }
