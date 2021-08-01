@@ -148,4 +148,5 @@ SNUTT 담당자&lt;br&gt;
     <string name="navigation_drawer_activity_main_item6">팀 스누보드</string>
     <string name="team_info">팀 스누보드</string>
     <string name="version_info_explanation">버전 %1$s\n최신 업데이트 %2$s</string>
+    <string name="web">web</string>
 </resources>

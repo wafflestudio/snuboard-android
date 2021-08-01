@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityTeamInfoBinding
+import com.wafflestudio.snuboard.domain.model.Team
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeamInfoActivity : AppCompatActivity() {
@@ -18,6 +20,9 @@ class TeamInfoActivity : AppCompatActivity() {
             R.layout.activity_team_info
         ) as ActivityTeamInfoBinding
     }
+
+    @Inject
+    lateinit var _team: Team
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,7 @@ class TeamInfoActivity : AppCompatActivity() {
                 setHomeButtonEnabled(true)
                 setHomeAsUpIndicator(R.drawable.ic_navigate_before)
             }
+            team = _team
         }
     }
 
