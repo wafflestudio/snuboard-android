@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{fragmentViewModel.savedNotices.empty ? @color/white : @color/background}"
+        android:background="@color/background"
         tools:context=".presentation.notice.NoticeFeedFragment">
 
         <com.google.android.material.appbar.AppBarLayout
