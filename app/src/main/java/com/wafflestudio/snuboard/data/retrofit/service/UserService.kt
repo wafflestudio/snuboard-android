@@ -44,12 +44,15 @@ interface UserService {
     @FormUrlEncoded
     @DELETE("users/me/keyword/")
     fun deleteUserKeyword(
-        @Field("keyword") keyword: String,
+            @Field("keyword") keyword: String,
     ): Single<Response<UserDto>>
 
     @FormUrlEncoded
     @POST("users/me/keyword/")
     fun postUserKeyword(
-        @Field("keyword") keyword: String,
+            @Field("keyword") keyword: String,
     ): Single<Response<UserDto>>
+
+    @DELETE("users/me/")
+    fun deleteUserMe(): Single<Response<UserDto>>
 }

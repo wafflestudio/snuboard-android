@@ -21,7 +21,7 @@ class DepartmentPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(
 
 enum class DepartmentPageConst(val position: Int, val title: String) {
     HOME(0, "홈"),
-    FEED(1, "피드");
+    FEED(1, "구독설정");
 
     companion object {
         fun fromPosition(position: Int): DepartmentPageConst? =

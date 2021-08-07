@@ -2,11 +2,16 @@ package com.wafflestudio.snuboard.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Insets
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Build
 import android.util.Base64
 import android.util.DisplayMetrics
@@ -16,6 +21,7 @@ import android.view.WindowInsets
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -111,6 +117,8 @@ fun bindStringTagItems(view: RecyclerView, contents: List<String>?) {
 
 @BindingAdapter("tag_items")
 fun bindTagItems(view: RecyclerView, tags: List<Tag>?) {
+    if (view.adapter == null)
+        view.adapter = TagListAdapter(null)
     val adapt = view.adapter as TagListAdapter
     tags?.also {
         adapt.submitList(it)
@@ -193,6 +201,26 @@ fun bindVisibilityString(view: View, visibility: String) {
 fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
     view.setOnClickListener {
         clickListener()
+    }
+}
+
+@BindingAdapter(
+        value = ["click_listener_image_url", "click_listener_image_email"],
+        requireAll = false
+)
+fun bindClickListenerUrl(view: ImageView, url: String?, email: String?) {
+    url?.let {
+        view.setOnClickListener { it2 ->
+            (view.context as Activity).startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+        }
+    }
+    email?.let {
+        view.setOnClickListener { it2 ->
+            val clipboard = view.context.getSystemService(CLIPBOARD_SERVICE)
+            val clip = ClipData.newPlainText("label", it)
+            (clipboard as ClipboardManager).setPrimaryClip(clip)
+            Toast.makeText(view.context, "이메일이 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 }
 

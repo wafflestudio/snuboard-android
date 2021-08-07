@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{fragmentViewModel.notices.empty ? @color/white : @color/background}"
+        android:background="@color/background"
         tools:context=".presentation.notice.NoticeFeedFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -80,21 +80,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="35dp"
-            android:clipToPadding="false"
-            app:bottom_padding="@{fragmentViewModel.isPageEnd ? 5: 35}"
-            app:notice_items="@{fragmentViewModel.notices}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar"
-            app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/item_notice" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="35dp"
+                android:clipToPadding="false"
+                app:bottom_padding="@{fragmentViewModel.isPageEnd ? 5: 35}"
+                app:notice_items="@{fragmentViewModel.notices}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/app_bar"
+                app:layout_constraintVertical_bias="0.0"
+                tools:listitem="@layout/item_notice" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

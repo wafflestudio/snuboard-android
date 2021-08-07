@@ -20,6 +20,8 @@ interface UserRepository {
     fun signUp(username: String, password: String, email: String): Single<Any>
 
     fun getUserMe(): Single<Any>
+
+    fun deleteUserMe(): Single<Any>
 }
 
 @Singleton
@@ -71,15 +73,28 @@ constructor(
 
     override fun getUserMe(): Single<Any> {
         return userService.getUserMe()
-            .subscribeOn(Schedulers.io())
-            .map {
-                if (it.isSuccessful) {
-                    it.body()?.let { it1 ->
-                        return@map userMapper.mapFromUserDto(it1)
-                    }
-                } else
-                    return@map parseErrorResponse(it.errorBody()!!)
-            }
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map userMapper.mapFromUserDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
+    }
+
+    override fun deleteUserMe(): Single<Any> {
+        return userService.deleteUserMe()
+                .subscribeOn(Schedulers.io())
+                .map {
+                    if (it.isSuccessful) {
+                        it.body()?.let { it1 ->
+                            return@map userMapper.mapFromUserDto(it1)
+                        }
+                    } else
+                        return@map parseErrorResponse(it.errorBody()!!)
+                }
     }
 
 }

@@ -342,34 +342,36 @@ constructor(
             })
     }
 
-    private fun updateNotices(postWork: () -> Unit = {}) {
+    fun updateNotices(postWork: () -> Unit = {}) {
         paginationCursor = null
         _isPageEnd.value = false
         getNoticesOfDepartmentUseCase
-            .getNotices(
-                tagDepartmentInfo.value!!.id,
-                paginationLimit,
-                paginationCursor,
-                homeTagString
-            )
-            .subscribe({
-                when (it) {
-                    is NoticeList -> {
-                        _notices.value = it.notices
-                        paginationCursor = if (it.nextCursor.isEmpty())
-                            EOP
-                        else
-                            it.nextCursor
-                        postWork()
+                .getNotices(
+                        tagDepartmentInfo.value!!.id,
+                        paginationLimit,
+                        paginationCursor,
+                        homeTagString
+                )
+                .subscribe({
+                    when (it) {
+                        is NoticeList -> {
+                            _notices.value = it.notices
+                            paginationCursor = if (it.nextCursor.isEmpty())
+                                EOP
+                            else
+                                it.nextCursor
+                            postWork()
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                            postWork()
+                        }
                     }
-                    is ErrorResponse -> {
-                        SingleEvent.triggerToast.value = Event(it.message)
-                        Timber.e(it.message)
-                    }
-                }
-            }, {
-                Timber.e(it)
-            })
+                }, {
+                    Timber.e(it)
+                    postWork()
+                })
     }
 
     private fun updateNotice(notice: Notice) {

@@ -79,14 +79,24 @@ class NoticeSearchActivity : AppCompatActivity() {
                 val myLayoutManager = LinearLayoutManager(this@NoticeSearchActivity)
                 layoutManager = myLayoutManager
                 adapter = NoticeListAdapter(
-                        HeartClickListener {
-                            noticeSearchActivityViewModel.toggleSavedNotice(it)
-                        }
+                    HeartClickListener {
+                        noticeSearchActivityViewModel.toggleSavedNotice(it)
+                    }
                 )
                 clearOnScrollListeners()
                 addOnScrollListener(NoticeInfiniteScrollListener(myLayoutManager) {
                     noticeSearchActivityViewModel.getNotices()
                 })
+            }
+
+            refreshLayout.setOnRefreshListener {
+                noticeSearchActivityViewModel.apply {
+                    cleanCursor()
+                    clearNotices()
+                    getNotices {
+                        refreshLayout.isRefreshing = false
+                    }
+                }
             }
         }
         noticeSearchActivityViewModel.apply {

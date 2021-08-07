@@ -58,7 +58,7 @@ constructor(
         _notices.value = listOf()
     }
 
-    fun getNotices() {
+    fun getNotices(callback: (() -> Unit)? = null) {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
         if (paginationCursor == EOP) {
             _isPageEnd.value = true
@@ -92,11 +92,13 @@ constructor(
                                         Timber.e(it.message)
                                     }
                                 }
+                                callback?.let { it() }
                             }, {
                                 _isNewLoading.value = false
                                 _isAddLoading.value = false
                                 SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
                                 Timber.e(it)
+                                callback?.let { it() }
                             })
                 }
     }

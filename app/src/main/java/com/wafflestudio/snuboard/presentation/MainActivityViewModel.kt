@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.User
 import com.wafflestudio.snuboard.domain.usecase.GetMyInfoUseCase
+import com.wafflestudio.snuboard.domain.usecase.SignOutUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
@@ -17,12 +18,14 @@ import javax.inject.Inject
 class MainActivityViewModel
 @Inject
 constructor(
-    private val getMyInfoUseCase: GetMyInfoUseCase,
-    private val savedStateHandle: SavedStateHandle
+        private val getMyInfoUseCase: GetMyInfoUseCase,
+        private val signOutUseCase: SignOutUseCase,
+        private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _isDrawerOpen = MutableLiveData(false)
     private val _myInfo = MutableLiveData<User>()
     private val _navigateToAuthActivity = MutableLiveData<Event<Unit>>()
+    private val _signOutNavigate = MutableLiveData<Event<Unit>>()
 
     val isDrawerOpen: LiveData<Boolean>
         get() = _isDrawerOpen
@@ -30,6 +33,8 @@ constructor(
         get() = _myInfo
     val navigateToAuthActivity: LiveData<Event<Unit>>
         get() = _navigateToAuthActivity
+    val signOutNavigate: LiveData<Event<Unit>>
+        get() = _signOutNavigate
 
     fun setDrawer(bool: Boolean) {
         _isDrawerOpen.value = bool
@@ -42,6 +47,27 @@ constructor(
                     when (it) {
                         is User -> {
                             _myInfo.value = it
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                            if (it.statusCode == 401) {
+                                _navigateToAuthActivity.value = Event(Unit)
+                            }
+                        }
+                    }
+                }, {
+                    Timber.e(it)
+                })
+    }
+
+    fun signOut() {
+        signOutUseCase
+                .signOut()
+                .subscribe({
+                    when (it) {
+                        is User -> {
+                            _navigateToAuthActivity.value = Event(Unit)
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

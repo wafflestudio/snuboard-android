@@ -18,9 +18,29 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         buildConfigField "String", "SERVER_BASE_URL", localProperties['serverBaseUrl']
+
+        resValue("string", "JINUK_NAME", localProperties['jinuk.name'])
+        resValue("string", "JINUK_GITHUB", localProperties['jinuk.github'])
+        resValue("string", "JINUK_EMAIL", localProperties['jinuk.email'])
+        resValue("string", "MYUNGHOON_NAME", localProperties['myunghoon.name'])
+        resValue("string", "MYUNGHOON_GITHUB", localProperties['myunghoon.github'])
+        resValue("string", "MYUNGHOON_EMAIL", localProperties['myunghoon.email'])
+        resValue("string", "SANGGYU_NAME", localProperties['sanggyu.name'])
+        resValue("string", "SANGGYU_GITHUB", localProperties['sanggyu.github'])
+        resValue("string", "SANGGYU_EMAIL", localProperties['sanggyu.email'])
+        resValue("string", "SANGMIN_NAME", localProperties['sangmin.name'])
+        resValue("string", "SANGMIN_GITHUB", localProperties['sangmin.github'])
+        resValue("string", "SANGMIN_EMAIL", localProperties['sangmin.email'])
+        resValue("string", "SUBEEN_NAME", localProperties['subeen.name'])
+        resValue("string", "SUBEEN_GITHUB", localProperties['subeen.github'])
+        resValue("string", "SUBEEN_EMAIL", localProperties['subeen.email'])
+        resValue("string", "SUBEEN_WEB", localProperties['subeen.web'])
+        resValue("string", "NAKYUNG_NAME", localProperties['nakyung.name'])
+        resValue("string", "NAKYUNG_EMAIL", localProperties['nakyung.email'])
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

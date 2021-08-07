@@ -87,8 +87,6 @@ constructor(
                         keywords,
                         limit,
                         cursor,
-                        content = true,
-                        title = true,
                         null,
                         tags.joinToString(","))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -182,7 +180,7 @@ constructor(
 
     fun getNotices(keywords: String, limit: Int, cursor: String?): Single<Any> {
         return noticeRepository
-                .getNoticeOfFollowSearch(keywords, limit, cursor, content = true, title = true)
+                .getNoticeOfFollowSearch(keywords, limit, cursor)
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
