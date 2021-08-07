@@ -57,20 +57,32 @@
             android:layout_height="wrap_content"
             android:background="@drawable/alert_border_white">
 
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/alert_cat"
+                android:src="@drawable/cat_sign_out"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/alert_content"
+                android:contentDescription="@string/button_sign_out" />
+
             <TextView
                 android:id="@+id/alert_content"
                 android:layout_margin="12dp"
+                android:layout_marginTop="0dp"
                 android:textStyle="normal"
                 android:textSize="12sp"
                 android:textColor="@color/black"
                 tools:text="@string/dialog_signout_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/alert_cat"
                 app:layout_constraintBottom_toTopOf="@id/confirm_email"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <EditText
                 android:id="@+id/confirm_email"
@@ -88,6 +100,7 @@
                 android:singleLine="true"
                 android:gravity="start"
                 android:importantForAutofill="no"
+                android:imeOptions="actionDone"
                 tools:ignore="LabelFor" />
 
 
