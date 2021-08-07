@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -182,6 +182,18 @@ class CustomAlertDialog(
                 override fun afterTextChanged(s: Editable?) {
                 }
 
+            })
+            confirmEmail.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_DONE
+                            || (event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER))) {
+                        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
+                                as InputMethodManager
+                        imm.hideSoftInputFromWindow(v!!.windowToken, 0)
+                        return true
+                    }
+                    return false
+                }
             })
             signOutButton.setOnClickListener {
                 mainActivityViewModel.signOut()
