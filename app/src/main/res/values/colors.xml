@@ -21,6 +21,7 @@
     <color name="gray5">#FFE0E0E0</color>
     <color name="gray6">#FFF2F2F2</color>
     <color name="red">#FFEB5757</color>
+    <color name="transparent_red">#88EB5757</color>
     <color name="orange">#FFF2994A</color>
     <color name="yellow">#FFF2C94C</color>
     <color name="green1">#FF219653</color>
