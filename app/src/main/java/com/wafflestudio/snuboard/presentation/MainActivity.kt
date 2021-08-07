@@ -2,15 +2,27 @@ package com.wafflestudio.snuboard.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityMainBinding
+import com.wafflestudio.snuboard.databinding.DialogSignoutBinding
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.ACCESS_TOKEN_KEY
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.REFRESH_TOKEN_KEY
 import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
@@ -88,6 +100,10 @@ class MainActivity : AppCompatActivity() {
                         startActivity(AuthActivity.intent(this@MainActivity))
                         finish()
                     }
+                    R.id.group3_item2 -> {
+                        CustomAlertDialog(mainActivityViewModel)
+                                .show(supportFragmentManager, "AlertDialog")
+                    }
                     else ->
                         return@setNavigationItemSelectedListener false
                 }
@@ -131,5 +147,46 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         fun intent(context: Context): Intent = Intent(context, MainActivity::class.java)
+    }
+}
+
+class CustomAlertDialog(
+        private val mainActivityViewModel: MainActivityViewModel
+) : DialogFragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding = DialogSignoutBinding.inflate(LayoutInflater.from(context))
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        binding.run {
+            val email = mainActivityViewModel.myInfo.value!!.email
+            val content = String.format(resources.getString(R.string.dialog_signout_content), """<b>$email</b>""")
+            alertContent.text = Html.fromHtml(content)
+            confirmEmail.hint = email
+            dismissButton.setOnClickListener {
+                this@CustomAlertDialog.dismiss()
+            }
+            confirmEmail.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.toString() == email) {
+                        signOutButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                        signOutButton.isClickable = true
+                    } else {
+                        signOutButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.transparent_red))
+                        signOutButton.isClickable = false
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                }
+
+            })
+            signOutButton.setOnClickListener {
+                mainActivityViewModel.signOut()
+            }
+        }
+        return binding.root
     }
 }

@@ -36,11 +36,24 @@ constructor(
 class GetMyInfoUseCase
 @Inject
 constructor(
-    private val userRepository: UserRepository
+        private val userRepository: UserRepository
 ) {
     fun getMyInfo(): Single<Any> {
         return userRepository
-            .getUserMe()
-            .observeOn(AndroidSchedulers.mainThread())
+                .getUserMe()
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+}
+
+@Singleton
+class SignOutUseCase
+@Inject
+constructor(
+        private val userRepository: UserRepository
+) {
+    fun signOut(): Single<Any> {
+        return userRepository
+                .deleteUserMe()
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }
