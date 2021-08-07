@@ -58,10 +58,11 @@
             android:background="@drawable/alert_border_white">
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
                 android:id="@+id/alert_cat"
                 android:src="@drawable/cat_sign_out"
+                android:layout_margin="8dp"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,10 @@
 
             <TextView
                 android:id="@+id/alert_content"
-                android:layout_margin="12dp"
+                app:layout_goneMarginTop="6dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="0dp"
                 android:textStyle="normal"
                 android:textSize="12sp"
