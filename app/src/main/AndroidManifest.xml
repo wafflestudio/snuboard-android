@@ -15,7 +15,8 @@
         android:theme="@style/Theme.SNUBoard"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".presentation.info.TeamInfoActivity"></activity>
+        <activity android:name=".presentation.info.NotificationListActivity"></activity>
+        <activity android:name=".presentation.info.TeamInfoActivity" />
         <activity android:name=".presentation.info.VersionInfoActivity" />
         <activity android:name=".presentation.auth.PolicyReadActivity" />
         <activity android:name=".presentation.auth.AuthActivity">
@@ -43,8 +44,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+ Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_noti_trim" />
