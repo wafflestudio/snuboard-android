@@ -30,6 +30,7 @@ class NotificationListActivity : AppCompatActivity() {
         notificationListActivityViewModel.isNotificationActive.observe(this) {
             invalidateOptionsMenu()
         }
+        notificationListActivityViewModel.getNotification()
         binding.run {
             lifecycleOwner = this@NotificationListActivity
             viewModel = notificationListActivityViewModel

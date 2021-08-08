@@ -11,4 +11,6 @@ object SharedPreferenceConst {
     private const val DEPARTMENT_HOME_KEY_PREFIX = "department_home_key_"
     fun getDepartmentHomeKey(departmentId: Int): String =
         DEPARTMENT_HOME_KEY_PREFIX + departmentId.toString()
+
+    const val IS_NOTIFICATION_ACTIVE_KEY = "is_notification_active_key"
 }
