@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
+import com.wafflestudio.snuboard.data.room.NoticeNoti
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,6 +20,8 @@ constructor(
     private val _isNotificationActive = MutableLiveData<Boolean>(null)
     val isNotificationActive: LiveData<Boolean>
         get() = _isNotificationActive
+
+    val allNoticeNotis: LiveData<List<NoticeNoti>> = noticeNotiRepository.getAllNoticeNotis()
 
     fun getNotification() {
         _isNotificationActive.value = noticeNotiRepository.getIsNotificationActive()

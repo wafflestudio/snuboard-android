@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityNotificationListBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +42,11 @@ class NotificationListActivity : AppCompatActivity() {
                 setDisplayHomeAsUpEnabled(true)
                 setHomeButtonEnabled(true)
                 setHomeAsUpIndicator(R.drawable.ic_navigate_before)
+            }
+            recyclerView.run {
+                val myLayoutManager = LinearLayoutManager(this@NotificationListActivity)
+                layoutManager = myLayoutManager
+                adapter = NoticeNotiListAdapter()
             }
         }
     }
