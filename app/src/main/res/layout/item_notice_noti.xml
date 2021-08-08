@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="com.wafflestudio.snuboard.domain.model.Notice" />
+            type="com.wafflestudio.snuboard.data.room.NoticeNoti" />
 
         <variable
             name="clickListener"
-            type="com.wafflestudio.snuboard.presentation.notice.NoticeClickListener" />
+            type="com.wafflestudio.snuboard.presentation.info.NoticeNotiClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,7 @@
 
                 <include
                     layout="@layout/sub_item_tags"
-                    app:notice="@{item}" />
+                    app:noticeNoti="@{item}" />
 
                 <TextView
                     style="@style/NotoSansBold"
