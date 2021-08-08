@@ -30,6 +30,7 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
+import com.wafflestudio.snuboard.presentation.info.NotificationListActivity
 import com.wafflestudio.snuboard.presentation.info.TeamInfoActivity
 import com.wafflestudio.snuboard.presentation.info.VersionInfoActivity
 import com.wafflestudio.snuboard.utils.EmailUtils
@@ -91,6 +92,13 @@ class MainActivity : AppCompatActivity() {
                     R.id.group1_item4 -> {
                         startActivity(TeamInfoActivity.intent(this@MainActivity))
                     }
+                    R.id.group2_item1 -> {
+                        startActivity(NotificationListActivity.intent(this@MainActivity))
+                        overridePendingTransition(
+                            R.anim.slide_from_right,
+                            R.anim.nav_default_exit_anim
+                        )
+                    }
                     R.id.group3_item1 -> {
                         val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
                         pref.edit {
@@ -102,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.group3_item2 -> {
                         CustomAlertDialog(mainActivityViewModel)
-                                .show(supportFragmentManager, "AlertDialog")
+                            .show(supportFragmentManager, "AlertDialog")
                     }
                     else ->
                         return@setNavigationItemSelectedListener false

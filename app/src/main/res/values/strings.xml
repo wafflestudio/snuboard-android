@@ -151,4 +151,6 @@ SNUBOARD 담당자&lt;br&gt;
     <string name="dialog_signout_title">정말 탈퇴하시겠어요?</string>
     <string name="dialog_signout_content">이 작업은 되돌릴 수 없어요. 탈퇴를 계속 진행하시겠어요?\n\n진행하시려면 %s를 입력해주세요.</string>
     <string name="button_sign_out">이해했습니다. 탈퇴를 진행해주세요.</string>
+    <string name="notification_list">알림 목록</string>
+    <string name="fragment_department_home_app_bar_notification">알림</string>
 </resources>
