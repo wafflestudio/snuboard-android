@@ -23,12 +23,9 @@ import java.lang.RuntimeException
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-@AndroidEntryPoint
-class MyFirebaseMessagingService
-@Inject
-constructor(
-    private val noticeNotiRepository: NoticeNotiRepository
-) : FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
+    @Inject lateinit var noticeNotiRepository: NoticeNotiRepository
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         // Check if message contains a data payload.
