@@ -15,13 +15,20 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
 import com.wafflestudio.snuboard.presentation.notice.NoticeDetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.lang.RuntimeException
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
-
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+@AndroidEntryPoint
+class MyFirebaseMessagingService
+@Inject
+constructor(
+    private val noticeNotiRepository: NoticeNotiRepository
+) : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         // Check if message contains a data payload.
@@ -35,8 +42,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val noticeId = get("noticeId")?.toInt()
                 val preview = get("preview").toString()
                 // TODO save to room
-                // TODO check `isNotificationActive`
-                sendNotification(notificationInfo, noticeId, preview)
+                if (noticeNotiRepository.getIsNotificationActive())
+                    sendNotification(notificationInfo, noticeId, preview)
             }
         } else {
             // 메시지 유형이 알림 메시지일 경우
@@ -74,14 +81,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
-    private fun sendNotification(messageBody: Map<String, String>, noticeId: Int?, bigText: String?) {
+    private fun sendNotification(
+        messageBody: Map<String, String>,
+        noticeId: Int?,
+        bigText: String?
+    ) {
         val intent = if (noticeId == null) Intent(this, MyApplication::class.java)
         else NoticeDetailActivity.intent(this, noticeId)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val androidNotiId = SystemClock.uptimeMillis().toInt()
         val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(
-                this,  androidNotiId, intent,
+                this, androidNotiId, intent,
                 PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
         } else {
@@ -104,7 +115,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
-        if (bigText != null) notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
+        if (bigText != null) notificationBuilder.setStyle(
+            NotificationCompat.BigTextStyle().bigText(bigText)
+        )
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
