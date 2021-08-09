@@ -33,7 +33,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     "body" to get("body").toString(),
                 )
                 val noticeId = get("noticeId")?.toInt()
-                sendNotification(notificationInfo, noticeId)
+                val preview = get("preview").toString()
+                // TODO save to room
+                // TODO check `isNotificationActive`
+                sendNotification(notificationInfo, noticeId, preview)
             }
         } else {
             // 메시지 유형이 알림 메시지일 경우
@@ -43,9 +46,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             remoteMessage.notification?.let {
                 notificationInfo = mapOf(
                     "title" to it.title.toString(),
-                    "body" to it.body.toString()
+                    "body" to it.body.toString(),
                 )
-                sendNotification(notificationInfo, null)
+                sendNotification(notificationInfo, null, null)
             }
         }
     }
@@ -71,23 +74,26 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
-    /**
-     * 푸시 메시지의 세부 설정을 하고, 안드로이드 앱에 푸시 메시지를 보내는 메소드
-     *
-     * onMessagedReceived() 콜백 메소드에서 FCM이 보낸 메시지의 title, body 등을 알아와 sendNotification()의 매개변수로 넘기면 됨
-     *
-     * @param messageBody FCM message body received.
-     */
-    private fun sendNotification(messageBody: Map<String, String>, noticeId: Int?) {
+    private fun sendNotification(messageBody: Map<String, String>, noticeId: Int?, bigText: String?) {
         val intent = if (noticeId == null) Intent(this, MyApplication::class.java)
         else NoticeDetailActivity.intent(this, noticeId)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
-        )
+        val androidNotiId = SystemClock.uptimeMillis().toInt()
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getActivity(
+                this,  androidNotiId, intent,
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                this, androidNotiId, intent,
+                PendingIntent.FLAG_ONE_SHOT // only mutable pendingIntent possible before API 23
+            )
+        }
 
-        val channelId = getString(R.string.default_notification_channel_id)
+        val channelId = if (noticeId == null) getString(R.string.default_notification_channel_id)
+        else getString(R.string.notice_notification_channel_id)
+
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         // icon, color는 메타 데이터에서 설정한 것으로 설정해주면 된다.
@@ -98,6 +104,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+        if (bigText != null) notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -106,13 +113,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
+                if (noticeId == null) "필수 알림" else "신규 게시글 알림",
+                if (noticeId == null) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
-        val AndroidNotiId = SystemClock.uptimeMillis().toInt()
-        notificationManager.notify(AndroidNotiId, notificationBuilder.build())
+        notificationManager.notify(androidNotiId, notificationBuilder.build())
     }
 
 
