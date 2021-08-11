@@ -3,26 +3,36 @@ package com.wafflestudio.snuboard.presentation.info
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.ActivityNotificationListBinding
+import com.wafflestudio.snuboard.databinding.DialogAddNoticeNotiBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class NotificationListActivity : AppCompatActivity() {
 
     private val binding: ActivityNotificationListBinding by lazy {
         DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_notification_list
+                this,
+                R.layout.activity_notification_list
         ) as ActivityNotificationListBinding
     }
+
+    private lateinit var bindingDialog: DialogAddNoticeNotiBinding
+    private lateinit var dialog: AlertDialog
 
     private val notificationListActivityViewModel: NotificationListActivityViewModel by viewModels()
 
@@ -47,6 +57,31 @@ class NotificationListActivity : AppCompatActivity() {
                 val myLayoutManager = LinearLayoutManager(this@NotificationListActivity)
                 layoutManager = myLayoutManager
                 adapter = NoticeNotiListAdapter()
+
+                val simpleItemCallback = object : ItemTouchHelper.SimpleCallback(
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+                        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                        return false
+                    }
+
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                        (viewHolder as NoticeNotiViewHolder)
+                                .binding.item?.id?.let {
+                                    notificationListActivityViewModel.deleteNoticeNoti(it)
+                                            .subscribe()
+                                }
+                        Toast.makeText(applicationContext, "Removed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                val itemTouchHelper = ItemTouchHelper(simpleItemCallback)
+                itemTouchHelper.attachToRecyclerView(this)
+            }
+
+            setUpDialog()
+
+            floatingActionButton.setOnClickListener {
+                dialog.show()
             }
         }
     }
@@ -88,8 +123,37 @@ class NotificationListActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.slide_to_right)
     }
 
+
+    private fun setUpDialog() {
+        bindingDialog = DialogAddNoticeNotiBinding.inflate(LayoutInflater.from(this))
+        val dialogBuilder = AlertDialog.Builder(this@NotificationListActivity)
+                .setTitle("Add Todos")
+                .setView(bindingDialog.root)
+                .setPositiveButton(
+                        "Create"
+                ) { _, _ ->
+                    notificationListActivityViewModel.addNoticeNoti(
+                            bindingDialog.id.text.toString().toInt(),
+                            bindingDialog.title.text.toString(),
+                            bindingDialog.departmentId.text.toString().toInt(),
+                            bindingDialog.departmentName.text.toString(),
+                            bindingDialog.preview.text.toString(),
+                            bindingDialog.tags.text.toString())
+                            .subscribe({}, {
+                                Timber.e(it)
+                            })
+                    Toast.makeText(applicationContext, "Create", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(
+                        "Cancel"
+                ) { _, _ ->
+                    Toast.makeText(applicationContext, "Cancel", Toast.LENGTH_SHORT).show()
+                }
+        dialog = dialogBuilder.create()
+    }
+
     companion object {
         fun intent(context: Context) =
-            Intent(context, NotificationListActivity::class.java)
+                Intent(context, NotificationListActivity::class.java)
     }
 }

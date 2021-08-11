@@ -54,8 +54,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/background"
             android:paddingTop="5dp"
-            android:paddingBottom="35dp"
             android:clipToPadding="false"
             app:notice_noti_items="@{viewModel.allNoticeNotis}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -64,6 +64,19 @@
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/item_notice_noti" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_close"
+            app:fabSize="normal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -9,6 +9,8 @@ import com.wafflestudio.snuboard.data.room.NoticeNotiDao
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.IS_NOTIFICATION_ACTIVE_KEY
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +18,9 @@ interface NoticeNotiRepository {
 
     fun insertNoticeNoti(noticeNoti: NoticeNoti): Completable
 
-    fun deleteNoticeNoti(noticeNoti: NoticeNoti): Completable
+    fun doesNoticeExist(id: Int): Single<Boolean>
+
+    fun deleteNoticeNoti(id: Int): Completable
 
     fun getAllNoticeNotis(): LiveData<List<NoticeNoti>>
 
@@ -34,15 +38,22 @@ constructor(
 ) : NoticeNotiRepository {
 
     private val pref = PreferenceManager.getDefaultSharedPreferences(
-        appContext
+            appContext
     )
 
     override fun insertNoticeNoti(noticeNoti: NoticeNoti): Completable {
         return noticeNotiDao.insertNoticeNoti(noticeNoti)
+                .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteNoticeNoti(noticeNoti: NoticeNoti): Completable {
-        return noticeNotiDao.deleteNoticeNoti(noticeNoti)
+    override fun doesNoticeExist(id: Int): Single<Boolean> {
+        return noticeNotiDao.doesNoticeExist(id)
+                .subscribeOn(Schedulers.io())
+    }
+
+    override fun deleteNoticeNoti(id: Int): Completable {
+        return noticeNotiDao.deleteNoticeNoti(id)
+                .subscribeOn(Schedulers.io())
     }
 
     override fun getAllNoticeNotis(): LiveData<List<NoticeNoti>> {

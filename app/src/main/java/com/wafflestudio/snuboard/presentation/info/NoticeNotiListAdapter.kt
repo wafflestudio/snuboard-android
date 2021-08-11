@@ -42,8 +42,8 @@ class NoticeNotiDiffCallback : DiffUtil.ItemCallback<NoticeNoti>() {
 
 }
 
-class NoticeNotiViewHolder(private val binding: ItemNoticeNotiBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class NoticeNotiViewHolder(val binding: ItemNoticeNotiBinding) :
+        RecyclerView.ViewHolder(binding.root) {
     fun bindItems(noticeNoti: NoticeNoti) {
         val tagRecyclerView = binding.root.findViewById<RecyclerView>(R.id.tag_recycler_view)
         tagRecyclerView.run {

@@ -3,28 +3,28 @@ package com.wafflestudio.snuboard
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
+import com.wafflestudio.snuboard.domain.usecase.NotifyUseCase
 import com.wafflestudio.snuboard.presentation.notice.NoticeDetailActivity
-import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.lang.RuntimeException
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-    @Inject lateinit var noticeNotiRepository: NoticeNotiRepository
+    @Inject
+    lateinit var noticeNotiRepository: NoticeNotiRepository
+
+    @Inject
+    lateinit var notifyUseCase: NotifyUseCase
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -33,14 +33,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Timber.d("Message data payload: ${remoteMessage.data}")
             remoteMessage.data.apply {
                 val notificationInfo = mapOf(
-                    "title" to get("title").toString(),
-                    "body" to get("body").toString(),
+                        "title" to get("title").toString(),
+                        "body" to get("body").toString(),
                 )
                 val noticeId = get("noticeId")?.toInt()
                 val preview = get("preview").toString()
-                // TODO save to room
-                if (noticeNotiRepository.getIsNotificationActive())
-                    sendNotification(notificationInfo, noticeId, preview)
+                val departmentName = get("departmentName").toString()
+                val departmentId = get("departmentId")?.toInt()
+                val tags = get("tags").toString()
+
+                if (noticeNotiRepository.getIsNotificationActive()) {
+                    if (noticeId != null && departmentId != null)
+                        notificationInfo["body"]?.let {
+                            notifyUseCase.addNoticeNoti(
+                                    noticeId,
+                                    it,
+                                    departmentId,
+                                    departmentName,
+                                    preview,
+                                    tags
+                            ) { sendNotification(notificationInfo, noticeId, preview) }
+                        }
+                }
             }
         } else {
             // 메시지 유형이 알림 메시지일 경우
