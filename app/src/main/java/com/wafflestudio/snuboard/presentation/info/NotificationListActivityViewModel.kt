@@ -41,18 +41,4 @@ constructor(
         return notifyUseCase.deleteNoticeNoti(id)
     }
 
-    fun addNoticeNoti(
-            id: Int,
-            title: String,
-            departmentId: Int,
-            departmentName: String,
-            preview: String,
-            tags: String,
-            postWork: () -> Unit = {}
-    ): Completable {
-        return notifyUseCase.addNoticeNoti(
-                id, title, departmentId, departmentName, preview, tags, postWork
-        )
-    }
-
 }
