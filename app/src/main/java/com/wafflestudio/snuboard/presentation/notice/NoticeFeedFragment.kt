@@ -78,6 +78,12 @@ class NoticeFeedFragment : Fragment() {
                 noticeFeedFragmentViewModel.updateNotices {
                     refreshLayout.isRefreshing = false
                 }
+                recyclerView.run {
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                        noticeFeedFragmentViewModel.getNotices()
+                    })
+                }
             }
         }
         noticeFeedFragmentViewModel.apply {

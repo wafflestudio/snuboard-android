@@ -66,6 +66,12 @@ class DepartmentHomeFragment : Fragment() {
                 departmentActivityViewModel.updateNotices {
                     refreshLayout.isRefreshing = false
                 }
+                filterNoticeRecyclerView.run {
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                        departmentActivityViewModel.getNotices()
+                    })
+                }
             }
         }
         setHasOptionsMenu(true)
