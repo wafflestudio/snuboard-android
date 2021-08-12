@@ -66,6 +66,17 @@ class SavedFragment : Fragment() {
                     savedFragmentViewModel.getSavedNotices()
                 })
             }
+            refreshLayout.setOnRefreshListener {
+                savedFragmentViewModel.updateSavedNotices {
+                    refreshLayout.isRefreshing = false
+                }
+                recyclerView.run {
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                        savedFragmentViewModel.getSavedNotices()
+                    })
+                }
+            }
         }
         savedFragmentViewModel.apply {
             updateSavedNotices.observe(viewLifecycleOwner) {
