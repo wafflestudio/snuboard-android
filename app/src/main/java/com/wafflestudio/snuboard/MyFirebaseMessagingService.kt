@@ -16,9 +16,11 @@ import com.google.firebase.messaging.RemoteMessage
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
 import com.wafflestudio.snuboard.domain.usecase.NotifyUseCase
 import com.wafflestudio.snuboard.presentation.notice.NoticeDetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var noticeNotiRepository: NoticeNotiRepository
@@ -43,7 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val tags = get("tags").toString()
 
                 if (noticeNotiRepository.getIsNotificationActive()) {
-                    if (noticeId != null && departmentId != null)
+                    if (noticeId != null && departmentId != null) {
                         notificationInfo["body"]?.let {
                             notifyUseCase.addNoticeNoti(
                                     noticeId,
@@ -53,7 +55,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                     preview,
                                     tags
                             ) { sendNotification(notificationInfo, noticeId, preview) }
+                                    .subscribe({}, { e ->
+                                        Timber.e(e)
+                                    })
                         }
+                    }
                 }
             }
         } else {
@@ -63,8 +69,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notificationInfo: Map<String, String>
             remoteMessage.notification?.let {
                 notificationInfo = mapOf(
-                    "title" to it.title.toString(),
-                    "body" to it.body.toString(),
+                        "title" to it.title.toString(),
+                        "body" to it.body.toString(),
                 )
                 sendNotification(notificationInfo, null, null)
             }
@@ -93,9 +99,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(
-        messageBody: Map<String, String>,
-        noticeId: Int?,
-        bigText: String?
+            messageBody: Map<String, String>,
+            noticeId: Int?,
+            bigText: String?
     ) {
         val intent = if (noticeId == null) Intent(this, MyApplication::class.java)
         else NoticeDetailActivity.intent(this, noticeId)
@@ -103,13 +109,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val androidNotiId = SystemClock.uptimeMillis().toInt()
         val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(
-                this, androidNotiId, intent,
-                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                    this, androidNotiId, intent,
+                    PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
             )
         } else {
             PendingIntent.getActivity(
-                this, androidNotiId, intent,
-                PendingIntent.FLAG_ONE_SHOT // only mutable pendingIntent possible before API 23
+                    this, androidNotiId, intent,
+                    PendingIntent.FLAG_ONE_SHOT // only mutable pendingIntent possible before API 23
             )
         }
 
@@ -120,25 +126,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // icon, color는 메타 데이터에서 설정한 것으로 설정해주면 된다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_noti_trim)
-            .setContentTitle(messageBody["title"])
-            .setContentText(messageBody["body"])
-            .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.ic_noti_trim)
+                .setContentTitle(messageBody["title"])
+                .setContentText(messageBody["body"])
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
         if (bigText != null) notificationBuilder.setStyle(
-            NotificationCompat.BigTextStyle().bigText(bigText)
+                NotificationCompat.BigTextStyle().bigText(bigText)
         )
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                if (noticeId == null) "필수 알림" else "신규 게시글 알림",
-                if (noticeId == null) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
+                    channelId,
+                    if (noticeId == null) "필수 알림" else "신규 게시글 알림",
+                    if (noticeId == null) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
