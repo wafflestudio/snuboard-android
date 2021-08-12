@@ -97,6 +97,12 @@ class NoticeSearchActivity : AppCompatActivity() {
                         refreshLayout.isRefreshing = false
                     }
                 }
+                recyclerView.run {
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                        noticeSearchActivityViewModel.getNotices()
+                    })
+                }
             }
         }
         noticeSearchActivityViewModel.apply {

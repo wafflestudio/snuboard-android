@@ -75,10 +75,16 @@ class DepartmentSearchActivity : AppCompatActivity() {
 
             refreshLayout.setOnRefreshListener {
                 departmentSearchActivityViewModel.updateNotices(
-                    callback = {
-                        refreshLayout.isRefreshing = false
-                    }
+                        callback = {
+                            refreshLayout.isRefreshing = false
+                        }
                 )
+                filterRecyclerView.run {
+                    clearOnScrollListeners()
+                    addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                        departmentSearchActivityViewModel.getNotices()
+                    })
+                }
             }
 
             setSupportActionBar(toolBar)
