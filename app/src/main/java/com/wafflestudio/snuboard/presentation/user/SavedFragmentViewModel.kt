@@ -83,7 +83,7 @@ constructor(
                 })
     }
 
-    fun updateSavedNotices() {
+    fun updateSavedNotices(callback: (() -> Unit)? = null) {
         savedNoticesPaginationCursor = null
         _isPageEnd.value = false
         getNoticesOfScrapUseCase
@@ -102,8 +102,10 @@ constructor(
                             Timber.e(it.message)
                         }
                     }
+                    callback?.let { it() }
                 }, {
                     Timber.e(it)
+                    callback?.let { it() }
                 })
     }
 
