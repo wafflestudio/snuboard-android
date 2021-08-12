@@ -37,10 +37,6 @@
                     android:id="@+id/group2_item1"
                     android:icon="@drawable/ic_notifications_none"
                     android:title="@string/navigation_drawer_activity_main_item3" />
-                <item
-                    android:id="@+id/group2_item2"
-                    android:icon="@drawable/ic_settings"
-                    android:title="@string/navigation_drawer_activity_main_item4" />
             </menu>
         </item>
     </group>

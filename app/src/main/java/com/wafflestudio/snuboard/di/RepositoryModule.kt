@@ -17,4 +17,7 @@ interface RepositoryModule {
 
     @Binds
     fun provideNoticeRepositoryImpl(repository: NoticeRepositoryImpl): NoticeRepository
+
+    @Binds
+    fun provideNoticeNotiRepositoryImpl(repository: NoticeNotiRepositoryImpl): NoticeNotiRepository
 }

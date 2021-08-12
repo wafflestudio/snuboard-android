@@ -142,7 +142,8 @@ SNUBOARD 담당자&lt;br&gt;
     <string name="before_icon">before_icon</string>
     <string name="textview_fragment_login_email">Email</string>
     <string name="navigation_drawer_activity_main_item5">개발자 괴롭히기</string>
-    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="default_notification_channel_id">notification_channel</string>
+    <string name="notice_notification_channel_id">notice_notification_channel</string>
     <string name="version_info">버전 정보</string>
     <string name="navigation_drawer_activity_main_item6">팀 스누보드</string>
     <string name="team_info">팀 스누보드</string>
@@ -151,4 +152,6 @@ SNUBOARD 담당자&lt;br&gt;
     <string name="dialog_signout_title">정말 탈퇴하시겠어요?</string>
     <string name="dialog_signout_content">이 작업은 되돌릴 수 없어요. 탈퇴를 계속 진행하시겠어요?\n\n진행하시려면 %s를 입력해주세요.</string>
     <string name="button_sign_out">이해했습니다. 탈퇴를 진행해주세요.</string>
+    <string name="notification_list">알림 목록</string>
+    <string name="fragment_department_home_app_bar_notification">알림</string>
 </resources>

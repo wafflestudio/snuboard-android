@@ -1,47 +1,80 @@
-package com.wafflestudio.snuboard;
+package com.wafflestudio.snuboard
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.util.Log
+import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
+import com.wafflestudio.snuboard.domain.usecase.NotifyUseCase
+import com.wafflestudio.snuboard.presentation.MainActivity
+import com.wafflestudio.snuboard.presentation.notice.NoticeDetailActivity
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+    @Inject
+    lateinit var noticeNotiRepository: NoticeNotiRepository
+
+    @Inject
+    lateinit var notifyUseCase: NotifyUseCase
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        // 앱이 foreground 상태에 있을 때 FCM 알림을 받았다면 onMessageReceived() 콜백 메소드가 호출됨으로써 FCM 알림이 대신된다.
-        Log.d("onMessageReceived 콜백 호출", "From: ${remoteMessage.from}")
-
-        // 메시지 유형이 데이터 메시지일 경우
         // Check if message contains a data payload.
-        var fcmBody: String = ""
         if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-            fcmBody = remoteMessage.data.get("Body").toString()
-        }
+            Timber.d("Message data payload: ${remoteMessage.data}")
+            remoteMessage.data.apply {
+                val notificationInfo = mapOf(
+                        "title" to get("title").toString(),
+                        "body" to get("body").toString(),
+                )
+                val noticeId = get("noticeId")?.toInt()
+                val preview = get("preview").toString()
+                val departmentName = get("departmentName").toString()
+                val departmentId = get("departmentId")?.toInt()
+                val tags = get("tags").toString()
 
-        // 메시지 유형이 알림 메시지일 경우
-        // Check if message contains a notification payload.
-        // Set FCM title, body to android notification
-        var notificationInfo: Map<String, String> = mapOf()
-        remoteMessage.notification?.let {
-            notificationInfo = mapOf(
-                "title" to it.title.toString(),
-                "body" to it.body.toString()
-            )
-            sendNotification(notificationInfo)
+                if (noticeNotiRepository.getIsNotificationActive()) {
+                    if (noticeId != null && departmentId != null) {
+                        notificationInfo["body"]?.let {
+                            notifyUseCase.addNoticeNoti(
+                                    noticeId,
+                                    it,
+                                    departmentId,
+                                    departmentName,
+                                    preview,
+                                    tags
+                            ) { sendNotification(notificationInfo, noticeId, preview) }
+                                    .subscribe({}, { e ->
+                                        Timber.e(e)
+                                    })
+                        }
+                    }
+                }
+            }
+        } else {
+            // 메시지 유형이 알림 메시지일 경우
+            // Check if message contains a notification payload.
+            // Set FCM title, body to android notification
+            val notificationInfo: Map<String, String>
+            remoteMessage.notification?.let {
+                notificationInfo = mapOf(
+                        "title" to it.title.toString(),
+                        "body" to it.body.toString(),
+                )
+                sendNotification(notificationInfo, null, null)
+            }
         }
     }
 
@@ -56,57 +89,83 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         /** 변경된 토큰 가져오기 및 확인하기 */
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                Timber.w(task.exception, "Fetching FCM registration token failed")
                 return@OnCompleteListener
             }
 
             // Get new FCM registration token
             val token = task.result
-            Log.d("newFCMToken", token.toString())
+            Timber.d("newFCMToken: ${token.toString()}")
         })
     }
 
-    /**
-     * 푸시 메시지의 세부 설정을 하고, 안드로이드 앱에 푸시 메시지를 보내는 메소드
-     *
-     * onMessagedReceived() 콜백 메소드에서 FCM이 보낸 메시지의 title, body 등을 알아와 sendNotification()의 매개변수로 넘기면 됨
-     *
-     * @param messageBody FCM message body received.
-     */
-    private fun sendNotification(messageBody: Map<String, String>) {
-        val intent = Intent(this, MyApplication::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT
+    @Suppress("UNCHECKED_CAST")
+    private fun sendNotification(
+            messageBody: Map<String, String>,
+            noticeId: Int?,
+            bigText: String?
+    ) {
+        val intent = if (noticeId == null) Intent(this, MyApplication::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        else arrayOf(
+                MainActivity.intent(this).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
+                NoticeDetailActivity.intent(this, noticeId)
         )
+        val androidNotiId = SystemClock.uptimeMillis().toInt()
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (noticeId == null)
+                PendingIntent.getActivity(
+                        this, androidNotiId, intent as Intent,
+                        PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                )
+            else
+                PendingIntent.getActivities(
+                        this, androidNotiId, intent as Array<Intent>,
+                        PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+                )
+        } else {
+            if (noticeId == null)
+                PendingIntent.getActivity(
+                        this, androidNotiId, intent as Intent,
+                        PendingIntent.FLAG_ONE_SHOT // only mutable pendingIntent possible before API 23
+                )
+            else
+                PendingIntent.getActivities(
+                        this, androidNotiId, intent as Array<Intent>,
+                        PendingIntent.FLAG_ONE_SHOT
+                )
+        }
 
-        val channelId = getString(R.string.default_notification_channel_id)
+        val channelId = if (noticeId == null) getString(R.string.default_notification_channel_id)
+        else getString(R.string.notice_notification_channel_id)
+
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         // icon, color는 메타 데이터에서 설정한 것으로 설정해주면 된다.
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_app_icon_v1_foreground)
-            .setContentTitle(messageBody["title"])
-            .setContentText(messageBody["body"])
-            .setAutoCancel(true)
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.ic_noti_trim)
+                .setContentTitle(messageBody["title"])
+                .setContentText(messageBody["body"])
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+        if (bigText != null) notificationBuilder.setStyle(
+                NotificationCompat.BigTextStyle().bigText(bigText)
+        )
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
+                    channelId,
+                    if (noticeId == null) "필수 알림" else "신규 게시글 알림",
+                    if (noticeId == null) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(androidNotiId, notificationBuilder.build())
     }
 
 

@@ -25,16 +25,21 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wafflestudio.snuboard.R
+import com.wafflestudio.snuboard.data.room.NoticeNoti
+import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.domain.model.*
 import com.wafflestudio.snuboard.presentation.TagListAdapter
 import com.wafflestudio.snuboard.presentation.department.CollegeDepartmentListAdapter
 import com.wafflestudio.snuboard.presentation.department.FilterNoticeListAdapter
 import com.wafflestudio.snuboard.presentation.department.FilterSearchNoticeListAdapter
 import com.wafflestudio.snuboard.presentation.department.FollowingDepartmentListAdapter
+import com.wafflestudio.snuboard.presentation.info.NoticeNotiListAdapter
 import com.wafflestudio.snuboard.presentation.notice.FileListAdapter
 import com.wafflestudio.snuboard.presentation.notice.NoticeListAdapter
 
@@ -87,6 +92,14 @@ fun bindFilterSearchNoticeItems(view: RecyclerView, items: List<Notice>?) {
     }
 }
 
+@BindingAdapter("notice_noti_items")
+fun bindNoticeNotiItems(view: RecyclerView, items: List<NoticeNoti>?) {
+    val adapt = view.adapter as NoticeNotiListAdapter
+    items?.also {
+        adapt.submitList(it)
+    }
+}
+
 @BindingAdapter("notice_tag_items")
 fun bindNoticeTagItems(view: RecyclerView, item: NoticeInterface?) {
     val adapt = view.adapter as TagListAdapter
@@ -108,10 +121,37 @@ fun bindStringTagItems(view: RecyclerView, contents: List<String>?) {
     val adapt = view.adapter as TagListAdapter
     contents?.also {
         adapt.submitList(
-                it.map { it1 ->
-                    Tag(it1, DepartmentColor.TAG_COLOR)
-                }
+            it.map { it1 ->
+                Tag(it1, DepartmentColor.TAG_COLOR)
+            }
         )
+    }
+}
+
+@BindingAdapter("notice_noti_tag_items")
+fun bindNoticeNotiTagItems(view: RecyclerView, item: NoticeNoti?) {
+    val adapt = view.adapter as TagListAdapter
+    item?.also {
+        val preferenceKey = SharedPreferenceConst.getDepartmentColorKey(item.departmentId)
+        val pref = PreferenceManager.getDefaultSharedPreferences(view.context)
+        var departmentColorId = pref.getInt(preferenceKey, -1)
+        if (departmentColorId == -1) {
+            pref.edit {
+                putInt(preferenceKey, DepartmentColor.POMEGRANATE.colorId)
+            }
+            departmentColorId = DepartmentColor.POMEGRANATE.colorId
+        }
+        val departmentColor = DepartmentColor.fromColorId(departmentColorId)
+
+        val items = mutableListOf<Tag>(
+            Tag(it.departmentName, departmentColor!!)
+        )
+        items.addAll(
+            it.tags.split(";").map { it1 ->
+                Tag(it1, DepartmentColor.TAG_COLOR)
+            }
+        )
+        adapt.submitList(items)
     }
 }
 
