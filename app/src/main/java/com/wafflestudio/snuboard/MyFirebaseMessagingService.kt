@@ -150,7 +150,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
         if (bigText != null) notificationBuilder.setStyle(
-                NotificationCompat.BigTextStyle().bigText(bigText)
+                NotificationCompat.BigTextStyle().bigText(messageBody["body"] + '\n' + bigText)
         )
 
         val notificationManager =

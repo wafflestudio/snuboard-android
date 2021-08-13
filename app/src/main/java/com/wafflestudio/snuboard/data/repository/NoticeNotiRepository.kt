@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.data.room.NoticeNoti
 import com.wafflestudio.snuboard.data.room.NoticeNotiDao
+import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.IS_NOTIFICATION_ACTIVE_KEY
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.core.Completable
@@ -66,6 +67,8 @@ constructor(
             setIsNotificationActive(true)
             result = true.toString()
         }
+        if (pref.getString(SharedPreferenceConst.ACCESS_TOKEN_KEY, "none") == "none")
+            result = false.toString()
         return result.toBoolean()
     }
 
