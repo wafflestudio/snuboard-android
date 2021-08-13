@@ -250,12 +250,12 @@ fun bindClickListenerColor(view: ConstraintLayout, clickListener: () -> Unit) {
 )
 fun bindClickListenerUrl(view: ImageView, url: String?, email: String?) {
     url?.let {
-        view.setOnClickListener { it2 ->
+        view.setOnClickListener { _ ->
             (view.context as Activity).startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
         }
     }
     email?.let {
-        view.setOnClickListener { it2 ->
+        view.setOnClickListener { _ ->
             val clipboard = view.context.getSystemService(CLIPBOARD_SERVICE)
             val clip = ClipData.newPlainText("label", it)
             (clipboard as ClipboardManager).setPrimaryClip(clip)
