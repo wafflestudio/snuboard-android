@@ -17,7 +17,7 @@
     <string name="navigation_drawer_activity_main_signout">회원 탈퇴</string>
     <string name="navigation_drawer_activity_main_item3">알림 목록</string>
     <string name="navigation_drawer_activity_main_item4">알림 설정</string>
-    <string name="tool_bar_fragment_department_follow">팔로우</string>
+    <string name="tool_bar_fragment_department_follow">학과</string>
     <string name="tool_bar_fragment_saved">관심목록</string>
     <string name="text_item_notice_title">2021학년도 1학기 컴퓨터공학부 개설 교과목별 수업운영 계획 안내</string>
     <string name="text_item_notice_content">2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다. 2021학년도 1학기 컴퓨터공학부 개설 교과목의 「교과목별 수업 운영 계획」을 붙임과 같이 안내합니다.</string>
