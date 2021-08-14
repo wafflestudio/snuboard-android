@@ -65,6 +65,17 @@
             app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/item_notice_noti" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cat_noti"
+            app:view_visibility_string="@{viewModel.allNoticeNotis.empty ? `visible`: `gone`}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/placeholder_image" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
