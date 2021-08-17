@@ -69,7 +69,16 @@ constructor(
                 .subscribe({
                     when (it) {
                         is User -> {
-                            _navigateToAuthActivity.value = Event(Unit)
+                            fcmTopicUseCase.unsubscribeAll().continueWith {
+                                if(it.isSuccessful)
+                                    _navigateToAuthActivity.value = Event(Unit)
+                                else {
+                                    SingleEvent.triggerToast.value = Event(
+                                        "심각한 오류가 발생했습니다. 앱을 재설치해주세요."
+                                    )
+                                }
+                            }
+
                         }
                         is ErrorResponse -> {
                             SingleEvent.triggerToast.value = Event(it.message)

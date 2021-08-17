@@ -25,6 +25,7 @@ import com.wafflestudio.snuboard.databinding.ActivityMainBinding
 import com.wafflestudio.snuboard.databinding.DialogSignoutBinding
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.ACCESS_TOKEN_KEY
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.REFRESH_TOKEN_KEY
+import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.presentation.MainPageConst.DEPT
 import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
@@ -34,8 +35,10 @@ import com.wafflestudio.snuboard.presentation.info.NotificationListActivity
 import com.wafflestudio.snuboard.presentation.info.TeamInfoActivity
 import com.wafflestudio.snuboard.presentation.info.VersionInfoActivity
 import com.wafflestudio.snuboard.utils.EmailUtils
+import com.wafflestudio.snuboard.utils.Event
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -46,6 +49,9 @@ class MainActivity : AppCompatActivity() {
                 R.layout.activity_main
         ) as ActivityMainBinding
     }
+
+    @Inject
+    private lateinit var fcmTopicUseCase: FCMTopicUseCase
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
@@ -105,8 +111,16 @@ class MainActivity : AppCompatActivity() {
                             remove(REFRESH_TOKEN_KEY)
                             remove(ACCESS_TOKEN_KEY)
                         }
-                        startActivity(AuthActivity.intent(this@MainActivity))
-                        finish()
+                        fcmTopicUseCase.unsubscribeAll().continueWith {
+                            if (it.isSuccessful)
+                                startActivity(AuthActivity.intent(this@MainActivity))
+                            else {
+                                SingleEvent.triggerToast.value = Event(
+                                    "심각한 오류가 발생했습니다. 앱을 재설치해주세요."
+                                )
+                            }
+                            finish()
+                        }
                     }
                     R.id.group3_item2 -> {
                         CustomAlertDialog(mainActivityViewModel)

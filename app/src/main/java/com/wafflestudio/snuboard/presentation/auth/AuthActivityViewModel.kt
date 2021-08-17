@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.preference.PreferenceManager
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.domain.model.User
+import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.domain.usecase.LoginUseCase
 import com.wafflestudio.snuboard.domain.usecase.SignUpUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
@@ -26,6 +27,7 @@ class AuthActivityViewModel
 constructor(
         private val signUpUseCase: SignUpUseCase,
         private val loginUseCase: LoginUseCase,
+        private val fcmTopicUseCase: FCMTopicUseCase,
         @ApplicationContext appContext: Context,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -100,6 +102,7 @@ constructor(
                     .subscribe({
                         when (it) {
                             is User -> {
+                                fcmTopicUseCase.subscribeAll()
                                 _navigateToMainActivity.value = Event(Unit)
                             }
                             is ErrorResponse -> {
