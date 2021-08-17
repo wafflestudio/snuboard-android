@@ -8,6 +8,7 @@ import com.wafflestudio.snuboard.data.room.NoticeNoti
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -66,11 +67,16 @@ constructor(
     fun unsubscribeAll(): Task<Void> {
         return FirebaseMessaging.getInstance().deleteToken()
     }
-    fun subscribeAll(): Single<Any> {
-        val fcmToken: String = FirebaseMessaging.getInstance().token.result ?: throw RuntimeException("Invalid token")
 
-        return userRepository
-            .subscribeToMyFCMTopics(fcmToken)
-            .observeOn(AndroidSchedulers.mainThread())
+    fun subscribeAll(): Task<Void> {
+        return FirebaseMessaging.getInstance().token.continueWith {
+            val fcmToken = it.result ?: throw RuntimeException()
+            userRepository
+                .subscribeToMyFCMTopics(fcmToken)
+                .observeOn(AndroidSchedulers.mainThread())
+            null
+        }
+
+
     }
 }

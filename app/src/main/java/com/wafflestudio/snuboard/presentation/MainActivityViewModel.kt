@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Task
 import com.wafflestudio.snuboard.domain.model.User
 import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetMyInfoUseCase
@@ -91,6 +92,10 @@ constructor(
                 }, {
                     Timber.e(it)
                 })
+    }
+
+    fun unSubscribe(): Task<Void> {
+        return fcmTopicUseCase.unsubscribeAll()
     }
 
 }
