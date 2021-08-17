@@ -50,9 +50,6 @@ class MainActivity : AppCompatActivity() {
         ) as ActivityMainBinding
     }
 
-    @Inject
-    private lateinit var fcmTopicUseCase: FCMTopicUseCase
-
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                             remove(REFRESH_TOKEN_KEY)
                             remove(ACCESS_TOKEN_KEY)
                         }
-                        fcmTopicUseCase.unsubscribeAll().continueWith {
+                        mainActivityViewModel.unSubscribe().continueWith {
                             if (it.isSuccessful)
                                 startActivity(AuthActivity.intent(this@MainActivity))
                             else {
