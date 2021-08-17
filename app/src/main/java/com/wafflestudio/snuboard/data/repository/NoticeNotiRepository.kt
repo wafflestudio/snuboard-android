@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
+import com.wafflestudio.snuboard.data.retrofit.service.UserService
 import com.wafflestudio.snuboard.data.room.NoticeNoti
 import com.wafflestudio.snuboard.data.room.NoticeNotiDao
 import com.wafflestudio.snuboard.di.SharedPreferenceConst

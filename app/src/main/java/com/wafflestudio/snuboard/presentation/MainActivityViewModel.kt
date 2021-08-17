@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.wafflestudio.snuboard.domain.model.User
+import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetMyInfoUseCase
 import com.wafflestudio.snuboard.domain.usecase.SignOutUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
@@ -20,6 +21,7 @@ class MainActivityViewModel
 constructor(
         private val getMyInfoUseCase: GetMyInfoUseCase,
         private val signOutUseCase: SignOutUseCase,
+        private val fcmTopicUseCase: FCMTopicUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _isDrawerOpen = MutableLiveData(false)

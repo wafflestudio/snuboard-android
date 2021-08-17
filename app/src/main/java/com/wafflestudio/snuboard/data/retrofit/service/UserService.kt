@@ -55,4 +55,16 @@ interface UserService {
 
     @DELETE("users/me/")
     fun deleteUserMe(): Single<Response<UserDto>>
+
+    @FormUrlEncoded
+    @POST("users/me/fcm/topics/")
+    fun subscribeToMyFCMTopics(
+        @Field("token") fcmToken: String,
+    ): Single<Response<Void>>
+
+    @FormUrlEncoded
+    @DELETE("users/me/fcm/topics/")
+    fun unsubscribeFromMyFCMTopics(
+        @Field("token") fcmToken: String,
+    ): Single<Response<Void>>
 }

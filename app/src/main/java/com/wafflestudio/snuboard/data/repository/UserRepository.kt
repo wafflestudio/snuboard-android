@@ -22,6 +22,10 @@ interface UserRepository {
     fun getUserMe(): Single<Any>
 
     fun deleteUserMe(): Single<Any>
+
+    fun subscribeToMyFCMTopics(fcmToken: String): Single<Any>
+
+    fun unsubscribeFromMyFCMTopics(fcmToken: String): Single<Any>
 }
 
 @Singleton
@@ -95,6 +99,22 @@ constructor(
                     } else
                         return@map parseErrorResponse(it.errorBody()!!)
                 }
+    }
+
+    override fun subscribeToMyFCMTopics(fcmToken: String): Single<Any> {
+        return userService.subscribeToMyFCMTopics(fcmToken)
+            .subscribeOn(Schedulers.io())
+            .map {
+                return@map it.isSuccessful
+            }
+    }
+
+    override fun unsubscribeFromMyFCMTopics(fcmToken: String): Single<Any> {
+        return userService.unsubscribeFromMyFCMTopics(fcmToken)
+            .subscribeOn(Schedulers.io())
+            .map {
+                return@map it.isSuccessful
+            }
     }
 
 }
