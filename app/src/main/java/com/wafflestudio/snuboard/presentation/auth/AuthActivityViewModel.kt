@@ -102,10 +102,17 @@ constructor(
                     .subscribe({
                         when (it) {
                             is User -> {
-                                fcmTopicUseCase.subscribeAll().continueWith {
-                                    if (it.isSuccessful)
-                                        _navigateToMainActivity.value = Event(Unit)
-                                    else
+                                fcmTopicUseCase.subscribeAll().continueWith { it2 ->
+                                    val result = it2.result
+                                    if (it2.isSuccessful && (result != null)) {
+                                        result.subscribe { it3 ->
+                                            if (it3 == true)
+                                                _navigateToMainActivity.value = Event(Unit)
+                                            else
+                                                triggerToast.value =
+                                                    Event("심각한 오류가 발생했습니다. 앱을 재설치해주세요.")
+                                        }
+                                    } else
                                         triggerToast.value = Event("심각한 오류가 발생했습니다. 앱을 재설치해주세요.")
                                 }
                             }

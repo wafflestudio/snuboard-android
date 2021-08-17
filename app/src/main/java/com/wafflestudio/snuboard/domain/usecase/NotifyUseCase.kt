@@ -68,13 +68,12 @@ constructor(
         return FirebaseMessaging.getInstance().deleteToken()
     }
 
-    fun subscribeAll(): Task<Void> {
+    fun subscribeAll(): Task<Single<Any>> {
         return FirebaseMessaging.getInstance().token.continueWith {
             val fcmToken = it.result ?: throw RuntimeException()
             userRepository
                 .subscribeToMyFCMTopics(fcmToken)
                 .observeOn(AndroidSchedulers.mainThread())
-            null
         }
 
 

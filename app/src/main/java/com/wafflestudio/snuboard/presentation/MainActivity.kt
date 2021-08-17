@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
                             remove(REFRESH_TOKEN_KEY)
                             remove(ACCESS_TOKEN_KEY)
                         }
-                        mainActivityViewModel.unSubscribe().continueWith {
-                            if (it.isSuccessful)
+                        mainActivityViewModel.unSubscribe().continueWith { it2 ->
+                            if (it2.isSuccessful)
                                 startActivity(AuthActivity.intent(this@MainActivity))
                             else {
                                 SingleEvent.triggerToast.value = Event(
