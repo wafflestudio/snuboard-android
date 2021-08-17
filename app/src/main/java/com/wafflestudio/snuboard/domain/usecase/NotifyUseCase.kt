@@ -1,6 +1,7 @@
 package com.wafflestudio.snuboard.domain.usecase
 
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
+import com.wafflestudio.snuboard.data.repository.UserRepository
 import com.wafflestudio.snuboard.data.room.NoticeNoti
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -51,5 +52,23 @@ constructor(
     private fun doesNoticeExist(id: Int): Single<Boolean> {
         return noticeNotiRepository.doesNoticeExist(id)
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+}
+
+@Singleton
+class FCMTopicUseCase
+@Inject
+constructor(
+    private val userRepository: UserRepository
+) {
+    fun unsubscribeAll(fcmToken: String): Single<Any> {
+        return userRepository
+            .unsubscribeFromMyFCMTopics(fcmToken)
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+    fun subscribeAll(fcmToken: String): Single<Any> {
+        return userRepository
+            .subscribeToMyFCMTopics(fcmToken)
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }
