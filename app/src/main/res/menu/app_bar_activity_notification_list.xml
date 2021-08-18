@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/noti_button"
-        android:icon="@drawable/ic_notifications_active"
-        android:title="@string/fragment_department_home_app_bar_notification"
-        app:showAsAction="ifRoom" />
-</menu>
