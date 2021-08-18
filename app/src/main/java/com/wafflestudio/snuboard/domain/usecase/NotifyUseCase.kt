@@ -8,7 +8,6 @@ import com.wafflestudio.snuboard.data.room.NoticeNoti
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,6 +49,11 @@ constructor(
                         throw error("error")
                     }
                 }
+    }
+
+    fun deleteAllNoticeNotis(): Completable {
+        return noticeNotiRepository.deleteAllNoticeNotis()
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun doesNoticeExist(id: Int): Single<Boolean> {

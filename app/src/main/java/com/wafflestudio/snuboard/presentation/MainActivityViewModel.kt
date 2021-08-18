@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task
 import com.wafflestudio.snuboard.domain.model.User
 import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.domain.usecase.GetMyInfoUseCase
+import com.wafflestudio.snuboard.domain.usecase.NotifyUseCase
 import com.wafflestudio.snuboard.domain.usecase.SignOutUseCase
 import com.wafflestudio.snuboard.utils.ErrorResponse
 import com.wafflestudio.snuboard.utils.Event
@@ -22,6 +23,7 @@ class MainActivityViewModel
 constructor(
         private val getMyInfoUseCase: GetMyInfoUseCase,
         private val signOutUseCase: SignOutUseCase,
+        private val notifyUseCase: NotifyUseCase,
         private val fcmTopicUseCase: FCMTopicUseCase,
         private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -71,11 +73,11 @@ constructor(
                     when (it) {
                         is User -> {
                             fcmTopicUseCase.unsubscribeAll().continueWith {
-                                if(it.isSuccessful)
+                                if (it.isSuccessful)
                                     _navigateToAuthActivity.value = Event(Unit)
                                 else {
                                     SingleEvent.triggerToast.value = Event(
-                                        "심각한 오류가 발생했습니다. 앱을 재설치해주세요."
+                                            "심각한 오류가 발생했습니다. 앱을 재설치해주세요."
                                     )
                                 }
                             }
@@ -89,6 +91,16 @@ constructor(
                             }
                         }
                     }
+                }, {
+                    Timber.e(it)
+                })
+    }
+
+    fun eraseNotificationList(postWork: () -> Unit = {}) {
+        notifyUseCase
+                .deleteAllNoticeNotis()
+                .subscribe({
+                    postWork()
                 }, {
                     Timber.e(it)
                 })

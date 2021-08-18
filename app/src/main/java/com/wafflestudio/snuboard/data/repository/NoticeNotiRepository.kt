@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
-import com.wafflestudio.snuboard.data.retrofit.service.UserService
 import com.wafflestudio.snuboard.data.room.NoticeNoti
 import com.wafflestudio.snuboard.data.room.NoticeNotiDao
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
@@ -25,6 +24,8 @@ interface NoticeNotiRepository {
     fun deleteNoticeNoti(id: Int): Completable
 
     fun getAllNoticeNotis(): LiveData<List<NoticeNoti>>
+
+    fun deleteAllNoticeNotis(): Completable
 
     fun getIsNotificationActive(): Boolean
 
@@ -60,6 +61,11 @@ constructor(
 
     override fun getAllNoticeNotis(): LiveData<List<NoticeNoti>> {
         return noticeNotiDao.getAllNoticeNotis()
+    }
+
+    override fun deleteAllNoticeNotis(): Completable {
+        return noticeNotiDao.deleteAllNoticeNotis()
+                .subscribeOn(Schedulers.io())
     }
 
     override fun getIsNotificationActive(): Boolean {
