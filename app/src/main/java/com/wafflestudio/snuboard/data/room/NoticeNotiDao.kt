@@ -21,4 +21,7 @@ interface NoticeNotiDao {
 
     @Query("SELECT * FROM notice_noti_table WHERE isDeleted = 0 ORDER BY id DESC ")
     fun getAllNoticeNotis(): LiveData<List<NoticeNoti>>
+
+    @Query("DELETE FROM notice_noti_table")
+    fun deleteAllNoticeNotis(): Completable
 }
