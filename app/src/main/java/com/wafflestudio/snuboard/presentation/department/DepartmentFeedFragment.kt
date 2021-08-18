@@ -1,5 +1,7 @@
 package com.wafflestudio.snuboard.presentation.department
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -60,6 +62,19 @@ class DepartmentFeedFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.app_bar_fragment_department_feed, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.link_button -> {
+                val url = departmentActivityViewModel.tagDepartmentInfo.value?.link
+                url?.let {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+                }
+                return true
+            }
+            else -> false
+        }
     }
 }
 
