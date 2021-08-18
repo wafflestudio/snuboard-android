@@ -8,6 +8,7 @@ import com.wafflestudio.snuboard.data.room.NoticeNoti
 import com.wafflestudio.snuboard.data.room.NoticeNotiDao
 import com.wafflestudio.snuboard.di.SharedPreferenceConst
 import com.wafflestudio.snuboard.di.SharedPreferenceConst.IS_NOTIFICATION_ACTIVE_KEY
+import com.wafflestudio.snuboard.di.SharedPreferenceConst.getDepartmentNotiKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -26,6 +27,10 @@ interface NoticeNotiRepository {
     fun getAllNoticeNotis(): LiveData<List<NoticeNoti>>
 
     fun deleteAllNoticeNotis(): Completable
+
+    fun getIsNotificationActiveWithDepartment(departmentId: Int): Boolean
+
+    fun setIsNotificationActiveWithDepartment(departmentId: Int, bool: Boolean)
 
     fun getIsNotificationActive(): Boolean
 
@@ -66,6 +71,23 @@ constructor(
     override fun deleteAllNoticeNotis(): Completable {
         return noticeNotiDao.deleteAllNoticeNotis()
                 .subscribeOn(Schedulers.io())
+    }
+
+    override fun getIsNotificationActiveWithDepartment(departmentId: Int): Boolean {
+        var result = pref.getString(getDepartmentNotiKey(departmentId), null)
+        if (result == null) {
+            setIsNotificationActiveWithDepartment(departmentId, true)
+            result = true.toString()
+        }
+        if (pref.getString(SharedPreferenceConst.ACCESS_TOKEN_KEY, "none") == "none")
+            result = false.toString()
+        return result.toBoolean()
+    }
+
+    override fun setIsNotificationActiveWithDepartment(departmentId: Int, bool: Boolean) {
+        pref.edit {
+            putString(getDepartmentNotiKey(departmentId), bool.toString())
+        }
     }
 
     override fun getIsNotificationActive(): Boolean {

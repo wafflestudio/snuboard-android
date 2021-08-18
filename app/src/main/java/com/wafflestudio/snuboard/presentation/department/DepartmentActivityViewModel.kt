@@ -22,19 +22,25 @@ import javax.inject.Inject
 class DepartmentActivityViewModel
 @Inject
 constructor(
-    private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
-    private val postFollowingTagUseCase: PostFollowingTagUseCase,
-    private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
-    private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
-    private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
-    private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
-    @ApplicationContext appContext: Context,
-    private val savedStateHandle: SavedStateHandle
+        private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
+        private val postFollowingTagUseCase: PostFollowingTagUseCase,
+        private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
+        private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
+        private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
+        private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
+        private val notifyUseCase: NotifyUseCase,
+        @ApplicationContext appContext: Context,
+        private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val pref = PreferenceManager.getDefaultSharedPreferences(
-        appContext
+            appContext
     )
+
+    // Notification Status
+    private val _isNotificationActive = MutableLiveData<Boolean>(false)
+    val isNotificationActive: LiveData<Boolean>
+        get() = _isNotificationActive
 
     // Loading Status
     private val _isNewLoading = MutableLiveData<Boolean>(false)
@@ -78,46 +84,65 @@ constructor(
     private val paginationLimit = 10
     private var paginationCursor: String? = null
 
+    // Notification Functions
+    private fun getNotification() {
+        _isNotificationActive.value =
+                notifyUseCase.getIsNotificationActiveWithDepartment(
+                        tagDepartmentInfo.value!!.id
+                )
+    }
+
+    fun toggleNotification() {
+        _isNotificationActive.value?.let {
+            notifyUseCase.setIsNotificationActiveWithDepartment(
+                    tagDepartmentInfo.value!!.id,
+                    !it
+            )
+            _isNotificationActive.value = !it
+        }
+    }
+
     // Department Functions
     fun getTagDepartmentInfo(departmentId: Int) {
         getHomeTagString(departmentId)
         getTagDepartmentInfoUseCase
-            .getTagDepartmentInfo(departmentId)
-            .subscribe({
-                when (it) {
-                    is TagDepartment -> {
-                        var homeTags = listOf<Tag>()
-                        tagDepartmentInfo.value?.also { org ->
-                            homeTags = org.homeTags
-                        } ?: run {
-                            homeTags = it.tags.map { tag ->
-                                if (tag.content in homeTagString) {
-                                    Tag(tag.content, DepartmentColor.TAG_SELECTED_COLOR)
-                                } else {
-                                    Tag(tag.content, DepartmentColor.TAG_COLOR)
+                .getTagDepartmentInfo(departmentId)
+                .subscribe({
+                    when (it) {
+                        is TagDepartment -> {
+                            var homeTags = listOf<Tag>()
+                            tagDepartmentInfo.value?.also { org ->
+                                homeTags = org.homeTags
+                            } ?: run {
+                                homeTags = it.tags.map { tag ->
+                                    if (tag.content in homeTagString) {
+                                        Tag(tag.content, DepartmentColor.TAG_SELECTED_COLOR)
+                                    } else {
+                                        Tag(tag.content, DepartmentColor.TAG_COLOR)
+                                    }
                                 }
                             }
-                        }
-                        val tagDepartmentFull = TagDepartmentFull(
-                            it.id,
-                            it.name,
-                            it.link,
-                            it.tags,
-                            homeTags,
-                            it.departmentColor
-                        )
+                            val tagDepartmentFull = TagDepartmentFull(
+                                    it.id,
+                                    it.name,
+                                    it.link,
+                                    it.tags,
+                                    homeTags,
+                                    it.departmentColor
+                            )
 
-                        _tagDepartmentInfo.value = tagDepartmentFull
-                        getNotices()
+                            _tagDepartmentInfo.value = tagDepartmentFull
+                            getNotices()
+                            getNotification()
+                        }
+                        is ErrorResponse -> {
+                            SingleEvent.triggerToast.value = Event(it.message)
+                            Timber.e(it.message)
+                        }
                     }
-                    is ErrorResponse -> {
-                        SingleEvent.triggerToast.value = Event(it.message)
-                        Timber.e(it.message)
-                    }
-                }
-            }, {
-                Timber.e(it)
-            })
+                }, {
+                    Timber.e(it)
+                })
     }
 
     fun changeDepartmentColor(departmentColor: DepartmentColor) {

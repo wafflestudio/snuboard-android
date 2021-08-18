@@ -107,6 +107,70 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/noti_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white"
+                    app:contentPadding="12dp"
+                    app:cardCornerRadius="8dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/noti_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/noti_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="4dp"
+                            android:contentDescription="@string/image_fragment_dept_feed_noti"
+                            android:src="@drawable/ic_notifications_none"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/noti_name"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="@color/gray1" />
+
+                        <TextView
+                            android:id="@+id/noti_name"
+                            style="@style/NotoSansBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_view_fragement_dept_feed_noti"
+                            android:textColor="@color/gray1"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/noti_icon"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/noti_status"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="4dp"
+                            android:onClick="@{() -> activityViewModel.toggleNotification()}"
+                            android:contentDescription="@string/image_fragment_dept_feed_noti"
+                            android:src="@{activityViewModel.isNotificationActive ? @drawable/ic_notifications_active : @drawable/ic_notifications_off}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toEndOf="@id/noti_name"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/colors_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
