@@ -154,4 +154,6 @@ SNUBOARD 담당자&lt;br&gt;
     <string name="button_sign_out">이해했습니다. 탈퇴를 진행해주세요.</string>
     <string name="notification_list">알림 목록</string>
     <string name="fragment_department_home_app_bar_notification">알림</string>
+    <string name="image_fragment_dept_feed_noti">Notification</string>
+    <string name="text_view_fragement_dept_feed_noti">알림</string>
 </resources>

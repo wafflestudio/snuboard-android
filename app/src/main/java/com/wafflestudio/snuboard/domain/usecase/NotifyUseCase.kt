@@ -56,6 +56,14 @@ constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getIsNotificationActiveWithDepartment(departmentId: Int): Boolean {
+        return noticeNotiRepository.getIsNotificationActiveWithDepartment(departmentId)
+    }
+
+    fun setIsNotificationActiveWithDepartment(departmentId: Int, bool: Boolean) {
+        noticeNotiRepository.setIsNotificationActiveWithDepartment(departmentId, bool)
+    }
+
     private fun doesNoticeExist(id: Int): Single<Boolean> {
         return noticeNotiRepository.doesNoticeExist(id)
                 .observeOn(AndroidSchedulers.mainThread())
