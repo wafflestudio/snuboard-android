@@ -26,17 +26,6 @@ constructor(
 
     val allNoticeNotis: LiveData<List<NoticeNoti>> = noticeNotiRepository.getAllNoticeNotis()
 
-    fun getNotification() {
-        _isNotificationActive.value = noticeNotiRepository.getIsNotificationActive()
-    }
-
-    fun toggleNotification() {
-        _isNotificationActive.value?.let {
-            noticeNotiRepository.setIsNotificationActive(!it)
-            _isNotificationActive.value = !it
-        }
-    }
-
     fun deleteNoticeNoti(id: Int): Completable {
         return notifyUseCase.deleteNoticeNoti(id)
     }

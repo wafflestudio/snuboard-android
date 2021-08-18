@@ -15,6 +15,4 @@ object SharedPreferenceConst {
     private const val DEPARTMENT_NOTI_KEY_PREFIX = "department_noti_key_"
     fun getDepartmentNotiKey(departmentId: Int): String =
             DEPARTMENT_NOTI_KEY_PREFIX + departmentId.toString()
-
-    const val IS_NOTIFICATION_ACTIVE_KEY = "is_notification_active_key"
 }

@@ -3,12 +3,9 @@ package com.wafflestudio.snuboard.presentation.info
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +31,6 @@ class NotificationListActivity : AppCompatActivity() {
         notificationListActivityViewModel.isNotificationActive.observe(this) {
             invalidateOptionsMenu()
         }
-        notificationListActivityViewModel.getNotification()
         binding.run {
             lifecycleOwner = this@NotificationListActivity
             viewModel = notificationListActivityViewModel
@@ -74,36 +70,9 @@ class NotificationListActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_bar_activity_notification_list, menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (notificationListActivityViewModel.isNotificationActive.value == true) {
-            val icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_notifications_active, null)
-            menu?.findItem(R.id.noti_button)?.icon = icon
-        } else {
-            val icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_notifications_off, null)
-            menu?.findItem(R.id.noti_button)?.icon = icon
-        }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.noti_button ->
-                notificationListActivityViewModel.toggleNotification()
-            else ->
-                return false
-        }
-        return true
     }
 
     override fun finish() {

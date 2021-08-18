@@ -45,22 +45,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val departmentId = get("departmentId")?.toInt()
                 val tags = get("tags").toString()
 
-                if (noticeNotiRepository.getIsNotificationActive()) {
-                    if (noticeId != null && departmentId != null) {
-                        if (noticeNotiRepository.getIsNotificationActiveWithDepartment(departmentId)) {
-                            notificationInfo["body"]?.let {
-                                notifyUseCase.addNoticeNoti(
-                                        noticeId,
-                                        it,
-                                        departmentId,
-                                        departmentName,
-                                        preview,
-                                        tags
-                                ) { sendNotification(notificationInfo, noticeId, preview) }
-                                        .subscribe({}, { e ->
-                                            Timber.e(e)
-                                        })
-                            }
+                if (noticeId != null && departmentId != null) {
+                    if (noticeNotiRepository.getIsNotificationActiveWithDepartment(departmentId)) {
+                        notificationInfo["body"]?.let {
+                            notifyUseCase.addNoticeNoti(
+                                    noticeId,
+                                    it,
+                                    departmentId,
+                                    departmentName,
+                                    preview,
+                                    tags
+                            ) { sendNotification(notificationInfo, noticeId, preview) }
+                                    .subscribe({}, { e ->
+                                        Timber.e(e)
+                                    })
                         }
                     }
                 }
