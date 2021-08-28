@@ -172,6 +172,7 @@ class CustomAlertDialog(
         binding.run {
             val email = mainActivityViewModel.myInfo.value!!.email
             val content = String.format(resources.getString(R.string.dialog_signout_content), """<b>$email</b>""")
+            @Suppress("DEPRECATION")
             alertContent.text = Html.fromHtml(content)
             confirmEmail.hint = email
             dismissButton.setOnClickListener {
