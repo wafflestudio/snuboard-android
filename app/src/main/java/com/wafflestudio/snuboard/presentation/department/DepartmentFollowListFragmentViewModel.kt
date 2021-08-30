@@ -107,7 +107,11 @@ constructor(
 
     fun toggleCollegeDepartment(collegeName: String) {
         val tmpIsCollegeDepartmentVisible = isCollegeDepartmentsVisible.value!!.toMutableMap()
-        tmpIsCollegeDepartmentVisible[collegeName] = !tmpIsCollegeDepartmentVisible[collegeName]!!
-        _isCollegeDepartmentsVisible.value = tmpIsCollegeDepartmentVisible
+        try {
+            tmpIsCollegeDepartmentVisible[collegeName] = !tmpIsCollegeDepartmentVisible[collegeName]!!
+            _isCollegeDepartmentsVisible.value = tmpIsCollegeDepartmentVisible
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
     }
 }
