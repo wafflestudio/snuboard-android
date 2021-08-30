@@ -102,7 +102,9 @@ class NoticeFeedFragment : Fragment() {
             updateNotice.observe(viewLifecycleOwner) {
                 observeUpdateNotice(it)
             }
-            getNotices()
+            getNotices {
+                mainActivityViewModel.navigateToAuthActivity()
+            }
         }
         return binding.root
     }

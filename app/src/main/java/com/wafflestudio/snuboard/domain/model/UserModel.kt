@@ -7,10 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 data class User(
-        val id: Int,
-        val username: String,
-        val email: String,
-        val keywords: List<String>
+        val id: Int
 )
 
 data class Member(

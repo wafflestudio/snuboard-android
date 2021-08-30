@@ -1,7 +1,5 @@
 package com.wafflestudio.snuboard.domain.usecase
 
-import com.google.android.gms.tasks.Task
-import com.google.firebase.messaging.FirebaseMessaging
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
 import com.wafflestudio.snuboard.data.repository.UserRepository
 import com.wafflestudio.snuboard.data.room.NoticeNoti
@@ -76,18 +74,10 @@ class FCMTopicUseCase
 constructor(
     private val userRepository: UserRepository
 ) {
-    fun unsubscribeAll(): Task<Void> {
-        return FirebaseMessaging.getInstance().deleteToken()
-    }
 
-    fun subscribeAll(): Task<Single<Any>> {
-        return FirebaseMessaging.getInstance().token.continueWith {
-            val fcmToken = it.result ?: throw RuntimeException()
-            userRepository
+    fun subscribeAll(fcmToken: String): Single<Any> {
+        return userRepository
                 .subscribeToMyFCMTopics(fcmToken)
                 .observeOn(AndroidSchedulers.mainThread())
-        }
-
-
     }
 }

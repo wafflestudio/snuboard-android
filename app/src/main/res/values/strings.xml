@@ -25,7 +25,7 @@
     <string name="app_explanation">모든 공지사항을 스누보드에서</string>
     <string name="textview_fragment_login_username">Username</string>
     <string name="textview_fragment_login_password">Password</string>
-    <string name="button_fragment_login_login">로그인</string>
+    <string name="button_fragment_login_start">시작하기</string>
     <string name="button_fragment_login_sign_up">회원가입</string>
     <string name="textview_fragment_login_confirm_password">Confirm Password</string>
     <string name="textview_fragment_login_account_explanation"><u>계정이 왜 필요한가요?</u></string>

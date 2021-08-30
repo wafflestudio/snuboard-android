@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.wafflestudio.snuboard.R
 import com.wafflestudio.snuboard.databinding.FragmentPolicyAgreeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +33,7 @@ class PolicyAgreeFragment : Fragment() {
             lifecycleOwner = this@PolicyAgreeFragment
 
             agreeButton.setOnClickListener {
-                findNavController().navigate(R.id.action_policyAgreeFragment_to_signUpFragment)
+                authActivityViewModel.signUp()
             }
         }
 

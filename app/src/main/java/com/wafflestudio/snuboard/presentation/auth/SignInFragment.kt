@@ -33,11 +33,8 @@ class SignInFragment : Fragment() {
         binding.run {
             activityViewModel = authActivityViewModel
             lifecycleOwner = this@SignInFragment
-            signUpButton.setOnClickListener {
-                findNavController().navigate(R.id.action_signInFragment_to_policyAgreeFragment)
-            }
             loginButton.setOnClickListener {
-                findNavController().navigate(R.id.action_signInFragment_to_login_fragment)
+                findNavController().navigate(R.id.action_signInFragment_to_policyAgreeFragment)
             }
         }
         return binding.root
