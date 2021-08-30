@@ -57,6 +57,7 @@
             android:background="@color/background"
             android:paddingTop="5dp"
             android:clipToPadding="false"
+            android:scrollbars="vertical"
             app:notice_noti_items="@{viewModel.allNoticeNotis}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

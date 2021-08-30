@@ -113,4 +113,10 @@ class NoticeFeedFragment : Fragment() {
         super.onPause()
         noticeFeedFragmentViewModel.updateNoticesOfScrapIfNeeded()
     }
+
+    fun refreshFromMainActivity() {
+        binding.run {
+            recyclerView.smoothScrollToPosition(0)
+        }
+    }
 }

@@ -97,6 +97,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="35dp"
                 android:clipToPadding="false"
+                android:scrollbars="vertical"
                 app:bottom_padding="@{fragmentViewModel.isPageEnd ? 5: 35}"
                 app:notice_items="@{fragmentViewModel.notices}"
                 app:layout_constraintBottom_toBottomOf="parent"

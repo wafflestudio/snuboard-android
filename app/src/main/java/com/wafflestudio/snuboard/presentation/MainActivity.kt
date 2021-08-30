@@ -19,6 +19,7 @@ import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
 import com.wafflestudio.snuboard.presentation.info.NotificationListActivity
 import com.wafflestudio.snuboard.presentation.info.TeamInfoActivity
 import com.wafflestudio.snuboard.presentation.info.VersionInfoActivity
+import com.wafflestudio.snuboard.presentation.notice.NoticeFeedFragment
 import com.wafflestudio.snuboard.utils.EmailUtils
 import com.wafflestudio.snuboard.utils.SingleEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +53,14 @@ class MainActivity : AppCompatActivity() {
             }
             bottomNavigation.setOnNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.notice_feed_fragment -> pager.setCurrentItem(NOTICE, true)
+                    R.id.notice_feed_fragment -> {
+                        if (pager.currentItem == NOTICE) {
+                            val noticeFeedFragment = supportFragmentManager.fragments[pager.currentItem]
+                            (noticeFeedFragment as NoticeFeedFragment).refreshFromMainActivity()
+                        } else
+                            pager.setCurrentItem(NOTICE, true)
+
+                    }
                     R.id.department_follow_list_fragment -> pager.setCurrentItem(DEPT, true)
                     R.id.saved_fragment -> pager.setCurrentItem(SAVED, true)
                     else -> {

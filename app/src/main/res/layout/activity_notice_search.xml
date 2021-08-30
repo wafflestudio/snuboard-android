@@ -158,6 +158,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="35dp"
                 android:clipToPadding="false"
+                android:scrollbars="vertical"
                 app:bottom_padding="@{viewModel.isPageEnd ? 5: 35}"
                 app:notice_items="@{viewModel.notices}"
                 app:layout_constraintBottom_toBottomOf="parent"
