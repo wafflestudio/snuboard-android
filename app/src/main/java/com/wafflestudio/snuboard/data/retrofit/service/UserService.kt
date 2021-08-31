@@ -14,7 +14,6 @@ interface UserService {
             @Field("token") token: String
     ): Single<Response<UserTokenDto>>
 
-    @FormUrlEncoded
     @POST("users/auth/token/")
     fun authWithToken(
             @Header("Authorization") refreshToken: String
