@@ -59,9 +59,9 @@ class RetrofitModule {
         Retrofit.Builder()
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.TEST_SERVER_BASE_URL)
-            .client(okHttpClient)
-            .build()
+                .baseUrl(BuildConfig.SERVER_BASE_URL)
+                .client(okHttpClient)
+                .build()
 
     @Provides
     @Singleton
@@ -164,8 +164,8 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
     private val userService: UserService = Retrofit.Builder()
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.TEST_SERVER_BASE_URL)
-        .client(client)
-        .build()
-        .create(UserService::class.java)
+            .baseUrl(BuildConfig.SERVER_BASE_URL)
+            .client(client)
+            .build()
+            .create(UserService::class.java)
 }
