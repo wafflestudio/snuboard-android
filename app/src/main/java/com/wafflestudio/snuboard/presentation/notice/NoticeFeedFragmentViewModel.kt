@@ -48,7 +48,7 @@ constructor(
     private var paginationCursor: String? = null
     private var isHeartToggled = false
 
-    fun getNotices() {
+    fun getNotices(onTokenDamaged: (() -> Unit) = {}) {
         val tmpNoticeList = _notices.value?.toMutableList() ?: mutableListOf()
         if (paginationCursor == EOP) {
             _isPageEnd.value = true
@@ -73,14 +73,18 @@ constructor(
                                 it.nextCursor
                         }
                         is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
                             Timber.e(it.message)
+                            if (it.statusCode == 401) {
+                                onTokenDamaged()
+                            } else {
+                                SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
+                            }
                         }
                     }
                 }, {
                     _isNewLoading.value = false
                     _isAddLoading.value = false
-                    SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
+                    SingleEvent.triggerToast.value = Event("앱 내부 에러가 발생했습니다")
                     Timber.e(it)
                 })
     }

@@ -57,11 +57,11 @@ class RetrofitModule {
         okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.SERVER_BASE_URL)
-            .client(okHttpClient)
-            .build()
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BuildConfig.SERVER_BASE_URL)
+                .client(okHttpClient)
+                .build()
 
     @Provides
     @Singleton
@@ -123,7 +123,7 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
         if (response.code == 401 && refreshToken != null) {
             val auth = "Bearer $refreshToken"
             val call: Call<UserTokenDto> =
-                    userService.authWithToken("refresh_token", auth)
+                    userService.authWithToken(auth)
             val tokenResponse: Response<UserTokenDto> = call.execute()
             if (tokenResponse.isSuccessful) {
                 var newRefreshToken: String? = null
@@ -162,10 +162,10 @@ constructor(@ApplicationContext appContext: Context) : Authenticator {
         .build()
 
     private val userService: UserService = Retrofit.Builder()
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BuildConfig.SERVER_BASE_URL)
-        .client(client)
-        .build()
-        .create(UserService::class.java)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BuildConfig.SERVER_BASE_URL)
+            .client(client)
+            .build()
+            .create(UserService::class.java)
 }

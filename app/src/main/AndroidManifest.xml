@@ -7,7 +7,7 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_app_icon_v1"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_icon_v1_round"
@@ -15,7 +15,7 @@
         android:theme="@style/Theme.SNUBoard"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".presentation.info.NotificationListActivity"></activity>
+        <activity android:name=".presentation.info.NotificationListActivity" />
         <activity android:name=".presentation.info.TeamInfoActivity" />
         <activity android:name=".presentation.info.VersionInfoActivity" />
         <activity android:name=".presentation.auth.PolicyReadActivity" />

@@ -15,13 +15,7 @@ import javax.inject.Singleton
 
 interface UserRepository {
 
-    fun login(username: String, password: String): Single<Any>
-
-    fun signUp(username: String, password: String, email: String): Single<Any>
-
-    fun getUserMe(): Single<Any>
-
-    fun deleteUserMe(): Single<Any>
+    fun signUp(token: String): Single<Any>
 
     fun subscribeToMyFCMTopics(fcmToken: String): Single<Any>
 
@@ -41,25 +35,8 @@ constructor(
             appContext
     )
 
-    override fun login(username: String, password: String): Single<Any> {
-        return userService.authWithPassword("password", username, password)
-            .subscribeOn(Schedulers.io())
-            .map {
-                if (it.isSuccessful) {
-                    it.body()?.let { it1 ->
-                        pref.edit {
-                            putString(SharedPreferenceConst.REFRESH_TOKEN_KEY, it1.refreshToken)
-                            putString(SharedPreferenceConst.ACCESS_TOKEN_KEY, it1.accessToken)
-                        }
-                        return@map userMapper.mapFromUserTokenDto(it1)
-                    }
-                } else
-                    return@map parseErrorResponse(it.errorBody()!!)
-            }
-    }
-
-    override fun signUp(username: String, password: String, email: String): Single<Any> {
-        return userService.postUser(username, password, email)
+    override fun signUp(token: String): Single<Any> {
+        return userService.postUser(token)
                 .subscribeOn(Schedulers.io())
                 .map {
                     if (it.isSuccessful) {
@@ -73,32 +50,6 @@ constructor(
                 } else
                     return@map parseErrorResponse(it.errorBody()!!)
             }
-    }
-
-    override fun getUserMe(): Single<Any> {
-        return userService.getUserMe()
-                .subscribeOn(Schedulers.io())
-                .map {
-                    if (it.isSuccessful) {
-                        it.body()?.let { it1 ->
-                            return@map userMapper.mapFromUserDto(it1)
-                        }
-                    } else
-                        return@map parseErrorResponse(it.errorBody()!!)
-                }
-    }
-
-    override fun deleteUserMe(): Single<Any> {
-        return userService.deleteUserMe()
-                .subscribeOn(Schedulers.io())
-                .map {
-                    if (it.isSuccessful) {
-                        it.body()?.let { it1 ->
-                            return@map userMapper.mapFromUserDto(it1)
-                        }
-                    } else
-                        return@map parseErrorResponse(it.errorBody()!!)
-                }
     }
 
     override fun subscribeToMyFCMTopics(fcmToken: String): Single<Any> {

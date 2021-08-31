@@ -56,6 +56,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="35dp"
                 android:clipToPadding="false"
+                android:scrollbars="vertical"
                 app:bottom_padding="@{activityViewModel.isPageEnd ? 5: 35}"
                 app:filter_notice_items="@{activityViewModel.notices}"
                 app:layout_constraintBottom_toBottomOf="parent"

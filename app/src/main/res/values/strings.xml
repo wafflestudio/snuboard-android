@@ -25,7 +25,7 @@
     <string name="app_explanation">모든 공지사항을 스누보드에서</string>
     <string name="textview_fragment_login_username">Username</string>
     <string name="textview_fragment_login_password">Password</string>
-    <string name="button_fragment_login_login">로그인</string>
+    <string name="button_fragment_login_start">시작하기</string>
     <string name="button_fragment_login_sign_up">회원가입</string>
     <string name="textview_fragment_login_confirm_password">Confirm Password</string>
     <string name="textview_fragment_login_account_explanation"><u>계정이 왜 필요한가요?</u></string>
@@ -72,7 +72,7 @@ WaffleStudio는 개인정보 보호 관련 주요 법률인 개인정보 보호�
 &lt;br&gt;
 개인정보의 수집범위 및 수집방법&lt;br&gt;
 1. SNUBOARD 회원가입 등 서비스 제공 및 계약이행을 위해 아래와 같이 개인정보를 수집할 수 있습니다.&lt;br&gt;
-- 아이디, 비밀번호, 이메일 주소&lt;br&gt;
+- 알림 기능을 위한 기기 토큰&lt;br&gt;
 2. 서비스 이용과정에서 아래와 같은 정보들이 생성되어 수집될 수 있습니다.&lt;br&gt;
 (1) PC : PC MacAddress, PC 사양정보, 브라우저 정보, 기타 서비스 이용 시 사용되는 프로그램 버전 정보&lt;br&gt;
 (2) 휴대전화(스마트폰) &amp; 스마트OS 탑재 모바일 기기(Tablet PC 등) : 모델명, 기기별 고유번호(UDID,IMEI 등), OS정보, 이동통신사, 구글/애플 광고 ID&lt;br&gt;

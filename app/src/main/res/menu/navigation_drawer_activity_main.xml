@@ -40,16 +40,4 @@
             </menu>
         </item>
     </group>
-    <group
-        android:id="@+id/group3"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/group3_item1"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/navigation_drawer_activity_main_logout" />
-        <item
-            android:id="@+id/group3_item2"
-            android:icon="@drawable/ic_phonelink_erase"
-            android:title="@string/navigation_drawer_activity_main_signout" />
-    </group>
 </menu>

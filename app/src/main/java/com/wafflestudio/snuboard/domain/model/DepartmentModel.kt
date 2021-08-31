@@ -37,6 +37,7 @@ data class CollegeDepartment(val id: Int, val name: String, val college: String)
           const val MUSIC = "음악대학"
           const val MEDICINE = "의과대학"
           const val CLS = "자유전공학부"
+          const val ETC = "기타 기관"
      }
 }
 

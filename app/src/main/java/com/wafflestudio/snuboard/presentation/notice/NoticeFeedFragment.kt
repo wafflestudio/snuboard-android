@@ -102,7 +102,9 @@ class NoticeFeedFragment : Fragment() {
             updateNotice.observe(viewLifecycleOwner) {
                 observeUpdateNotice(it)
             }
-            getNotices()
+            getNotices {
+                mainActivityViewModel.navigateToAuthActivity()
+            }
         }
         return binding.root
     }
@@ -110,5 +112,11 @@ class NoticeFeedFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         noticeFeedFragmentViewModel.updateNoticesOfScrapIfNeeded()
+    }
+
+    fun refreshFromMainActivity() {
+        binding.run {
+            recyclerView.smoothScrollToPosition(0)
+        }
     }
 }

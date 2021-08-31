@@ -9,11 +9,14 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
+import androidx.preference.PreferenceManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.wafflestudio.snuboard.data.repository.NoticeNotiRepository
+import com.wafflestudio.snuboard.di.SharedPreferenceConst
+import com.wafflestudio.snuboard.domain.usecase.FCMTopicUseCase
 import com.wafflestudio.snuboard.domain.usecase.NotifyUseCase
 import com.wafflestudio.snuboard.presentation.MainActivity
 import com.wafflestudio.snuboard.presentation.notice.NoticeDetailActivity
@@ -28,6 +31,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var notifyUseCase: NotifyUseCase
+
+    @Inject
+    lateinit var fcmTopicUseCase: FCMTopicUseCase
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -92,7 +98,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 Timber.w(task.exception, "Fetching FCM registration token failed")
                 return@OnCompleteListener
             }
-
+            val pref = PreferenceManager.getDefaultSharedPreferences(this)
+            pref.getString(SharedPreferenceConst.ACCESS_TOKEN_KEY, null)
+                    ?.run {
+                        Timber.d("Subscribing based on new FCM Token")
+                        fcmTopicUseCase.subscribeAll(this)
+                                .subscribe()
+                    }
             // Get new FCM registration token
             val token = task.result
             Timber.d("newFCMToken: ${token.toString()}")

@@ -118,8 +118,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                    tools:context=".presentation.auth.LoginFragment">
+                    app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}">
 
                     <Button
                         android:id="@+id/apply_button"

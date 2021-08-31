@@ -62,7 +62,6 @@
 
             <include
                 layout="@layout/header_navigation_drawer_activity_main"
-                app:myInfo="@{viewModel.myInfo}"
                 app:viewModel="@{viewModel}" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>

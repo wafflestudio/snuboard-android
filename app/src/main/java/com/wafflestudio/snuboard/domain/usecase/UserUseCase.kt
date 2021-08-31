@@ -12,48 +12,9 @@ class SignUpUseCase
 constructor(
     private val userRepository: UserRepository
 ) {
-    fun signUp(username: String, password: String, email: String): Single<Any> {
+    fun signUp(token: String): Single<Any> {
         return userRepository
-                .signUp(username, password, email)
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-}
-
-@Singleton
-class LoginUseCase
-@Inject
-constructor(
-    private val userRepository: UserRepository
-) {
-    fun login(username: String, password: String): Single<Any> {
-        return userRepository
-            .login(username, password)
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-}
-
-@Singleton
-class GetMyInfoUseCase
-@Inject
-constructor(
-        private val userRepository: UserRepository
-) {
-    fun getMyInfo(): Single<Any> {
-        return userRepository
-                .getUserMe()
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-}
-
-@Singleton
-class SignOutUseCase
-@Inject
-constructor(
-        private val userRepository: UserRepository
-) {
-    fun signOut(): Single<Any> {
-        return userRepository
-                .deleteUserMe()
+                .signUp(token)
                 .observeOn(AndroidSchedulers.mainThread())
     }
 }
