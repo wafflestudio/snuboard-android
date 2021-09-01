@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">SNU Board</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">스누보드</string>
     <string name="activity_main_bn_feed">홈</string>
     <string name="activity_main_bn_dept">학과</string>
     <string name="activity_main_bn_saved">관심목록</string>
