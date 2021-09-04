@@ -37,6 +37,15 @@ constructor(
             appContext
     )
 
+    // Adapt ScrollListener
+    private val _adaptScrollListener = MutableLiveData<Event<Unit>>()
+    val adaptScrollListener: LiveData<Event<Unit>>
+        get() = _adaptScrollListener
+
+    fun adaptScrollListener() {
+        _adaptScrollListener.value = Event(Unit)
+    }
+
     // Notification Status
     private val _isNotificationActive = MutableLiveData<Boolean>(false)
     val isNotificationActive: LiveData<Boolean>

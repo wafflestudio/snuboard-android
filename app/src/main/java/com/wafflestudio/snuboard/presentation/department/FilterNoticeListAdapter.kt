@@ -103,11 +103,13 @@ class FilterViewHolder(private val binding: ItemNoticeFilterBinding) :
                 departmentActivityViewModel.applyHomeTags()
                 hideSoftKeyboard(searchText)
                 searchText.clearFocus()
+                departmentActivityViewModel.adaptScrollListener()
             }
             eraseButton.setOnClickListener {
                 departmentActivityViewModel.eraseHomeTags()
                 hideSoftKeyboard(searchText)
                 searchText.clearFocus()
+                departmentActivityViewModel.adaptScrollListener()
             }
             eraseSearchButton.setOnClickListener {
                 searchText.requestFocus()

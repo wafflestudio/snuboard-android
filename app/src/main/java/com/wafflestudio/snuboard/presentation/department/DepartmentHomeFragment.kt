@@ -73,6 +73,17 @@ class DepartmentHomeFragment : Fragment() {
                     })
                 }
             }
+            departmentActivityViewModel.apply {
+                adaptScrollListener.observe(viewLifecycleOwner) {
+                    filterNoticeRecyclerView.run {
+                        clearOnScrollListeners()
+                        addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                            departmentActivityViewModel.getNotices()
+                        })
+                    }
+                }
+                getNotices()
+            }
         }
         setHasOptionsMenu(true)
         return binding.root

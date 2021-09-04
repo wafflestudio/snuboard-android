@@ -3,6 +3,8 @@ package com.wafflestudio.snuboard.presentation.department
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -42,7 +44,10 @@ class DepartmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         SingleEvent.triggerToast.observe(this) {
             it.getContentIfNotHandled()?.let { it1 ->
-                Toast.makeText(this, it1, Toast.LENGTH_SHORT).show()
+                val shortToast = Toast.makeText(this, it1, Toast.LENGTH_SHORT)
+                shortToast.show()
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({ shortToast.cancel() }, 700)
             }
         }
         binding.run {
