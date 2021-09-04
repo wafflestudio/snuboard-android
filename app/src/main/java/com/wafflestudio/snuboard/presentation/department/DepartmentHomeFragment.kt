@@ -93,14 +93,6 @@ class DepartmentHomeFragment : Fragment() {
                 }
                 return true
             }
-            R.id.search_button -> {
-                departmentActivityViewModel.tagDepartmentInfo.value?.let {
-                    startActivity(DepartmentSearchActivity
-                            .intentWithDepartmentInfo(requireContext(), it))
-                    activity?.overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
-                }
-                true
-            }
             else -> false
         }
     }

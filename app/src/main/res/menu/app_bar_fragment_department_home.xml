@@ -7,10 +7,4 @@
         android:title="@string/fragment_department_home_app_bar_link"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/search_button"
-        android:icon="@drawable/ic_search"
-        android:title="@string/fragment_notice_feed_app_bar_search"
-        app:showAsAction="always" />
-
 </menu>

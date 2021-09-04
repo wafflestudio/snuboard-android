@@ -26,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.department.DepartmentSearchActivity" />
         <activity android:name=".presentation.user.ProfileActivity" />
         <activity android:name=".presentation.department.DepartmentActivity" />
         <activity android:name=".presentation.notice.NoticeDetailActivity" />
