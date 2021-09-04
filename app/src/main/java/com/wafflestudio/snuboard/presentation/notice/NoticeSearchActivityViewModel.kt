@@ -69,8 +69,11 @@ constructor(
         else
             _isAddLoading.value = true
         keywords.value?.apply {
-            if (isEmpty())
+            if (isEmpty()) {
+                _isNewLoading.value = false
+                _isAddLoading.value = false
                 return
+            }
         }
                 ?.let { keyword_string ->
                     getNoticesOfFollowSearchUseCase

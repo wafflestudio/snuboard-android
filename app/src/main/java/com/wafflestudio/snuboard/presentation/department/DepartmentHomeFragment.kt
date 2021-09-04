@@ -63,9 +63,9 @@ class DepartmentHomeFragment : Fragment() {
                 filterNoticeRecyclerView.adapter?.notifyItemChanged(0, Unit)
             }
             refreshLayout.setOnRefreshListener {
-                departmentActivityViewModel.updateNotices {
+                departmentActivityViewModel.updateNotices(callback = {
                     refreshLayout.isRefreshing = false
-                }
+                })
                 filterNoticeRecyclerView.run {
                     clearOnScrollListeners()
                     addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {

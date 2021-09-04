@@ -49,8 +49,8 @@
     <string name="text_activity_notice_search_cancel">취소</string>
     <string name="cancel_icon">cancel_icon</string>
     <string name="text_view_fragement_dept_home_home">태그 필터</string>
-    <string name="button_fragment_department_home_apply">필터 적용</string>
-    <string name="button_fragment_department_home_erase">초기화</string>
+    <string name="button_fragment_department_home_apply">검색</string>
+    <string name="button_fragment_department_home_erase">필터 제거</string>
     <string name="app_bar_profile_activity_profile">프로필</string>
     <string name="text_view_activity_profile_email">닉네임</string>
     <string name="header_image">header image</string>
