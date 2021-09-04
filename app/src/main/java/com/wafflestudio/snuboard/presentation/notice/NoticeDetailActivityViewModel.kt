@@ -21,7 +21,6 @@ constructor(
         private val getNoticesByFollowUseCase: GetNoticesByFollowUseCase,
         private val getNoticesOfFollowSearchUseCase: GetNoticeOfFollowSearchUseCase,
         private val getNoticesOfScrapUseCase: GetNoticesOfScrapUseCase,
-        private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
         private val getNoticesOfDepartmentIdSearchUseCase: GetNoticesOfDepartmentIdSearchUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
@@ -72,7 +71,6 @@ constructor(
                             _notice.value = it
                             getNoticesByFollowUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesOfFollowSearchUseCase.updateNoticeWithNoticeDetail(it)
-                            getNoticesOfDepartmentUseCase.updateNoticeWithNoticeDetail(it)
                             getNoticesOfDepartmentIdSearchUseCase.updateNoticeWithNoticeDetail(it)
                             if (!it.isScrapped)
                                 getNoticesOfScrapUseCase.updateNoticeWithNoticeDetail(it)

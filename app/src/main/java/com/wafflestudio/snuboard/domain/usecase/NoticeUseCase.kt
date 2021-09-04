@@ -13,61 +13,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetNoticesOfDepartmentUseCase
-@Inject
-constructor(
-        private val noticeRepository: NoticeRepository,
-        private val noticeMapper: NoticeMapper
-) {
-
-    private val _updateNotice = MutableLiveData<Event<List<Notice>>>(Event(listOf()))
-
-    val updateNotice: LiveData<Event<List<Notice>>>
-        get() = _updateNotice
-
-    fun getNotices(
-        departmentId: Int,
-        limit: Int,
-        cursor: String?,
-        tags: List<String>
-    ): Single<Any> {
-        return noticeRepository
-            .getNoticesOfDepartment(departmentId, limit, cursor, null, tags.joinToString(","))
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun updateNotice(notice: Notice) {
-        _updateNotice.value?.let {
-            if (it.hasBeenHandled) {
-                _updateNotice.value = Event(listOf(notice))
-            } else {
-                it.peekContent()?.let { it1 ->
-                    val tmpUpdateNotice = it1.toMutableList()
-                    tmpUpdateNotice.add(notice)
-                    _updateNotice.value = Event(tmpUpdateNotice)
-                }
-            }
-        }
-    }
-
-    fun updateNoticeWithNoticeDetail(noticeDetail: NoticeDetail) {
-        val notice = noticeMapper.mapToNoticeFromNoticeDetail(noticeDetail)
-        _updateNotice.value?.let {
-            if (it.hasBeenHandled) {
-                _updateNotice.value = Event(listOf(notice))
-            } else {
-                it.peekContent()?.let { it1 ->
-                    val tmpUpdateNotice = it1.toMutableList()
-                    tmpUpdateNotice.add(notice)
-                    _updateNotice.value = Event(tmpUpdateNotice)
-                }
-            }
-        }
-    }
-
-}
-
-@Singleton
 class GetNoticesOfDepartmentIdSearchUseCase
 @Inject
 constructor(
@@ -80,7 +25,7 @@ constructor(
     val updateNotice: LiveData<Event<List<Notice>>>
         get() = _updateNotice
 
-    fun getNotices(departmentId: Int, keywords: String, limit: Int, cursor: String?, tags: List<String>): Single<Any> {
+    fun getNotices(departmentId: Int, keywords: String?, limit: Int, cursor: String?, tags: List<String>): Single<Any> {
         return noticeRepository
                 .getNoticesOfDepartmentIdSearch(
                         departmentId,

@@ -206,10 +206,9 @@ constructor(
         homeTagStringFixed = tmpHomeTagString
         updateNotices(postWork = {
             SingleEvent.triggerToast.value = Event("검색이 완료되었습니다")
+        }, callback = {
+            notifyList()
         })
-        if (keywords.value!!.isBlank()) {
-            SingleEvent.triggerToast.value = Event("검색이 완료되었습니다")
-        }
     }
 
     fun eraseHomeTags() {
@@ -234,10 +233,9 @@ constructor(
         _tagDepartmentInfo.value = tagDepartmentFull
         updateNotices(postWork = {
             SingleEvent.triggerToast.value = Event("필터를 제거하였습니다")
+        }, callback = {
+            notifyList()
         })
-        if (keywords.value!!.isBlank()) {
-            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다")
-        }
     }
 
     fun cleanCursor() {
@@ -305,88 +303,74 @@ constructor(
             _isNewLoading.value = true
         else
             _isAddLoading.value = true
-        keywords.value?.apply {
-            if (isEmpty()) {
-                _isNewLoading.value = false
-                _isAddLoading.value = false
-                return
-            }
+        keywords.value?.let { keyword_string ->
+            getNoticesOfDepartmentIdSearchUseCase
+                    .getNotices(
+                            tagDepartmentInfo.value!!.id,
+                            if (keyword_string.isEmpty()) null else keyword_string,
+                            paginationLimit,
+                            paginationCursor,
+                            homeTagStringFixed
+                    )
+                    .subscribe({
+                        _isNewLoading.value = false
+                        _isAddLoading.value = false
+                        when (it) {
+                            is NoticeList -> {
+                                tmpNoticeList.addAll(it.notices)
+                                _notices.value = tmpNoticeList
+                                paginationCursor = if (it.nextCursor.isEmpty())
+                                    EOP
+                                else
+                                    it.nextCursor
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                    }, {
+                        _isNewLoading.value = false
+                        _isAddLoading.value = false
+                        SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
+                        Timber.e(it)
+                    })
         }
-                ?.let { keyword_string ->
-                    getNoticesOfDepartmentIdSearchUseCase
-                            .getNotices(
-                                    tagDepartmentInfo.value!!.id,
-                                    keyword_string,
-                                    paginationLimit,
-                                    paginationCursor,
-                                    homeTagStringFixed
-                            )
-                            .subscribe({
-                                _isNewLoading.value = false
-                                _isAddLoading.value = false
-                                when (it) {
-                                    is NoticeList -> {
-                                        tmpNoticeList.addAll(it.notices)
-                                        _notices.value = tmpNoticeList
-                                        paginationCursor = if (it.nextCursor.isEmpty())
-                                            EOP
-                                        else
-                                            it.nextCursor
-                                    }
-                                    is ErrorResponse -> {
-                                        SingleEvent.triggerToast.value = Event(it.message)
-                                        Timber.e(it.message)
-                                    }
-                                }
-                            }, {
-                                _isNewLoading.value = false
-                                _isAddLoading.value = false
-                                SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
-                                Timber.e(it)
-                            })
-                }
     }
 
     fun updateNotices(postWork: () -> Unit = {}, callback: (() -> Unit)? = null) {
         paginationCursor = null
         _isPageEnd.value = false
-        keywords.value?.apply {
-            if (isEmpty()) {
-                notifyList()
-                callback?.let { it() }
-                return
-            }
+        keywords.value?.let { keyword_string ->
+            getNoticesOfDepartmentIdSearchUseCase
+                    .getNotices(
+                            tagDepartmentInfo.value!!.id,
+                            if (keyword_string.isEmpty()) null else keyword_string,
+                            paginationLimit,
+                            paginationCursor,
+                            homeTagStringFixed
+                    )
+                    .subscribe({
+                        when (it) {
+                            is NoticeList -> {
+                                _notices.value = it.notices
+                                paginationCursor = if (it.nextCursor.isEmpty())
+                                    EOP
+                                else
+                                    it.nextCursor
+                                postWork()
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                        callback?.let { it() }
+                    }, {
+                        Timber.e(it)
+                        callback?.let { it() }
+                    })
         }
-                ?.let { keyword_string ->
-                    getNoticesOfDepartmentIdSearchUseCase
-                            .getNotices(
-                                    tagDepartmentInfo.value!!.id,
-                                    keyword_string,
-                                    paginationLimit,
-                                    paginationCursor,
-                                    homeTagStringFixed
-                            )
-                            .subscribe({
-                                when (it) {
-                                    is NoticeList -> {
-                                        _notices.value = it.notices
-                                        paginationCursor = if (it.nextCursor.isEmpty())
-                                            EOP
-                                        else
-                                            it.nextCursor
-                                        postWork()
-                                    }
-                                    is ErrorResponse -> {
-                                        SingleEvent.triggerToast.value = Event(it.message)
-                                        Timber.e(it.message)
-                                    }
-                                }
-                                callback?.let { it() }
-                            }, {
-                                Timber.e(it)
-                                callback?.let { it() }
-                            })
-                }
     }
 
     private fun updateNotice(notice: Notice) {

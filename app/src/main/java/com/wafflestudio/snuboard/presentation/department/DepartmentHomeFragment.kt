@@ -82,7 +82,6 @@ class DepartmentHomeFragment : Fragment() {
                         })
                     }
                 }
-                getNotices()
             }
         }
         setHasOptionsMenu(true)

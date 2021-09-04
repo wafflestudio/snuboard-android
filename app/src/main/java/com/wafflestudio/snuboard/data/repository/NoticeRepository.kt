@@ -10,9 +10,7 @@ import javax.inject.Singleton
 
 interface NoticeRepository {
 
-    fun getNoticesOfDepartment(departmentId: Int, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any>
-
-    fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any>
+    fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String?, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any>
 
     fun getNoticesOfFollow(limit: Int, cursor: String?): Single<Any>
 
@@ -34,20 +32,8 @@ constructor(
         private val noticeService: NoticeService,
         private val noticeMapper: NoticeMapper,
 ) : NoticeRepository {
-    override fun getNoticesOfDepartment(departmentId: Int, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any> {
-        return noticeService.getNoticesOfDepartment(departmentId, limit, cursor, pinned, tags)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    if (it.isSuccessful) {
-                        it.body()?.let { it1 ->
-                            return@map noticeMapper.mapFromListNoticeDto(it1)
-                        }
-                    } else
-                        return@map parseErrorResponse(it.errorBody()!!)
-                }
-    }
 
-    override fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any> {
+    override fun getNoticesOfDepartmentIdSearch(departmentId: Int, keywords: String?, limit: Int, cursor: String?, pinned: Boolean?, tags: String?): Single<Any> {
         return noticeService.getNoticesOfDepartmentIdSearch(departmentId, keywords, limit, cursor, pinned, tags)
                 .subscribeOn(Schedulers.io())
                 .map {
