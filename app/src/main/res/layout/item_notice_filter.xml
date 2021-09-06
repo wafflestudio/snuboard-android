@@ -28,7 +28,6 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:background="@color/white"
-            android:onClick="@{() -> activityViewModel.toggleHomeTagCard()}"
             app:contentPadding="12dp"
             app:cardCornerRadius="8dp">
 
@@ -37,70 +36,63 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/tags_header"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/cancel_button"
+                    app:cardCornerRadius="10dp"
+                    android:backgroundTint="@color/gray5">
 
-                    <ImageView
-                        android:id="@+id/tags_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="4dp"
-                        android:contentDescription="@string/image_fragment_dept_feed_tag"
-                        android:src="@drawable/ic_home"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tags_name"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tags_name"
-                        style="@style/NotoSansBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_view_fragement_dept_home_home"
-                        android:textColor="@{activityViewModel.isFilterOn ? @color/filter_on : @color/filter_default}"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/tags_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:layout_marginEnd="7dp"
+                            android:src="@drawable/ic_search"
+                            android:contentDescription="@string/search_icon"
+                            app:tint="@color/gray3" />
 
-                    <ImageView
-                        android:id="@+id/toggle_open_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="5dp"
-                        android:contentDescription="@string/image_view_fragment_dept_domain"
-                        android:src="@drawable/ic_arrow_drop_down"
-                        app:view_visibility_string="@{!activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
+                        <EditText
+                            android:id="@+id/search_text"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginEnd="7dp"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:text="@={activityViewModel.keywords}"
+                            android:imeOptions="actionDone"
+                            android:textSize="13sp"
+                            android:textColor="@color/gray3"
+                            android:background="@null"
+                            android:hint="@string/edit_text_activity_notice_search_hint" />
 
-                    <ImageView
-                        android:id="@+id/toggle_close_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="5dp"
-                        android:contentDescription="@string/image_view_fragment_dept_domain"
-                        android:src="@drawable/ic_arrow_drop_up"
-                        app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:preview_color="@{activityViewModel.isFilterOn ? BasicColor.FILTER_ON_COLOR.colorId : BasicColor.FILTER_COLOR.colorId}" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/erase_search_button"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:layout_marginEnd="7dp"
+                            android:src="@drawable/ic_cancel"
+                            android:contentDescription="@string/cancel_icon"
+                            app:view_visibility_string="@{activityViewModel.keywords.isEmpty()  ? `gone` : `visible`}"
+                            app:tint="@color/gray4" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tag_recycler_view"
@@ -108,17 +100,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
                     android:nestedScrollingEnabled="false"
-                    app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}"
                     app:tag_items="@{activityViewModel.tagDepartmentInfo.homeTags}"
                     tools:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                     tools:listitem="@layout/sub_item_tag" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:view_visibility_string="@{activityViewModel.isHomeTagsVisible ? `visible` : `gone`}">
+                    android:layout_height="match_parent">
 
                     <Button
                         android:id="@+id/apply_button"

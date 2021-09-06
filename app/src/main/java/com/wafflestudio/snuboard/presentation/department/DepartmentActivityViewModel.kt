@@ -24,8 +24,8 @@ class DepartmentActivityViewModel
 constructor(
         private val getTagDepartmentInfoUseCase: GetTagDepartmentInfoUseCase,
         private val postFollowingTagUseCase: PostFollowingTagUseCase,
+        private val getNoticesOfDepartmentIdSearchUseCase: GetNoticesOfDepartmentIdSearchUseCase,
         private val deleteFollowingTagUseCase: DeleteFollowingTagUseCase,
-        private val getNoticesOfDepartmentUseCase: GetNoticesOfDepartmentUseCase,
         private val deleteNoticeScrapUseCase: DeleteNoticeScrapUseCase,
         private val postNoticeScrapUseCase: PostNoticeScrapUseCase,
         private val notifyUseCase: NotifyUseCase,
@@ -37,6 +37,15 @@ constructor(
             appContext
     )
 
+    // Adapt ScrollListener
+    private val _adaptScrollListener = MutableLiveData<Event<Unit>>()
+    val adaptScrollListener: LiveData<Event<Unit>>
+        get() = _adaptScrollListener
+
+    fun adaptScrollListener() {
+        _adaptScrollListener.value = Event(Unit)
+    }
+
     // Notification Status
     private val _isNotificationActive = MutableLiveData<Boolean>(false)
     val isNotificationActive: LiveData<Boolean>
@@ -46,6 +55,11 @@ constructor(
     private val _isNewLoading = MutableLiveData<Boolean>(false)
     private val _isAddLoading = MutableLiveData<Boolean>(false)
     private val _isPageEnd = MutableLiveData<Boolean>(false)
+    val keywords = MutableLiveData("")
+
+    private var fixedKeywords = ""
+
+    val updateNotice = getNoticesOfDepartmentIdSearchUseCase.updateNotice
 
     val isNewLoading: LiveData<Boolean>
         get() = _isNewLoading
@@ -61,14 +75,7 @@ constructor(
 
     // Tag members
     private var homeTagString = listOf<String>()
-
-    private val _isHomeTagsVisible = MutableLiveData(false)
-    val isHomeTagsVisible: LiveData<Boolean>
-        get() = _isHomeTagsVisible
-
-    private val _isFilterOn = MutableLiveData(false)
-    val isFilterOn: LiveData<Boolean>
-        get() = _isFilterOn
+    private var homeTagStringFixed = listOf<String>()
 
     private val _notifyFilterNoticeList = MutableLiveData<Event<Unit>>()
     val notifyFilterNoticeList: LiveData<Event<Unit>>
@@ -76,13 +83,18 @@ constructor(
 
     // Notice Members
     private val _notices = MutableLiveData<List<Notice>>()
-    val updateNotice = getNoticesOfDepartmentUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
         get() = _notices
 
     private val paginationLimit = 10
     private var paginationCursor: String? = null
+
+    private fun fixKeywords() {
+        keywords.value?.let {
+            fixedKeywords = it
+        }
+    }
 
     // Notification Functions
     private fun getNotification() {
@@ -104,7 +116,6 @@ constructor(
 
     // Department Functions
     fun getTagDepartmentInfo(departmentId: Int) {
-        getHomeTagString(departmentId)
         getTagDepartmentInfoUseCase
                 .getTagDepartmentInfo(departmentId)
                 .subscribe({
@@ -152,35 +163,18 @@ constructor(
             putInt(preferenceKey, departmentColor.colorId)
         }
         _tagDepartmentInfo.value = TagDepartmentFull(
-            tmpTagDepartment.id,
-            tmpTagDepartment.name,
-            tmpTagDepartment.link,
-            tmpTagDepartment.tags,
-            tmpTagDepartment.homeTags,
-            departmentColor
+                tmpTagDepartment.id,
+                tmpTagDepartment.name,
+                tmpTagDepartment.link,
+                tmpTagDepartment.tags,
+                tmpTagDepartment.homeTags,
+                departmentColor
         )
     }
 
     // Tag Functions
-
-    private fun notifyList() {
+    fun notifyList() {
         _notifyFilterNoticeList.value = Event(Unit)
-    }
-
-    private fun getHomeTagString(departmentId: Int) {
-        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(departmentId)
-        val departmentHomeTagString = pref.getString(preferenceKey, "EMPTY")
-        var departmentHomeTags = listOf<String>()
-        if (departmentHomeTagString == "EMPTY" || departmentHomeTagString!!.isBlank()) {
-            pref.edit {
-                putString(preferenceKey, "")
-            }
-        } else {
-            departmentHomeTags = departmentHomeTagString.split(",")
-        }
-        homeTagString = departmentHomeTags
-        _isFilterOn.value = homeTagString.isNotEmpty()
-        notifyList()
     }
 
     fun toggleHomeTag(tagContent: String) {
@@ -215,51 +209,23 @@ constructor(
         notifyList()
     }
 
-    fun toggleHomeTagCard() {
-        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
-
-        if (isHomeTagsVisible.value!!) {
-            getHomeTagString(tmpTagDepartmentInfo.id)
-            val homeTags = tmpTagDepartmentInfo.homeTags.map {
-                if (it.content in homeTagString) {
-                    Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
-                } else {
-                    Tag(it.content, DepartmentColor.TAG_COLOR)
-                }
-            }
-            val tagDepartmentFull = TagDepartmentFull(
-                tmpTagDepartmentInfo.id,
-                tmpTagDepartmentInfo.name,
-                tmpTagDepartmentInfo.link,
-                tmpTagDepartmentInfo.tags,
-                homeTags,
-                tmpTagDepartmentInfo.departmentColor
-            )
-            _tagDepartmentInfo.value = tagDepartmentFull
-        }
-        _isHomeTagsVisible.value = !isHomeTagsVisible.value!!
-        notifyList()
-    }
 
     fun applyHomeTags() {
-        val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
-        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(tmpTagDepartmentInfo.id)
-        pref.edit {
-            putString(preferenceKey, homeTagString.joinToString(separator = ","))
-        }
-        _isFilterOn.value = homeTagString.isNotEmpty()
-        updateNotices {
-            SingleEvent.triggerToast.value = Event("필터를 적용하였습니다.")
-        }
+        val tmpHomeTagString = homeTagString.toMutableList()
+        homeTagStringFixed = tmpHomeTagString
+        updateNotices(postWork = {
+            SingleEvent.triggerToast.value = Event("검색이 완료되었습니다")
+        }, callback = {
+            notifyList()
+        }, onEmpty = {
+            SingleEvent.triggerToast.value = Event("검색어가 들어있는 게시물이 없습니다")
+        })
     }
 
     fun eraseHomeTags() {
         val tmpTagDepartmentInfo = tagDepartmentInfo.value!!
-        val preferenceKey = SharedPreferenceConst.getDepartmentHomeKey(tmpTagDepartmentInfo.id)
-        pref.edit {
-            putString(preferenceKey, "")
-        }
         homeTagString = listOf()
+        homeTagStringFixed = listOf()
         val homeTags = tmpTagDepartmentInfo.homeTags.map {
             if (it.content in homeTagString) {
                 Tag(it.content, DepartmentColor.TAG_SELECTED_COLOR)
@@ -268,20 +234,35 @@ constructor(
             }
         }
         val tagDepartmentFull = TagDepartmentFull(
-            tmpTagDepartmentInfo.id,
-            tmpTagDepartmentInfo.name,
-            tmpTagDepartmentInfo.link,
-            tmpTagDepartmentInfo.tags,
-            homeTags,
-            tmpTagDepartmentInfo.departmentColor
+                tmpTagDepartmentInfo.id,
+                tmpTagDepartmentInfo.name,
+                tmpTagDepartmentInfo.link,
+                tmpTagDepartmentInfo.tags,
+                homeTags,
+                tmpTagDepartmentInfo.departmentColor
         )
         _tagDepartmentInfo.value = tagDepartmentFull
-        _isFilterOn.value = homeTagString.isNotEmpty()
-        updateNotices {
-            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다.")
-        }
+        updateNotices(postWork = {
+            SingleEvent.triggerToast.value = Event("필터를 제거하였습니다")
+        }, callback = {
+            notifyList()
+        }, onEmpty = {
+            SingleEvent.triggerToast.value = Event("검색어가 들어있는 게시물이 없습니다")
+        })
     }
 
+    fun cleanCursor() {
+        paginationCursor = null
+        _isPageEnd.value = false
+    }
+
+    fun cleanText() {
+        keywords.value = ""
+    }
+
+    fun clearNotices() {
+        _notices.value = listOf()
+    }
 
     fun toggleFollowingTag(tagContent: String) {
         tagDepartmentInfo.value?.let {
@@ -290,12 +271,12 @@ constructor(
                 DepartmentColor.TAG_COLOR -> {
                     subscribeFollowingTag(it.name, tagContent)
                     postFollowingTagUseCase
-                        .postFollowingTag(it.id, tagContent)
+                            .postFollowingTag(it.id, tagContent)
                 }
                 DepartmentColor.TAG_SELECTED_COLOR -> {
                     unsubscribeFollowingTag(it.name, tagContent)
                     deleteFollowingTagUseCase
-                        .deleteFollowingTag(it.id, tagContent)
+                            .deleteFollowingTag(it.id, tagContent)
                 }
                 else ->
                     null
@@ -335,68 +316,78 @@ constructor(
             _isNewLoading.value = true
         else
             _isAddLoading.value = true
-        getNoticesOfDepartmentUseCase
-            .getNotices(
-                tagDepartmentInfo.value!!.id,
-                paginationLimit,
-                paginationCursor,
-                homeTagString
-            )
-            .subscribe({
-                _isNewLoading.value = false
-                _isAddLoading.value = false
-                when (it) {
-                    is NoticeList -> {
-                        tmpNoticeList.addAll(it.notices)
-                        _notices.value = tmpNoticeList
-                        paginationCursor = if (it.nextCursor.isEmpty())
-                            EOP
-                        else
-                            it.nextCursor
-                    }
-                    is ErrorResponse -> {
-                        SingleEvent.triggerToast.value = Event(it.message)
-                        Timber.e(it.message)
-                    }
-                }
-            }, {
-                _isNewLoading.value = false
-                _isAddLoading.value = false
-                SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
-                Timber.e(it)
-            })
+        fixedKeywords.let { keyword_string ->
+            getNoticesOfDepartmentIdSearchUseCase
+                    .getNotices(
+                            tagDepartmentInfo.value!!.id,
+                            if (keyword_string.isEmpty()) null else keyword_string,
+                            paginationLimit,
+                            paginationCursor,
+                            homeTagStringFixed
+                    )
+                    .subscribe({
+                        _isNewLoading.value = false
+                        _isAddLoading.value = false
+                        when (it) {
+                            is NoticeList -> {
+                                tmpNoticeList.addAll(it.notices)
+                                _notices.value = tmpNoticeList
+                                paginationCursor = if (it.nextCursor.isEmpty())
+                                    EOP
+                                else
+                                    it.nextCursor
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
+                        }
+                    }, {
+                        _isNewLoading.value = false
+                        _isAddLoading.value = false
+                        SingleEvent.triggerToast.value = Event("서버 관련 에러가 발생했습니다")
+                        Timber.e(it)
+                    })
+        }
     }
 
-    fun updateNotices(postWork: () -> Unit = {}) {
+    fun updateNotices(postWork: () -> Unit = {}, callback: (() -> Unit)? = null, onEmpty: () -> Unit = {}) {
         paginationCursor = null
         _isPageEnd.value = false
-        getNoticesOfDepartmentUseCase
-                .getNotices(
-                        tagDepartmentInfo.value!!.id,
-                        paginationLimit,
-                        paginationCursor,
-                        homeTagString
-                )
-                .subscribe({
-                    when (it) {
-                        is NoticeList -> {
-                            _notices.value = it.notices
-                            paginationCursor = if (it.nextCursor.isEmpty())
-                                EOP
-                            else
-                                it.nextCursor
-                            postWork()
+        fixKeywords()
+        fixedKeywords.let { keyword_string ->
+            getNoticesOfDepartmentIdSearchUseCase
+                    .getNotices(
+                            tagDepartmentInfo.value!!.id,
+                            if (keyword_string.isEmpty()) null else keyword_string,
+                            paginationLimit,
+                            paginationCursor,
+                            homeTagStringFixed
+                    )
+                    .subscribe({
+                        when (it) {
+                            is NoticeList -> {
+                                _notices.value = it.notices
+                                paginationCursor = if (it.nextCursor.isEmpty())
+                                    EOP
+                                else
+                                    it.nextCursor
+                                if (it.notices.isEmpty())
+                                    onEmpty()
+                                else
+                                    postWork()
+                            }
+                            is ErrorResponse -> {
+                                SingleEvent.triggerToast.value = Event(it.message)
+                                Timber.e(it.message)
+                            }
                         }
-                        is ErrorResponse -> {
-                            SingleEvent.triggerToast.value = Event(it.message)
-                            Timber.e(it.message)
-                            postWork()
-                        }
-                    }
-                }, {
-                    Timber.e(it)
-                    postWork()
-                })
+                        callback?.let { it() }
+                    }, {
+                        Timber.e(it)
+                        callback?.let { it() }
+                    })
+        }
     }
 
     private fun updateNotice(notice: Notice) {

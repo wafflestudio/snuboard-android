@@ -7,19 +7,10 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface NoticeService {
-    @GET("notices/department/{department_id}/")
-    fun getNoticesOfDepartment(
-            @Path("department_id") departmentId: Int,
-            @Query("limit") limit: Int,
-            @Query("cursor") cursor: String?,
-            @Query("pinned") pinned: Boolean?,
-            @Query("tags") tags: String?
-    ): Single<Response<NoticeListDto>>
-
     @GET("notices/department/{department_id}/search/")
     fun getNoticesOfDepartmentIdSearch(
             @Path("department_id") departmentId: Int,
-            @Query("keywords") keyword: String,
+            @Query("keywords") keyword: String?,
             @Query("limit") limit: Int,
             @Query("cursor") cursor: String?,
             @Query("pinned") pinned: Boolean?,

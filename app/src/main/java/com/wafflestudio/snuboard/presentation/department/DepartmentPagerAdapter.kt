@@ -10,8 +10,8 @@ class DepartmentPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment = when (position) {
-        HOME.position -> DepartmentHomeFragment()
         FEED.position -> DepartmentFeedFragment()
+        HOME.position -> DepartmentHomeFragment()
         else -> {
             throw Error("Not valid fragment for designated page number")
         }
@@ -20,8 +20,8 @@ class DepartmentPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(
 }
 
 enum class DepartmentPageConst(val position: Int, val title: String) {
-    HOME(0, "홈"),
-    FEED(1, "구독설정");
+    FEED(0, "관심태그"),
+    HOME(1, "공지검색");
 
     companion object {
         fun fromPosition(position: Int): DepartmentPageConst? =

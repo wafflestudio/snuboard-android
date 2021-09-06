@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">SNU Board</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">스누보드</string>
     <string name="activity_main_bn_feed">홈</string>
     <string name="activity_main_bn_dept">학과</string>
     <string name="activity_main_bn_saved">관심목록</string>
@@ -39,8 +37,8 @@
     <string name="tab_activity_dept_feed">피드</string>
     <string name="fragment_department_home_app_bar_link">링크</string>
     <string name="image_fragment_dept_feed_tag">tag</string>
-    <string name="text_view_fragement_dept_feed_follow">팔로우</string>
-    <string name="text_view_fragement_dept_feed_color">색</string>
+    <string name="text_view_fragement_dept_feed_follow">팔로우할 태그를 선택해주세요</string>
+    <string name="text_view_fragement_dept_feed_color">학과의 색상을 선택해주세요</string>
     <string name="image_view_item_color_color_preview">color_preview</string>
     <string name="image_view_item_color_check">check</string>
     <string name="fragment_department_home_app_bar_favoirite_border">좋아요</string>
@@ -51,8 +49,8 @@
     <string name="text_activity_notice_search_cancel">취소</string>
     <string name="cancel_icon">cancel_icon</string>
     <string name="text_view_fragement_dept_home_home">태그 필터</string>
-    <string name="button_fragment_department_home_apply">필터 적용</string>
-    <string name="button_fragment_department_home_erase">초기화</string>
+    <string name="button_fragment_department_home_apply">검색</string>
+    <string name="button_fragment_department_home_erase">필터 제거</string>
     <string name="app_bar_profile_activity_profile">프로필</string>
     <string name="text_view_activity_profile_email">닉네임</string>
     <string name="header_image">header image</string>
@@ -155,5 +153,5 @@ SNUBOARD 담당자&lt;br&gt;
     <string name="notification_list">알림 목록</string>
     <string name="fragment_department_home_app_bar_notification">알림</string>
     <string name="image_fragment_dept_feed_noti">Notification</string>
-    <string name="text_view_fragement_dept_feed_noti">알림</string>
+    <string name="text_view_fragement_dept_feed_noti">새 게시물의 알림을 받을까요?</string>
 </resources>

@@ -63,14 +63,24 @@ class DepartmentHomeFragment : Fragment() {
                 filterNoticeRecyclerView.adapter?.notifyItemChanged(0, Unit)
             }
             refreshLayout.setOnRefreshListener {
-                departmentActivityViewModel.updateNotices {
+                departmentActivityViewModel.updateNotices(callback = {
                     refreshLayout.isRefreshing = false
-                }
+                })
                 filterNoticeRecyclerView.run {
                     clearOnScrollListeners()
                     addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
                         departmentActivityViewModel.getNotices()
                     })
+                }
+            }
+            departmentActivityViewModel.apply {
+                adaptScrollListener.observe(viewLifecycleOwner) {
+                    filterNoticeRecyclerView.run {
+                        clearOnScrollListeners()
+                        addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                            departmentActivityViewModel.getNotices()
+                        })
+                    }
                 }
             }
         }
@@ -92,14 +102,6 @@ class DepartmentHomeFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
                 }
                 return true
-            }
-            R.id.search_button -> {
-                departmentActivityViewModel.tagDepartmentInfo.value?.let {
-                    startActivity(DepartmentSearchActivity
-                            .intentWithDepartmentInfo(requireContext(), it))
-                    activity?.overridePendingTransition(R.anim.slide_from_right, R.anim.nav_default_exit_anim)
-                }
-                true
             }
             else -> false
         }
