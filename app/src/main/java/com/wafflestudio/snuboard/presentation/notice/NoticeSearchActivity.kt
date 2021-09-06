@@ -3,6 +3,8 @@ package com.wafflestudio.snuboard.presentation.notice
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -32,9 +34,12 @@ class NoticeSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SingleEvent.triggerToast.observe(this@NoticeSearchActivity) {
+        SingleEvent.triggerToast.observe(this) {
             it.getContentIfNotHandled()?.let { it1 ->
-                Toast.makeText(this@NoticeSearchActivity, it1, Toast.LENGTH_SHORT).show()
+                val shortToast = Toast.makeText(this, it1, Toast.LENGTH_SHORT)
+                shortToast.show()
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({ shortToast.cancel() }, 700)
             }
         }
         binding.run {
@@ -55,11 +60,18 @@ class NoticeSearchActivity : AppCompatActivity() {
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
                             hideSoftKeyboard(searchText)
                             noticeSearchActivityViewModel.apply {
+                                fixKeywords()
                                 cleanCursor()
                                 clearNotices()
                                 getNotices()
                             }
                             searchText.clearFocus()
+                            recyclerView.run {
+                                clearOnScrollListeners()
+                                addOnScrollListener(NoticeInfiniteScrollListener(layoutManager as LinearLayoutManager) {
+                                    noticeSearchActivityViewModel.getNotices()
+                                })
+                            }
                             return true
                         }
                         return false
@@ -91,6 +103,7 @@ class NoticeSearchActivity : AppCompatActivity() {
 
             refreshLayout.setOnRefreshListener {
                 noticeSearchActivityViewModel.apply {
+                    fixKeywords()
                     cleanCursor()
                     clearNotices()
                     getNotices {

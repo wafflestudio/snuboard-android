@@ -31,6 +31,9 @@ constructor(
     private val _isAddLoading = MutableLiveData<Boolean>(false)
     private val _isPageEnd = MutableLiveData<Boolean>(false)
     val keywords = MutableLiveData("")
+
+    private var fixedKeywords = ""
+
     val updateNotice = getNoticesOfFollowSearchUseCase.updateNotice
 
     val notices: LiveData<List<Notice>>
@@ -44,6 +47,12 @@ constructor(
 
     private val paginationLimit = 10
     private var paginationCursor: String? = null
+
+    fun fixKeywords() {
+        keywords.value?.let {
+            fixedKeywords = it
+        }
+    }
 
     fun cleanCursor() {
         paginationCursor = null
@@ -68,14 +77,15 @@ constructor(
             _isNewLoading.value = true
         else
             _isAddLoading.value = true
-        keywords.value?.apply {
+        fixedKeywords.apply {
             if (isEmpty()) {
                 _isNewLoading.value = false
                 _isAddLoading.value = false
+                SingleEvent.triggerToast.value = Event("빈 검색어로 검색할 수 없습니다")
                 return
             }
         }
-                ?.let { keyword_string ->
+                .let { keyword_string ->
                     getNoticesOfFollowSearchUseCase
                             .getNotices(keyword_string, paginationLimit, paginationCursor)
                             .subscribe({
@@ -89,6 +99,8 @@ constructor(
                                             EOP
                                         else
                                             it.nextCursor
+                                        if (it.notices.isEmpty())
+                                            SingleEvent.triggerToast.value = Event("검색어가 들어있는 게시물이 없습니다")
                                     }
                                     is ErrorResponse -> {
                                         SingleEvent.triggerToast.value = Event(it.message)

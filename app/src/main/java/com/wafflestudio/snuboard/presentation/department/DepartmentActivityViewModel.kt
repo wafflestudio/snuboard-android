@@ -56,6 +56,9 @@ constructor(
     private val _isAddLoading = MutableLiveData<Boolean>(false)
     private val _isPageEnd = MutableLiveData<Boolean>(false)
     val keywords = MutableLiveData("")
+
+    private var fixedKeywords = ""
+
     val updateNotice = getNoticesOfDepartmentIdSearchUseCase.updateNotice
 
     val isNewLoading: LiveData<Boolean>
@@ -86,6 +89,12 @@ constructor(
 
     private val paginationLimit = 10
     private var paginationCursor: String? = null
+
+    private fun fixKeywords() {
+        keywords.value?.let {
+            fixedKeywords = it
+        }
+    }
 
     // Notification Functions
     private fun getNotification() {
@@ -208,6 +217,8 @@ constructor(
             SingleEvent.triggerToast.value = Event("검색이 완료되었습니다")
         }, callback = {
             notifyList()
+        }, onEmpty = {
+            SingleEvent.triggerToast.value = Event("검색어가 들어있는 게시물이 없습니다")
         })
     }
 
@@ -235,6 +246,8 @@ constructor(
             SingleEvent.triggerToast.value = Event("필터를 제거하였습니다")
         }, callback = {
             notifyList()
+        }, onEmpty = {
+            SingleEvent.triggerToast.value = Event("검색어가 들어있는 게시물이 없습니다")
         })
     }
 
@@ -303,7 +316,7 @@ constructor(
             _isNewLoading.value = true
         else
             _isAddLoading.value = true
-        keywords.value?.let { keyword_string ->
+        fixedKeywords.let { keyword_string ->
             getNoticesOfDepartmentIdSearchUseCase
                     .getNotices(
                             tagDepartmentInfo.value!!.id,
@@ -338,10 +351,11 @@ constructor(
         }
     }
 
-    fun updateNotices(postWork: () -> Unit = {}, callback: (() -> Unit)? = null) {
+    fun updateNotices(postWork: () -> Unit = {}, callback: (() -> Unit)? = null, onEmpty: () -> Unit = {}) {
         paginationCursor = null
         _isPageEnd.value = false
-        keywords.value?.let { keyword_string ->
+        fixKeywords()
+        fixedKeywords.let { keyword_string ->
             getNoticesOfDepartmentIdSearchUseCase
                     .getNotices(
                             tagDepartmentInfo.value!!.id,
@@ -358,7 +372,10 @@ constructor(
                                     EOP
                                 else
                                     it.nextCursor
-                                postWork()
+                                if (it.notices.isEmpty())
+                                    onEmpty()
+                                else
+                                    postWork()
                             }
                             is ErrorResponse -> {
                                 SingleEvent.triggerToast.value = Event(it.message)
