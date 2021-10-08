@@ -16,7 +16,6 @@ import com.wafflestudio.snuboard.presentation.MainPageConst.NOTICE
 import com.wafflestudio.snuboard.presentation.MainPageConst.SAVED
 import com.wafflestudio.snuboard.presentation.auth.AuthActivity
 import com.wafflestudio.snuboard.presentation.auth.PolicyReadActivity
-import com.wafflestudio.snuboard.presentation.info.NotificationListActivity
 import com.wafflestudio.snuboard.presentation.info.TeamInfoActivity
 import com.wafflestudio.snuboard.presentation.info.VersionInfoActivity
 import com.wafflestudio.snuboard.presentation.notice.NoticeFeedFragment
@@ -85,13 +84,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.group1_item4 -> {
                         startActivity(TeamInfoActivity.intent(this@MainActivity))
-                    }
-                    R.id.group2_item1 -> {
-                        startActivity(NotificationListActivity.intent(this@MainActivity))
-                        overridePendingTransition(
-                            R.anim.slide_from_right,
-                            R.anim.nav_default_exit_anim
-                        )
                     }
                     else ->
                         return@setNavigationItemSelectedListener false
