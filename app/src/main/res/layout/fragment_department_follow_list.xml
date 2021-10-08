@@ -175,6 +175,12 @@
                     app:viewModel="@{viewModel}"
                     app:collegeName="@{CollegeDepartment.ETC}" />
 
+                <include
+                    layout="@layout/item_college_card"
+                    android:id="@+id/union_college_card"
+                    app:viewModel="@{viewModel}"
+                    app:collegeName="@{CollegeDepartment.UNION}" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

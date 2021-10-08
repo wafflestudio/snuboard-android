@@ -26,18 +26,4 @@
             </menu>
         </item>
     </group>
-    <group
-        android:id="@+id/group2"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/group2_subtitle"
-            android:title="@string/navigation_drawer_activity_main_category2">
-            <menu>
-                <item
-                    android:id="@+id/group2_item1"
-                    android:icon="@drawable/ic_notifications_none"
-                    android:title="@string/navigation_drawer_activity_main_item3" />
-            </menu>
-        </item>
-    </group>
 </menu>

@@ -20,6 +20,7 @@ import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.NURSIN
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.PHARM
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.SCIENCE
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.SOCIAL
+import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.UNION
 import com.wafflestudio.snuboard.domain.model.CollegeDepartment.Companion.VET
 import com.wafflestudio.snuboard.domain.model.FollowingDepartment
 import com.wafflestudio.snuboard.domain.usecase.ClassifyDepartmentUseCase
@@ -68,7 +69,8 @@ constructor(
                     MUSIC to false,
                     MEDICINE to false,
                     CLS to false,
-                    ETC to false
+                    ETC to false,
+                    UNION to false
             )
     )
     val isCollegeDepartmentsVisible: LiveData<Map<String, Boolean>>
