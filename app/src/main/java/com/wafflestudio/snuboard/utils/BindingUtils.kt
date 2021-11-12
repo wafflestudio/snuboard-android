@@ -296,9 +296,9 @@ fun bindLoadContent(view: WebView, content: String?, style: String? = "") {
                 padding: 0px; 
                 } 
             img {
-                height: auto;
-                width: ${width}px;
-                object-fit: contain;
+                height: auto !important;
+                width: ${width}px !important;
+                object-fit: contain !important;
             }
             """ +
                     style +
